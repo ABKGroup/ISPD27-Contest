@@ -1,0 +1,11 @@
+{
+  "orfs_commit": "aabf2a397059704f68ddafe7e2c8bd1a0e7c65f5",
+  "openroad_base_commit": "90e29809c3d41f5ad289576e4c0c05b80c700bcd",
+  "kepler_commit": "f70c2e38592d704c8cccf68433b091e82c8118f0",
+  "openroad_patch": "patches/openroad-spef-pin-wire-cap.patch",
+  "openroad_patch_sha256": "7c14aca5164aadf49b412dc5704400abb692d27734f29d8309c4e5d79f01d905",
+  "openroad_binary_sha256": "39e8a3e155d06fa2551128d805ade26cdaa1eace529e99b903fec7a990db88db",
+  "container": "/home/tool/singularity/images/ispd26.sif",
+  "orfs_git_status": "m tools/OpenROAD\n m tools/yosys",
+  "openroad_git_status": "M src/dbSta/src/SpefWriter.cc"
+}
