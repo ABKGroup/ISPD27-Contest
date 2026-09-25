@@ -1,0 +1,4 @@
+design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,hold_wns_ns,hold_tns_ns,output_dir
+ariane,ariane_conv4_u70,BC,0,-0.4463331944108944,-428.38411389500504,-0.12371947960030237,-112.77117595950808,/home/jal216/ispd27_postcts/ariane_u70d80_it4/evaluation/ariane_conv4_u70/off
+ariane,ariane_conv4_u70,TC,0,-0.6268718902371063,-638.9155967617916,-0.07276024256638462,-25.663144600911686,/home/jal216/ispd27_postcts/ariane_u70d80_it4/evaluation/ariane_conv4_u70/off
+ariane,ariane_conv4_u70,WC,0,-0.9323595266460033,-951.9478150489865,-0.011013329181561797,-0.039095643545549286,/home/jal216/ispd27_postcts/ariane_u70d80_it4/evaluation/ariane_conv4_u70/off

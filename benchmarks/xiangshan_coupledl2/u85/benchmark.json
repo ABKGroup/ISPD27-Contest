@@ -1,0 +1,33 @@
+{
+  "clock_periods_ps": {
+    "BC": 2295.0,
+    "TC": 3031.0,
+    "WC": 4493.0
+  },
+  "core_area_um2": 107545.9,
+  "cts_inserted_cells": 3449,
+  "design": "xiangshan_coupledl2",
+  "hold_wns_ns": {
+    "BC": -0.7639570673285214,
+    "TC": -0.9632088498653204,
+    "WC": -1.3895711303848528
+  },
+  "layout_run": "xiangshan_coupledl2_u85",
+  "macro_area_um2": 33686.0,
+  "measured_utilization_excluding_cts_pct": 84.6,
+  "measured_utilization_pct": 86.0,
+  "scenario": "xiangshan_coupledl2_eval90_h100",
+  "setup_gap": {
+    "BC": 1.1631826609678808,
+    "TC": 1.1671393702070056,
+    "WC": 1.162743721763591
+  },
+  "setup_wns_ns": {
+    "BC": -0.3745042069212865,
+    "TC": -0.5065994310974338,
+    "WC": -0.7312075418838143
+  },
+  "stdcell_area_um2": 58807.7,
+  "target_utilization_pct": 85.0,
+  "timing_run": "xiangshan_coupledl2_u85_cal2"
+}

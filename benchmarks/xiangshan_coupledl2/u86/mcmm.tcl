@@ -1,4 +1,4 @@
-# ISPD27 MCMM configuration for xiangshan_coupledl2.
+# ISPD27 MCMM configuration for xiangshan_coupledl2__u86.
 #
 # Modes, PVT corners and mode-corner scenes for timing analysis, in the
 # same order and with the same commands the evaluation flow uses, so a

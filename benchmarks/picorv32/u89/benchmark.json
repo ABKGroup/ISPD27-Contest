@@ -1,0 +1,33 @@
+{
+  "clock_periods_ps": {
+    "BC": 884.0,
+    "TC": 1210.0,
+    "WC": 1804.0
+  },
+  "core_area_um2": 2530.2,
+  "cts_inserted_cells": 101,
+  "design": "picorv32",
+  "hold_wns_ns": {
+    "BC": -0.07320096641445233,
+    "TC": -0.06702320669707347,
+    "WC": -0.0519261719032909
+  },
+  "layout_run": "picorv32_u89d95",
+  "macro_area_um2": 0.0,
+  "measured_utilization_excluding_cts_pct": 88.55,
+  "measured_utilization_pct": 90.25,
+  "scenario": "picorv32_eval90_h100",
+  "setup_gap": {
+    "BC": 1.110814450065291,
+    "TC": 1.111511351562742,
+    "WC": 1.111067721120964
+  },
+  "setup_wns_ns": {
+    "BC": -0.09795997385771711,
+    "TC": -0.1349287353909178,
+    "WC": -0.20036616890221928
+  },
+  "stdcell_area_um2": 2283.5,
+  "target_utilization_pct": 89.0,
+  "timing_run": "picorv32_u89d95_cal2"
+}

@@ -1,0 +1,60 @@
+{
+  "id": "picorv32_conv2_u88",
+  "design": "picorv32",
+  "periods_ps": {
+    "BC": 814.0,
+    "TC": 1121.0,
+    "WC": 1670.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 100.0,
+  "delivered_base_period_ps": 300.0,
+  "clock_ratios": {
+    "core_clock": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/picorv32_v2",
+  "delivered_period_ps": 300.0,
+  "achievable_period_ps": {
+    "BC": 610.8704139874224,
+    "TC": 783.0126318227217,
+    "WC": 1150.256035645098
+  },
+  "period_percent": 90.0,
+  "period_basis": "iterated on this layout own evaluations until every corner setup gap fell inside 1.05x to 1.25x",
+  "evaluated_achievable_ps": {
+    "BC": 735.3387303472093,
+    "TC": 1115.1492955071094,
+    "WC": 1671.8585588871401
+  },
+  "target_gap": 1.15,
+  "slope_fit": {
+    "BC": {
+      "a": 0.383469842280564,
+      "D": 528.1845973534788,
+      "p1": 336.0,
+      "w1": -399.33873034720926,
+      "p2": 662.0,
+      "w2": -274.3275617637454,
+      "predicted_wns": -148.51390523656653
+    },
+    "TC": {
+      "a": 0.6980960340331676,
+      "D": 985.0286861754048,
+      "p1": 431.0,
+      "w1": -684.1492955071095,
+      "p2": 1004.0,
+      "w2": -284.1402680061045,
+      "predicted_wns": -174.21883489262052
+    },
+    "WC": {
+      "a": 0.715594253381518,
+      "D": 1491.829721277641,
+      "p1": 633.0,
+      "w1": -1038.8585588871401,
+      "p2": 1505.0,
+      "w2": -414.86036993845636,
+      "predicted_wns": -258.5211920220727
+    }
+  },
+  "iteration": 2
+}

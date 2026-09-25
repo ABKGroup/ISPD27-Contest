@@ -1,0 +1,4 @@
+design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,hold_wns_ns,hold_tns_ns,output_dir
+mempool_tile,mempool_tile_conv2_u75,BC,0,-0.5700684391782095,-2598.3999980015988,-0.4148407745019934,-1169.995134787581,/home/jal216/ispd27_postcts/mempool_tile_u75_it2/evaluation/mempool_tile_conv2_u75/off
+mempool_tile,mempool_tile_conv2_u75,TC,0,-0.777244938185297,-3048.1603638617203,-0.47727838538877104,-1309.7347898603678,/home/jal216/ispd27_postcts/mempool_tile_u75_it2/evaluation/mempool_tile_conv2_u75/off
+mempool_tile,mempool_tile_conv2_u75,WC,0,-1.162653089564207,-4058.7783749578784,-0.6089717088283981,-1655.4232681964904,/home/jal216/ispd27_postcts/mempool_tile_u75_it2/evaluation/mempool_tile_conv2_u75/off

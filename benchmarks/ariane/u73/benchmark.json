@@ -1,0 +1,33 @@
+{
+  "clock_periods_ps": {
+    "BC": 2258.0,
+    "TC": 3047.0,
+    "WC": 4580.0
+  },
+  "core_area_um2": 57407.2,
+  "cts_inserted_cells": 1208,
+  "design": "ariane",
+  "hold_wns_ns": {
+    "BC": -0.1478772110677093,
+    "TC": -0.1203133986138692,
+    "WC": -0.07017086939570474
+  },
+  "layout_run": "ariane_u73d83",
+  "macro_area_um2": 19757.8,
+  "measured_utilization_excluding_cts_pct": 73.91,
+  "measured_utilization_pct": 74.83,
+  "scenario": "ariane_conv4_u73",
+  "setup_gap": {
+    "BC": 1.1520082166798788,
+    "TC": 1.151168652644972,
+    "WC": 1.1509602735122608
+  },
+  "setup_wns_ns": {
+    "BC": -0.34323455326316665,
+    "TC": -0.46061088460922966,
+    "WC": -0.6913980526861543
+  },
+  "stdcell_area_um2": 23200.2,
+  "target_utilization_pct": 73.0,
+  "timing_run": "ariane_u73d83_it4"
+}

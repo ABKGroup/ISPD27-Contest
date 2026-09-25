@@ -1,0 +1,26 @@
+{
+  "id": "ariane_conv4_u73",
+  "design": "ariane",
+  "periods_ps": {
+    "BC": 2258.0,
+    "TC": 3047.0,
+    "WC": 4580.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "delivered_base_period_ps": 900.0,
+  "clock_ratios": {
+    "core_clock": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/ariane_v3",
+  "delivered_period_ps": 900.0,
+  "achievable_period_ps": {
+    "BC": 1908.6357345231222,
+    "TC": 2527.439967074948,
+    "WC": 3687.5155628548864
+  },
+  "period_percent": 55,
+  "period_basis": "iterated on this layout own evaluations until every corner setup gap fell inside 1.05x to 1.25x",
+  "target_gap": 1.15,
+  "iteration": 4
+}

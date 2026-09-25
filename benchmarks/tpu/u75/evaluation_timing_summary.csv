@@ -1,0 +1,4 @@
+design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,hold_wns_ns,hold_tns_ns,output_dir
+tpu,tpu_conv4_u75,BC,0,-0.18268064911618007,-26.906972757468743,-0.07297788791344423,-180.5794490049843,/home/jal216/ispd27_postcts/tpu_u75_it4/evaluation/tpu_conv4_u75/off
+tpu,tpu_conv4_u75,TC,0,-0.23522162089960158,-37.106240006800114,-0.0675844660716276,-114.63324557656354,/home/jal216/ispd27_postcts/tpu_u75_it4/evaluation/tpu_conv4_u75/off
+tpu,tpu_conv4_u75,WC,0,-0.3480131752248527,-58.669950909927515,-0.05364754495427486,-24.934154396461512,/home/jal216/ispd27_postcts/tpu_u75_it4/evaluation/tpu_conv4_u75/off

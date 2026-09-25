@@ -1,0 +1,31 @@
+{
+  "id": "tpu_conv4_u92",
+  "design": "tpu",
+  "periods_ps": {
+    "BC": 1010.0,
+    "TC": 1357.0,
+    "WC": 2032.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 100.0,
+  "delivered_base_period_ps": 200.0,
+  "clock_ratios": {
+    "core_clock": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/tpu_v2",
+  "delivered_period_ps": 200.0,
+  "achievable_period_ps": {
+    "BC": 737.1487720542985,
+    "TC": 979.1928244897853,
+    "WC": 1438.1178354293852
+  },
+  "period_percent": 90.0,
+  "period_basis": "iterated on this layout own evaluations until every corner setup gap fell inside 1.05x to 1.25x",
+  "evaluated_achievable_ps": {
+    "BC": 848.2348950036928,
+    "TC": 1191.1611055045812,
+    "WC": 1858.530512701862
+  },
+  "target_gap": 1.15,
+  "iteration": 4
+}

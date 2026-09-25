@@ -1,0 +1,32 @@
+{
+  "id": "xiangshan_coupledl2_eval90_h100",
+  "design": "xiangshan_coupledl2",
+  "periods_ps": {
+    "BC": 2295.0,
+    "TC": 3031.0,
+    "WC": 4493.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 100.0,
+  "clk_io_pct": 0.2,
+  "input_transition_ps": 20.0,
+  "output_load_ff": 2.0,
+  "delivered_base_period_ps": 1400.0,
+  "clock_ratios": {
+    "core_clock": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/xiangshan_coupledl2_u85",
+  "delivered_period_ps": 6030.0,
+  "achievable_period_ps": {
+    "BC": 1773.639099,
+    "TC": 2282.296206,
+    "WC": 3519.661591
+  },
+  "period_percent": 90.0,
+  "period_basis": "the achievable period reported by the official evaluation, not the calibration estimate",
+  "evaluated_achievable_ps": {
+    "BC": 2549.769955716846,
+    "TC": 3367.7491147489227,
+    "WC": 4992.1594974159125
+  }
+}

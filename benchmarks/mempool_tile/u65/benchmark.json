@@ -1,0 +1,33 @@
+{
+  "clock_periods_ps": {
+    "BC": 3832.0,
+    "TC": 5225.0,
+    "WC": 7845.0
+  },
+  "core_area_um2": 49041.9,
+  "cts_inserted_cells": 1503,
+  "design": "mempool_tile",
+  "hold_wns_ns": {
+    "BC": -0.42517844970364416,
+    "TC": -0.48623361087463457,
+    "WC": -0.6126532639039172
+  },
+  "layout_run": "mempool_tile_u65",
+  "macro_area_um2": 3756.6,
+  "measured_utilization_excluding_cts_pct": 65.9,
+  "measured_utilization_pct": 67.24,
+  "scenario": "mempool_tile_conv2_u65",
+  "setup_gap": {
+    "BC": 1.1503075100225755,
+    "TC": 1.1502799592000508,
+    "WC": 1.1501823103581195
+  },
+  "setup_wns_ns": {
+    "BC": -0.575978378406509,
+    "TC": -0.785212786820265,
+    "WC": -1.178180224759448
+  },
+  "stdcell_area_um2": 29219.3,
+  "target_utilization_pct": 65.0,
+  "timing_run": "mempool_tile_u65_it2"
+}

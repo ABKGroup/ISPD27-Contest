@@ -1,0 +1,33 @@
+{
+  "clock_periods_ps": {
+    "BC": 1404.0,
+    "TC": 1765.0,
+    "WC": 2615.0
+  },
+  "core_area_um2": 47617.3,
+  "cts_inserted_cells": 1200,
+  "design": "blackparrot_2",
+  "hold_wns_ns": {
+    "BC": -0.10769987722494549,
+    "TC": -0.08045475429159749,
+    "WC": -0.06794467793340657
+  },
+  "layout_run": "blackparrot_2_u65d75",
+  "macro_area_um2": 15340.8,
+  "measured_utilization_excluding_cts_pct": 64.96,
+  "measured_utilization_pct": 66.06,
+  "scenario": "blackparrot_2_eval90_h100",
+  "setup_gap": {
+    "BC": 1.1652462598814974,
+    "TC": 1.149244797161615,
+    "WC": 1.12127439530253
+  },
+  "setup_wns_ns": {
+    "BC": -0.23200574887362235,
+    "TC": -0.2634170669902504,
+    "WC": -0.31713254371611593
+  },
+  "stdcell_area_um2": 16117.0,
+  "target_utilization_pct": 65.0,
+  "timing_run": "blackparrot_2_u65d75_cal2"
+}

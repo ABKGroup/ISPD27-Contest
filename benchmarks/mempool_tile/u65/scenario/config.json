@@ -1,0 +1,27 @@
+{
+  "id": "mempool_tile_conv2_u65",
+  "design": "mempool_tile",
+  "periods_ps": {
+    "BC": 3832.0,
+    "TC": 5225.0,
+    "WC": 7845.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "delivered_base_period_ps": 4000.0,
+  "clock_ratios": {
+    "clk_i": 1.0,
+    "vclk_i": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/mempool_tile_v3",
+  "delivered_period_ps": 4000.0,
+  "achievable_period_ps": {
+    "BC": 4000.0,
+    "TC": 4210.827800505065,
+    "WC": 5352.328476830383
+  },
+  "period_percent": 55,
+  "period_basis": "iterated on this layout own evaluations until every corner setup gap fell inside 1.05x to 1.25x",
+  "target_gap": 1.15,
+  "iteration": 2
+}

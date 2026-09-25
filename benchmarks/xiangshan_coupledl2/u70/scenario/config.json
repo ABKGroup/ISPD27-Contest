@@ -1,0 +1,26 @@
+{
+  "id": "xiangshan_coupledl2_conv3_u70",
+  "design": "xiangshan_coupledl2",
+  "periods_ps": {
+    "BC": 2572.0,
+    "TC": 3502.0,
+    "WC": 5307.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "delivered_base_period_ps": 1400.0,
+  "clock_ratios": {
+    "core_clock": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/xiangshan_coupledl2_v3",
+  "delivered_period_ps": 1400.0,
+  "achievable_period_ps": {
+    "BC": 2141.38495639122,
+    "TC": 2883.8599297523724,
+    "WC": 4245.501401439734
+  },
+  "period_percent": 55,
+  "period_basis": "iterated on this layout own evaluations until every corner setup gap fell inside 1.05x to 1.25x",
+  "target_gap": 1.15,
+  "iteration": 3
+}

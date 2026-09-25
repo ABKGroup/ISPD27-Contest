@@ -1,0 +1,4 @@
+design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,hold_wns_ns,hold_tns_ns,output_dir
+picorv32,picorv32_conv2_u88,BC,0,-0.12233875073021017,-1.8850101555049499,-0.07871292538130306,-101.57639747719163,/home/jal216/ispd27_postcts/picorv32_u88d95_it2/evaluation/picorv32_conv2_u88/off
+picorv32,picorv32_conv2_u88,TC,0,-0.16714929507342868,-2.4728852398016694,-0.07393757857755277,-75.98409043460461,/home/jal216/ispd27_postcts/picorv32_u88d95_it2/evaluation/picorv32_conv2_u88/off
+picorv32,picorv32_conv2_u88,WC,0,-0.24985835722553532,-3.7970480245185816,-0.06209280336952689,-31.80644382813574,/home/jal216/ispd27_postcts/picorv32_u88d95_it2/evaluation/picorv32_conv2_u88/off

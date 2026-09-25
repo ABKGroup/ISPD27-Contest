@@ -1,0 +1,33 @@
+{
+  "clock_periods_ps": {
+    "BC": 950.0,
+    "TC": 1272.0,
+    "WC": 1909.0
+  },
+  "core_area_um2": 13062.4,
+  "cts_inserted_cells": 229,
+  "design": "tpu",
+  "hold_wns_ns": {
+    "BC": -0.07256166529984913,
+    "TC": -0.06719885785805886,
+    "WC": -0.05323302930858692
+  },
+  "layout_run": "tpu_v2",
+  "macro_area_um2": 0.0,
+  "measured_utilization_excluding_cts_pct": 45.94,
+  "measured_utilization_pct": 46.71,
+  "scenario": "tpu_conv2_u40",
+  "setup_gap": {
+    "BC": 1.1235596425437921,
+    "TC": 1.1219630620801049,
+    "WC": 1.120919513754
+  },
+  "setup_wns_ns": {
+    "BC": -0.11738166041660252,
+    "TC": -0.15513701496589316,
+    "WC": -0.23083535175638584
+  },
+  "stdcell_area_um2": 6101.1,
+  "target_utilization_pct": 40.0,
+  "timing_run": "tpu_v2_it2"
+}

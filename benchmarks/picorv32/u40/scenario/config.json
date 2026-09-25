@@ -1,0 +1,31 @@
+{
+  "id": "picorv32_conv1_u40",
+  "design": "picorv32",
+  "periods_ps": {
+    "BC": 605.0,
+    "TC": 782.0,
+    "WC": 1158.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 100.0,
+  "delivered_base_period_ps": 300.0,
+  "clock_ratios": {
+    "core_clock": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/picorv32_v2",
+  "delivered_period_ps": 300.0,
+  "achievable_period_ps": {
+    "BC": 610.8704139874224,
+    "TC": 783.0126318227217,
+    "WC": 1150.256035645098
+  },
+  "period_percent": 90.0,
+  "period_basis": "iterated on this layout own evaluations until every corner setup gap fell inside 1.05x to 1.25x",
+  "evaluated_achievable_ps": {
+    "BC": 696.1544632483651,
+    "TC": 899.6400175554016,
+    "WC": 1331.599791919918
+  },
+  "target_gap": 1.15,
+  "iteration": 1
+}

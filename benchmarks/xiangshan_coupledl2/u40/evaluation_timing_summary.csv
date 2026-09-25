@@ -1,0 +1,4 @@
+design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,hold_wns_ns,hold_tns_ns,output_dir
+xiangshan_coupledl2,xiangshan_coupledl2_conv3_u40,BC,0,-0.4262403780309414,-61.38864019449719,-1.1312171244963338,-2172.3999539465613,/home/jal216/ispd27_postcts/xiangshan_coupledl2_v3_it3/evaluation/xiangshan_coupledl2_conv3_u40/off
+xiangshan_coupledl2,xiangshan_coupledl2_conv3_u40,TC,0,-0.5852225394356858,-87.49313486477614,-1.4497658687083206,-496.19024110141066,/home/jal216/ispd27_postcts/xiangshan_coupledl2_v3_it3/evaluation/xiangshan_coupledl2_conv3_u40/off
+xiangshan_coupledl2,xiangshan_coupledl2_conv3_u40,WC,0,-0.892276922583194,-143.44932765673985,-2.079654679004598,-5.372698307733875,/home/jal216/ispd27_postcts/xiangshan_coupledl2_v3_it3/evaluation/xiangshan_coupledl2_conv3_u40/off
