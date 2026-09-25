@@ -33,17 +33,17 @@ corner, measured after global routing with an extracted SPEF.
     <tr>
       <td><code>u76</code> &nbsp; 75.99%</td>
       <td>75.06%</td>
-      <td>1638 / 2014 / 2716 ps</td>
-      <td>-1.253 / -1.841 / -2.997 ns</td>
-      <td>-0.160 / -0.103 / -0.022 ns</td>
+      <td>2705 / 3636 / 5453 ps</td>
+      <td>-0.399 / -0.544 / -0.808 ns</td>
+      <td>-0.210 / -0.153 / -0.072 ns</td>
     </tr>
     <tr>
       <td rowspan="1"><code>blackparrot_2</code></td>
       <td><code>u66</code> &nbsp; 66.06%</td>
       <td>64.96%</td>
-      <td>925 / 1055 / 1305 ps</td>
-      <td>-0.615 / -0.906 / -1.601 ns</td>
-      <td>-0.116 / -0.114 / -0.110 ns</td>
+      <td>1404 / 1765 / 2615 ps</td>
+      <td>-0.232 / -0.263 / -0.317 ns</td>
+      <td>-0.108 / -0.080 / -0.068 ns</td>
     </tr>
     <tr>
       <td rowspan="2"><code>mempool_tile</code></td>
@@ -71,9 +71,9 @@ corner, measured after global routing with an extracted SPEF.
     <tr>
       <td><code>u90</code> &nbsp; 90.25%</td>
       <td>88.55%</td>
-      <td>514 / 619 / 916 ps</td>
-      <td>-0.468 / -0.726 / -1.088 ns</td>
-      <td>-0.023 / -0.017 / -0.002 ns</td>
+      <td>884 / 1210 / 1804 ps</td>
+      <td>-0.098 / -0.135 / -0.200 ns</td>
+      <td>-0.073 / -0.067 / -0.052 ns</td>
     </tr>
     <tr>
       <td rowspan="2"><code>tpu</code></td>
@@ -86,9 +86,9 @@ corner, measured after global routing with an extracted SPEF.
     <tr>
       <td><code>u94</code> &nbsp; 93.87%</td>
       <td>92.31%</td>
-      <td>623 / 759 / 1022 ps</td>
-      <td>-0.474 / -0.661 / -1.041 ns</td>
-      <td>-0.023 / -0.018 / -0.004 ns</td>
+      <td>1030 / 1365 / 1973 ps</td>
+      <td>-0.148 / -0.176 / -0.280 ns</td>
+      <td>-0.073 / -0.068 / -0.054 ns</td>
     </tr>
     <tr>
       <td rowspan="2"><code>xiangshan_coupledl2</code></td>

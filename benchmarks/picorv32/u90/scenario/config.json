@@ -1,13 +1,13 @@
 {
-  "id": "picorv32_p55_h50",
+  "id": "picorv32_eval90_h100",
   "design": "picorv32",
   "periods_ps": {
-    "BC": 514.0,
-    "TC": 619.0,
-    "WC": 916.0
+    "BC": 884.0,
+    "TC": 1210.0,
+    "WC": 1804.0
   },
   "setup_uncertainty_ps": 0.0,
-  "hold_uncertainty_ps": 50.0,
+  "hold_uncertainty_ps": 100.0,
   "clk_io_pct": 0.2,
   "input_transition_ps": 20.0,
   "output_load_ff": 2.0,
@@ -18,9 +18,15 @@
   "source_run_dir": "/home/jal216/ispd27_postcts/picorv32_u89d95",
   "delivered_period_ps": 1350.0,
   "achievable_period_ps": {
-    "BC": 934.2638306250685,
-    "TC": 1124.8939541850855,
-    "WC": 1665.7424334614282
+    "BC": 830.938326,
+    "TC": 1124.893951,
+    "WC": 1665.742432
   },
-  "period_percent": 55
+  "period_percent": 90.0,
+  "period_basis": "the achievable period reported by the official evaluation, not the calibration estimate",
+  "evaluated_achievable_ps": {
+    "BC": 981.9599634493762,
+    "TC": 1344.9287969736015,
+    "WC": 2004.3660843344496
+  }
 }

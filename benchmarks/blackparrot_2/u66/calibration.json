@@ -1,8 +1,8 @@
 {
   "design": "blackparrot_2",
   "rundir": "/home/jal216/ispd27_postcts/blackparrot_2_u65d75",
-  "p": 55,
-  "final_hold_ps": 50.0,
+  "p": 90,
+  "final_hold_ps": 100.0,
   "meets_profile": true,
   "rounds": [
     {
@@ -14,9 +14,9 @@
         "WC": 4250.0
       },
       "achievable": {
-        "BC": 1682.393799,
-        "TC": 1918.691895,
-        "WC": 2372.628784
+        "BC": 1135.193573,
+        "TC": 1414.091858,
+        "WC": 2017.208443
       },
       "result": {
         "BC": {
@@ -51,40 +51,87 @@
     {
       "round": 1,
       "kind": "scenario",
-      "scenario": "blackparrot_2_p55_h50",
+      "scenario": "blackparrot_2_p90_h100",
       "periods": {
-        "BC": 925,
-        "TC": 1055,
-        "WC": 1305
+        "BC": 1514,
+        "TC": 1727,
+        "WC": 2135
       },
-      "hold": 50.0,
+      "hold": 100.0,
       "result": {
         "BC": {
-          "clk_period_ps": 925.0,
-          "max_clock_period_ps": 925.0,
-          "setup_wns_ps": -92.39359314576058,
-          "setup_tns_ps": -3507.787407902446,
-          "hold_wns_ps": -42.3089481807738,
-          "hold_tns_ps": -209183.32749627793,
-          "setup_wns_nonzero_ps": -92.393593
+          "clk_period_ps": 1514.0,
+          "max_clock_period_ps": 1514.0,
+          "setup_wns_ps": 378.8064321812023,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": -92.30893863979465,
+          "hold_tns_ps": -1284000.6371708743,
+          "setup_wns_nonzero_ps": 378.806427
         },
         "TC": {
-          "clk_period_ps": 1055.0,
-          "max_clock_period_ps": 1055.0,
-          "setup_wns_ps": -310.4794211921627,
-          "setup_tns_ps": -75007.96813659907,
-          "hold_wns_ps": -27.612842678361016,
-          "hold_tns_ps": -51110.61816437633,
-          "setup_wns_nonzero_ps": -310.479431
+          "clk_period_ps": 1727.0,
+          "max_clock_period_ps": 1727.0,
+          "setup_wns_ps": 312.9081450905374,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": -77.61283313738186,
+          "hold_tns_ps": -1022621.4085312834,
+          "setup_wns_nonzero_ps": 312.908142
         },
         "WC": {
-          "clk_period_ps": 1305.0,
-          "max_clock_period_ps": 1305.0,
-          "setup_wns_ps": -712.2085172320925,
-          "setup_tns_ps": -622937.9348377144,
-          "hold_wns_ps": -16.48131637756777,
-          "hold_tns_ps": -2318.9537050007307,
-          "setup_wns_nonzero_ps": -712.208496
+          "clk_period_ps": 2135.0,
+          "max_clock_period_ps": 2135.0,
+          "setup_wns_ps": 117.79155475893198,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": -66.48132071437648,
+          "hold_tns_ps": -529632.7024797439,
+          "setup_wns_nonzero_ps": 117.791557
+        }
+      },
+      "meets": false,
+      "setup_violating": [],
+      "hold_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ]
+    },
+    {
+      "round": 2,
+      "kind": "scenario",
+      "scenario": "blackparrot_2_p90_h100",
+      "periods": {
+        "BC": 1022,
+        "TC": 1273,
+        "WC": 1815
+      },
+      "hold": 100.0,
+      "result": {
+        "BC": {
+          "clk_period_ps": 1022.0,
+          "max_clock_period_ps": 1022.000061,
+          "setup_wns_ps": -14.793555328788647,
+          "setup_tns_ps": -369.8388832197162,
+          "hold_wns_ps": -92.30893863979465,
+          "hold_tns_ps": -1284000.6371708743,
+          "setup_wns_nonzero_ps": -14.793555
+        },
+        "TC": {
+          "clk_period_ps": 1273.0,
+          "max_clock_period_ps": 1273.0,
+          "setup_wns_ps": -92.47935787475556,
+          "setup_tns_ps": -1632.85297047544,
+          "hold_wns_ps": -77.61283313738186,
+          "hold_tns_ps": -1022621.4085312834,
+          "setup_wns_nonzero_ps": -92.479355
+        },
+        "WC": {
+          "clk_period_ps": 1815.0,
+          "max_clock_period_ps": 1815.0,
+          "setup_wns_ps": -202.20825095203793,
+          "setup_tns_ps": -3354.690760819362,
+          "hold_wns_ps": -66.48132071437648,
+          "hold_tns_ps": -529632.7024797439,
+          "setup_wns_nonzero_ps": -202.208252
         }
       },
       "meets": true,

@@ -1,13 +1,13 @@
 {
-  "id": "tpu_p55_h50",
+  "id": "tpu_eval90_h100",
   "design": "tpu",
   "periods_ps": {
-    "BC": 623.0,
-    "TC": 759.0,
-    "WC": 1022.0
+    "BC": 1030.0,
+    "TC": 1365.0,
+    "WC": 1973.0
   },
   "setup_uncertainty_ps": 0.0,
-  "hold_uncertainty_ps": 50.0,
+  "hold_uncertainty_ps": 100.0,
   "clk_io_pct": 0.2,
   "input_transition_ps": 20.0,
   "output_load_ff": 2.0,
@@ -18,9 +18,15 @@
   "source_run_dir": "/home/jal216/ispd27_postcts/tpu_u93d95",
   "delivered_period_ps": 1920.0,
   "achievable_period_ps": {
-    "BC": 1133.1045591568895,
-    "TC": 1380.26829406859,
-    "WC": 1858.41193177506
+    "BC": 953.1046220000001,
+    "TC": 1380.268311,
+    "WC": 1858.41193
   },
-  "period_percent": 55
+  "period_percent": 90.0,
+  "period_basis": "the achievable period reported by the official evaluation, not the calibration estimate",
+  "evaluated_achievable_ps": {
+    "BC": 1143.9401615808188,
+    "TC": 1516.8777882969482,
+    "WC": 2192.7174933419146
+  }
 }

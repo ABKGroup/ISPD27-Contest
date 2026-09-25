@@ -1,8 +1,8 @@
 {
   "design": "ariane",
   "rundir": "/home/jal216/ispd27_postcts/ariane_u74d84",
-  "p": 55,
-  "final_hold_ps": 50.0,
+  "p": 90,
+  "final_hold_ps": 100.0,
   "meets_profile": true,
   "rounds": [
     {
@@ -14,65 +14,126 @@
         "WC": 5280.0
       },
       "achievable": {
-        "BC": 2979.0898617121807,
-        "TC": 3661.103421178285,
-        "WC": 4938.371051281462
+        "BC": 2459.288681,
+        "TC": 3264.103825,
+        "WC": 4938.371063
       },
       "result": {
         "BC": {
           "clk_period_ps": 5280.0,
+          "max_clock_period_ps": 5280.0,
           "setup_wns_ps": 2300.9101382878193,
           "setup_tns_ps": 0.0,
           "hold_wns_ps": 20.773341463404055,
-          "hold_tns_ps": 0.0
+          "hold_tns_ps": 0.0,
+          "setup_wns_nonzero_ps": 2300.910156
         },
         "TC": {
           "clk_period_ps": 5280.0,
+          "max_clock_period_ps": 5280.0,
           "setup_wns_ps": 1618.8965788217151,
           "setup_tns_ps": 0.0,
           "hold_wns_ps": 23.710297708907326,
-          "hold_tns_ps": 0.0
+          "hold_tns_ps": 0.0,
+          "setup_wns_nonzero_ps": 1618.896606
         },
         "WC": {
           "clk_period_ps": 5280.0,
+          "max_clock_period_ps": 5280.0,
           "setup_wns_ps": 341.6289487185381,
           "setup_tns_ps": 0.0,
           "hold_wns_ps": 36.42414162629459,
-          "hold_tns_ps": 0.0
+          "hold_tns_ps": 0.0,
+          "setup_wns_nonzero_ps": 341.628937
         }
       }
     },
     {
       "round": 1,
       "kind": "scenario",
-      "scenario": "ariane_p55_h50",
+      "scenario": "ariane_p90_h100",
       "periods": {
-        "BC": 1638,
-        "TC": 2014,
-        "WC": 2716
+        "BC": 2681,
+        "TC": 3295,
+        "WC": 4445
       },
-      "hold": 50.0,
+      "hold": 100.0,
       "result": {
         "BC": {
-          "clk_period_ps": 1638.0,
-          "setup_wns_ps": -612.68890206315,
-          "setup_tns_ps": -895401.573356035,
-          "hold_wns_ps": -29.22666287340465,
-          "hold_tns_ps": -144156.53084446772
+          "clk_period_ps": 2681.0,
+          "max_clock_period_ps": 2681.0,
+          "setup_wns_ps": 221.71131685895352,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": -79.2266533324255,
+          "hold_tns_ps": -1187155.9356365546,
+          "setup_wns_nonzero_ps": 221.711319
         },
         "TC": {
-          "clk_period_ps": 2014.000122,
-          "setup_wns_ps": -993.903852083598,
-          "setup_tns_ps": -1931289.7243116726,
-          "hold_wns_ps": -26.289706627901378,
-          "hold_tns_ps": -38839.633886608935
+          "clk_period_ps": 3295.0,
+          "max_clock_period_ps": 3295.0,
+          "setup_wns_ps": 30.896174631143577,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": -76.28971096471008,
+          "hold_tns_ps": -896829.8211040387,
+          "setup_wns_nonzero_ps": 30.896175
         },
         "WC": {
-          "clk_period_ps": 2716.0,
-          "setup_wns_ps": -1709.570269962005,
-          "setup_tns_ps": -4191531.4053905667,
-          "hold_wns_ps": -13.575862710514116,
-          "hold_tns_ps": -1265.415555178735
+          "clk_period_ps": 4445.0,
+          "max_clock_period_ps": 4445.0,
+          "setup_wns_ps": -326.3709315855416,
+          "setup_tns_ps": -86275.90409928169,
+          "hold_wns_ps": -63.575867047322824,
+          "hold_tns_ps": -381010.38210147,
+          "setup_wns_nonzero_ps": -326.370941
+        }
+      },
+      "meets": false,
+      "setup_violating": [
+        "WC"
+      ],
+      "hold_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ]
+    },
+    {
+      "round": 2,
+      "kind": "scenario",
+      "scenario": "ariane_p90_h100",
+      "periods": {
+        "BC": 2213,
+        "TC": 2938,
+        "WC": 4445
+      },
+      "hold": 100.0,
+      "result": {
+        "BC": {
+          "clk_period_ps": 2213.0,
+          "max_clock_period_ps": 2213.0,
+          "setup_wns_ps": -152.6889731868128,
+          "setup_tns_ps": -37264.9717018895,
+          "hold_wns_ps": -79.2266533324255,
+          "hold_tns_ps": -1187155.9356365546,
+          "setup_wns_nonzero_ps": -152.68898
+        },
+        "TC": {
+          "clk_period_ps": 2938.0,
+          "max_clock_period_ps": 2938.0,
+          "setup_wns_ps": -254.70403665817665,
+          "setup_tns_ps": -78546.22228486501,
+          "hold_wns_ps": -76.28971096471008,
+          "hold_tns_ps": -896829.8211040387,
+          "setup_wns_nonzero_ps": -254.704041
+        },
+        "WC": {
+          "clk_period_ps": 4445.0,
+          "max_clock_period_ps": 4445.0,
+          "setup_wns_ps": -326.3709315855416,
+          "setup_tns_ps": -86275.90409928169,
+          "hold_wns_ps": -63.575867047322824,
+          "hold_tns_ps": -381010.38210147,
+          "setup_wns_nonzero_ps": -326.370941
         }
       },
       "meets": true,

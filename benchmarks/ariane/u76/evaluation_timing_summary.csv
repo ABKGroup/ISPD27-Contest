@@ -1,4 +1,4 @@
 design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,hold_wns_ns,hold_tns_ns,output_dir
-ariane,ariane_p55_h50,BC,0,-1.253094300002212,-3667.382558080494,-0.16011547707281026,-98.00092510027787,/home/jal216/ispd27_postcts/ariane_u74d84/evaluation/ariane_p55_h50/off
-ariane,ariane_p55_h50,TC,0,-1.8413346476754924,-6306.388084073374,-0.102518771659649,-22.11191238952522,/home/jal216/ispd27_postcts/ariane_u74d84/evaluation/ariane_p55_h50/off
-ariane,ariane_p55_h50,WC,0,-2.997309967764501,-12318.741986856867,-0.02159661347281667,-0.05991196451796588,/home/jal216/ispd27_postcts/ariane_u74d84/evaluation/ariane_p55_h50/off
+ariane,ariane_eval90_h100,BC,0,-0.3994942170824293,-251.67432327699672,-0.21011548140961894,-1033.9954356302662,/home/jal216/ispd27_postcts/ariane_u74d84_cal2/evaluation/ariane_eval90_h100/off
+ariane,ariane_eval90_h100,TC,0,-0.5437348371072965,-350.15986694670886,-0.1525187759964577,-723.8210202377178,/home/jal216/ispd27_postcts/ariane_u74d84_cal2/evaluation/ariane_eval90_h100/off
+ariane,ariane_eval90_h100,WC,0,-0.8077103462811649,-521.5518420222019,-0.07159661780962537,-240.1749280172154,/home/jal216/ispd27_postcts/ariane_u74d84_cal2/evaluation/ariane_eval90_h100/off

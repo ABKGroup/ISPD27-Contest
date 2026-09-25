@@ -1,13 +1,13 @@
 {
-  "id": "blackparrot_2_p55_h50",
+  "id": "blackparrot_2_eval90_h100",
   "design": "blackparrot_2",
   "periods_ps": {
-    "BC": 925.0,
-    "TC": 1055.0,
-    "WC": 1305.0
+    "BC": 1404.0,
+    "TC": 1765.0,
+    "WC": 2615.0
   },
   "setup_uncertainty_ps": 0.0,
-  "hold_uncertainty_ps": 50.0,
+  "hold_uncertainty_ps": 100.0,
   "clk_io_pct": 0.2,
   "input_transition_ps": 20.0,
   "output_load_ff": 2.0,
@@ -18,9 +18,15 @@
   "source_run_dir": "/home/jal216/ispd27_postcts/blackparrot_2_u65d75",
   "delivered_period_ps": 4250.0,
   "achievable_period_ps": {
-    "BC": 1682.393799,
-    "TC": 1918.691895,
-    "WC": 2372.628784
+    "BC": 1135.193573,
+    "TC": 1414.091858,
+    "WC": 2017.208443
   },
-  "period_percent": 55
+  "period_percent": 90.0,
+  "period_basis": "the achievable period reported by the official evaluation, not the calibration estimate",
+  "evaluated_achievable_ps": {
+    "BC": 1559.6056843419087,
+    "TC": 1961.0241959231396,
+    "WC": 2905.52767252584
+  }
 }

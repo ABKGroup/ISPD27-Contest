@@ -1,7 +1,7 @@
 # blackparrot_2 MCMM scenario constraint. Units: ps (ASAP7 liberty time_unit).
 # Generated from the delivered SDC: every clock is scaled from clk_period so
 # the delivered period ratios survive compression.
-set clk_period 925
+set clk_period 1404
 set clk_io_pct 0.2
 ###############################################################
 #  Design:            black_parrot
@@ -28,4 +28,4 @@ set io_load_ff 2
 set_load $io_load_ff [all_outputs]
 
 set_clock_uncertainty -setup 0 [all_clocks]
-set_clock_uncertainty -hold 50 [all_clocks]
+set_clock_uncertainty -hold 100 [all_clocks]

@@ -1,4 +1,4 @@
 design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,hold_wns_ns,hold_tns_ns,output_dir
-blackparrot_2,blackparrot_2_p55_h50,BC,0,-0.6152057221588807,-973.8622605060275,-0.1157738076703401,-249.38620512844977,/home/jal216/ispd27_postcts/blackparrot_2_u65d75/evaluation/blackparrot_2_p55_h50/off
-blackparrot_2,blackparrot_2_p55_h50,TC,0,-0.9060242592405467,-2038.800638690492,-0.11441841964088621,-138.90945693700743,/home/jal216/ispd27_postcts/blackparrot_2_u65d75/evaluation/blackparrot_2_p55_h50/off
-blackparrot_2,blackparrot_2_p55_h50,WC,0,-1.600527494716683,-4307.711168553974,-0.11036427371681419,-101.24651379994214,/home/jal216/ispd27_postcts/blackparrot_2_u65d75/evaluation/blackparrot_2_p55_h50/off
+blackparrot_2,blackparrot_2_eval90_h100,BC,0,-0.23200574887362235,-26.436358985412276,-0.10769987722494549,-1161.4129153736833,/home/jal216/ispd27_postcts/blackparrot_2_u65d75_cal2/evaluation/blackparrot_2_eval90_h100/off
+blackparrot_2,blackparrot_2_eval90_h100,TC,0,-0.2634170669902504,-70.44281630622727,-0.08045475429159749,-902.5455405801697,/home/jal216/ispd27_postcts/blackparrot_2_u65d75_cal2/evaluation/blackparrot_2_eval90_h100/off
+blackparrot_2,blackparrot_2_eval90_h100,WC,0,-0.31713254371611593,-65.06226694532108,-0.06794467793340657,-391.74347122852686,/home/jal216/ispd27_postcts/blackparrot_2_u65d75_cal2/evaluation/blackparrot_2_eval90_h100/off
