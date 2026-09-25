@@ -1,0 +1,103 @@
+{
+  "design": "mempool_tile",
+  "rundir": "/home/jal216/ispd27_postcts/mempool_tile_u85",
+  "p": 55,
+  "final_hold_ps": 50.0,
+  "meets_profile": true,
+  "rounds": [
+    {
+      "round": 0,
+      "kind": "probe",
+      "periods": {
+        "BC": 5950.0,
+        "TC": 5950.0,
+        "WC": 5950.0
+      },
+      "achievable": {
+        "BC": 5205.985474,
+        "TC": 5254.866272,
+        "WC": 6987.848022
+      },
+      "result": {
+        "BC": {
+          "clk_period_ps": 5950.0,
+          "max_clock_period_ps": 5950.0,
+          "setup_wns_ps": 0.0,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": -158.31705454360943,
+          "hold_tns_ps": -597338.2168343639,
+          "setup_wns_nonzero_ps": 744.014526
+        },
+        "TC": {
+          "clk_period_ps": 5950.0,
+          "max_clock_period_ps": 5950.0,
+          "setup_wns_ps": 0.0,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": -205.69976360055736,
+          "hold_tns_ps": -767325.392072227,
+          "setup_wns_nonzero_ps": 695.133728
+        },
+        "WC": {
+          "clk_period_ps": 5950.0,
+          "max_clock_period_ps": 5950.0,
+          "setup_wns_ps": -1037.8480338860886,
+          "setup_tns_ps": -2216171.6603810405,
+          "hold_wns_ps": -287.07206171452265,
+          "hold_tns_ps": -1057301.2374563229,
+          "setup_wns_nonzero_ps": -1037.848022
+        }
+      }
+    },
+    {
+      "round": 1,
+      "kind": "scenario",
+      "scenario": "mempool_tile_p55_h50",
+      "periods": {
+        "BC": 2863,
+        "TC": 2890,
+        "WC": 3843
+      },
+      "hold": 50.0,
+      "result": {
+        "BC": {
+          "clk_period_ps": 2863.0,
+          "max_clock_period_ps": 2863.0,
+          "setup_wns_ps": -515.6830538766083,
+          "setup_tns_ps": -1438805.3899177003,
+          "hold_wns_ps": -208.31705888041813,
+          "hold_tns_ps": -991653.0001253338,
+          "setup_wns_nonzero_ps": -515.683044
+        },
+        "TC": {
+          "clk_period_ps": 2890.0,
+          "max_clock_period_ps": 2890.0,
+          "setup_wns_ps": -1220.4248771490513,
+          "setup_tns_ps": -5946266.834257145,
+          "hold_wns_ps": -255.6997956929418,
+          "hold_tns_ps": -1056227.4652697516,
+          "setup_wns_nonzero_ps": -1220.424927
+        },
+        "WC": {
+          "clk_period_ps": 3843.0,
+          "max_clock_period_ps": 3843.000244,
+          "setup_wns_ps": -2091.348880214308,
+          "setup_tns_ps": -10885348.317810016,
+          "hold_wns_ps": -337.0720660513313,
+          "hold_tns_ps": -1286263.346311089,
+          "setup_wns_nonzero_ps": -2091.348877
+        }
+      },
+      "meets": true,
+      "setup_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ],
+      "hold_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "blackparrot_2_p55_h50",
+  "design": "blackparrot_2",
+  "periods_ps": {
+    "BC": 925.0,
+    "TC": 1055.0,
+    "WC": 1305.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "clk_io_pct": 0.2,
+  "input_transition_ps": 20.0,
+  "output_load_ff": 2.0,
+  "delivered_base_period_ps": 850.0,
+  "clock_ratios": {
+    "clk_i": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/blackparrot_2_u65d75",
+  "delivered_period_ps": 4250.0,
+  "achievable_period_ps": {
+    "BC": 1682.393799,
+    "TC": 1918.691895,
+    "WC": 2372.628784
+  },
+  "period_percent": 55
+}

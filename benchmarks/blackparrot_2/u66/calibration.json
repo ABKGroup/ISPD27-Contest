@@ -1,0 +1,103 @@
+{
+  "design": "blackparrot_2",
+  "rundir": "/home/jal216/ispd27_postcts/blackparrot_2_u65d75",
+  "p": 55,
+  "final_hold_ps": 50.0,
+  "meets_profile": true,
+  "rounds": [
+    {
+      "round": 0,
+      "kind": "probe",
+      "periods": {
+        "BC": 4250.0,
+        "TC": 4250.0,
+        "WC": 4250.0
+      },
+      "achievable": {
+        "BC": 1682.393799,
+        "TC": 1918.691895,
+        "WC": 2372.628784
+      },
+      "result": {
+        "BC": {
+          "clk_period_ps": 4250.0,
+          "max_clock_period_ps": 4250.0,
+          "setup_wns_ps": 2567.6061379720995,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": 7.691056156034908,
+          "hold_tns_ps": 0.0,
+          "setup_wns_nonzero_ps": 2567.606201
+        },
+        "TC": {
+          "clk_period_ps": 4250.0,
+          "max_clock_period_ps": 4250.0,
+          "setup_wns_ps": 2331.30804482352,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": 22.387175536235553,
+          "hold_tns_ps": 0.0,
+          "setup_wns_nonzero_ps": 2331.308105
+        },
+        "WC": {
+          "clk_period_ps": 4250.0,
+          "max_clock_period_ps": 4250.0,
+          "setup_wns_ps": 1877.37115493119,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": 33.51867408145307,
+          "hold_tns_ps": 0.0,
+          "setup_wns_nonzero_ps": 1877.371216
+        }
+      }
+    },
+    {
+      "round": 1,
+      "kind": "scenario",
+      "scenario": "blackparrot_2_p55_h50",
+      "periods": {
+        "BC": 925,
+        "TC": 1055,
+        "WC": 1305
+      },
+      "hold": 50.0,
+      "result": {
+        "BC": {
+          "clk_period_ps": 925.0,
+          "max_clock_period_ps": 925.0,
+          "setup_wns_ps": -92.39359314576058,
+          "setup_tns_ps": -3507.787407902446,
+          "hold_wns_ps": -42.3089481807738,
+          "hold_tns_ps": -209183.32749627793,
+          "setup_wns_nonzero_ps": -92.393593
+        },
+        "TC": {
+          "clk_period_ps": 1055.0,
+          "max_clock_period_ps": 1055.0,
+          "setup_wns_ps": -310.4794211921627,
+          "setup_tns_ps": -75007.96813659907,
+          "hold_wns_ps": -27.612842678361016,
+          "hold_tns_ps": -51110.61816437633,
+          "setup_wns_nonzero_ps": -310.479431
+        },
+        "WC": {
+          "clk_period_ps": 1305.0,
+          "max_clock_period_ps": 1305.0,
+          "setup_wns_ps": -712.2085172320925,
+          "setup_tns_ps": -622937.9348377144,
+          "hold_wns_ps": -16.48131637756777,
+          "hold_tns_ps": -2318.9537050007307,
+          "setup_wns_nonzero_ps": -712.208496
+        }
+      },
+      "meets": true,
+      "setup_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ],
+      "hold_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ]
+    }
+  ]
+}

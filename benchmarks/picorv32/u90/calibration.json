@@ -1,0 +1,91 @@
+{
+  "design": "picorv32",
+  "rundir": "/home/jal216/ispd27_postcts/picorv32_u89d95",
+  "p": 55,
+  "final_hold_ps": 50.0,
+  "meets_profile": true,
+  "rounds": [
+    {
+      "round": 0,
+      "kind": "probe",
+      "periods": {
+        "BC": 1350.0,
+        "TC": 1350.0,
+        "WC": 1350.0
+      },
+      "achievable": {
+        "BC": 934.2638306250685,
+        "TC": 1124.8939541850855,
+        "WC": 1665.7424334614282
+      },
+      "result": {
+        "BC": {
+          "clk_period_ps": 1350.0,
+          "setup_wns_ps": 415.7361693749314,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": 24.96256683564319,
+          "hold_tns_ps": 0.0
+        },
+        "TC": {
+          "clk_period_ps": 1350.0,
+          "setup_wns_ps": 225.10604581491455,
+          "setup_tns_ps": 0.0,
+          "hold_wns_ps": 29.881271188021042,
+          "hold_tns_ps": 0.0
+        },
+        "WC": {
+          "clk_period_ps": 1350.0,
+          "setup_wns_ps": -315.7424334614282,
+          "setup_tns_ps": -4848.438558913161,
+          "hold_wns_ps": 42.019166092400916,
+          "hold_tns_ps": 0.0
+        }
+      }
+    },
+    {
+      "round": 1,
+      "kind": "scenario",
+      "scenario": "picorv32_p55_h50",
+      "periods": {
+        "BC": 514,
+        "TC": 619,
+        "WC": 916
+      },
+      "hold": 50.0,
+      "result": {
+        "BC": {
+          "clk_period_ps": 514.0,
+          "setup_wns_ps": -316.9383101971817,
+          "setup_tns_ps": -15535.249593315764,
+          "hold_wns_ps": -25.037430562271584,
+          "hold_tns_ps": -17391.09485598109
+        },
+        "TC": {
+          "clk_period_ps": 619.0,
+          "setup_wns_ps": -505.8939953847682,
+          "setup_tns_ps": -46164.69358581655,
+          "hold_wns_ps": -20.118733148787665,
+          "hold_tns_ps": -4621.481882331104
+        },
+        "WC": {
+          "clk_period_ps": 916.0,
+          "setup_wns_ps": -749.7423822870854,
+          "setup_tns_ps": -62698.12782917137,
+          "hold_wns_ps": -7.980838244407794,
+          "hold_tns_ps": -241.31763350757186
+        }
+      },
+      "meets": true,
+      "setup_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ],
+      "hold_violating": [
+        "BC",
+        "TC",
+        "WC"
+      ]
+    }
+  ]
+}

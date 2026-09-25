@@ -1,0 +1,324 @@
+VERSION 5.7 ;
+BUSBITCHARS "[]" ;
+MACRO ht_asap7_blackparrot_64x7
+  FOREIGN ht_asap7_blackparrot_64x7 0 0 ;
+  SYMMETRY X Y R90 ;
+  SIZE 6.516 BY 7.830 ;
+  CLASS BLOCK ;
+  PIN rw0_wmask_in[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 0.000 0.276 0.072 0.300 ;
+    END
+  END rw0_wmask_in[0]
+  PIN rw0_wmask_in[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 0.000 1.284 0.072 1.308 ;
+    END
+  END rw0_wmask_in[1]
+  PIN rw0_wmask_in[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 6.444 0.276 6.516 0.300 ;
+    END
+  END rw0_wmask_in[2]
+  PIN rw0_wmask_in[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 6.444 1.284 6.516 1.308 ;
+    END
+  END rw0_wmask_in[3]
+  PIN rw0_wmask_in[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 0.207 7.560 0.225 7.830 ;
+    END
+  END rw0_wmask_in[4]
+  PIN rw0_wmask_in[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 0.747 7.560 0.765 7.830 ;
+    END
+  END rw0_wmask_in[5]
+  PIN rw0_wmask_in[6]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 1.287 7.560 1.305 7.830 ;
+    END
+  END rw0_wmask_in[6]
+  PIN rw0_wd_in[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 0.000 2.292 0.072 2.316 ;
+    END
+  END rw0_wd_in[0]
+  PIN rw0_wd_in[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 0.000 3.300 0.072 3.324 ;
+    END
+  END rw0_wd_in[1]
+  PIN rw0_wd_in[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 6.444 2.292 6.516 2.316 ;
+    END
+  END rw0_wd_in[2]
+  PIN rw0_wd_in[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 6.444 3.300 6.516 3.324 ;
+    END
+  END rw0_wd_in[3]
+  PIN rw0_wd_in[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 0.207 0.000 0.225 0.270 ;
+    END
+  END rw0_wd_in[4]
+  PIN rw0_wd_in[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 0.963 0.000 0.981 0.270 ;
+    END
+  END rw0_wd_in[5]
+  PIN rw0_wd_in[6]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 1.719 0.000 1.737 0.270 ;
+    END
+  END rw0_wd_in[6]
+  PIN rw0_rd_out[0]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 2.475 0.000 2.493 0.270 ;
+    END
+  END rw0_rd_out[0]
+  PIN rw0_rd_out[1]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 3.231 0.000 3.249 0.270 ;
+    END
+  END rw0_rd_out[1]
+  PIN rw0_rd_out[2]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 3.987 0.000 4.005 0.270 ;
+    END
+  END rw0_rd_out[2]
+  PIN rw0_rd_out[3]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 4.743 0.000 4.761 0.270 ;
+    END
+  END rw0_rd_out[3]
+  PIN rw0_rd_out[4]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 1.827 7.560 1.845 7.830 ;
+    END
+  END rw0_rd_out[4]
+  PIN rw0_rd_out[5]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 2.367 7.560 2.385 7.830 ;
+    END
+  END rw0_rd_out[5]
+  PIN rw0_rd_out[6]
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 2.907 7.560 2.925 7.830 ;
+    END
+  END rw0_rd_out[6]
+  PIN rw0_addr_in[0]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 0.000 4.308 0.072 4.332 ;
+    END
+  END rw0_addr_in[0]
+  PIN rw0_addr_in[1]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 0.000 5.316 0.072 5.340 ;
+    END
+  END rw0_addr_in[1]
+  PIN rw0_addr_in[2]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 0.000 6.324 0.072 6.348 ;
+    END
+  END rw0_addr_in[2]
+  PIN rw0_addr_in[3]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 6.444 4.308 6.516 4.332 ;
+    END
+  END rw0_addr_in[3]
+  PIN rw0_addr_in[4]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 6.444 5.316 6.516 5.340 ;
+    END
+  END rw0_addr_in[4]
+  PIN rw0_addr_in[5]
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M3 ;
+      RECT 6.444 6.324 6.516 6.348 ;
+    END
+  END rw0_addr_in[5]
+  PIN rw0_we_in
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 3.447 7.560 3.465 7.830 ;
+    END
+  END rw0_we_in
+  PIN rw0_ce_in
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 3.987 7.560 4.005 7.830 ;
+    END
+  END rw0_ce_in
+  PIN rw0_clk
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER M2 ;
+      RECT 4.527 7.560 4.545 7.830 ;
+    END
+  END rw0_clk
+  PIN VSS
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER M4 ;
+      RECT 0.216 0.228 6.300 0.348 ;
+      RECT 0.216 0.996 6.300 1.116 ;
+      RECT 0.216 1.764 6.300 1.884 ;
+      RECT 0.216 2.532 6.300 2.652 ;
+      RECT 0.216 3.300 6.300 3.420 ;
+      RECT 0.216 4.068 6.300 4.188 ;
+      RECT 0.216 4.836 6.300 4.956 ;
+      RECT 0.216 5.604 6.300 5.724 ;
+      RECT 0.216 6.372 6.300 6.492 ;
+      RECT 0.216 7.140 6.300 7.260 ;
+    END
+  END VSS
+  PIN VDD
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER M4 ;
+      RECT 0.216 0.612 6.300 0.732 ;
+      RECT 0.216 1.380 6.300 1.500 ;
+      RECT 0.216 2.148 6.300 2.268 ;
+      RECT 0.216 2.916 6.300 3.036 ;
+      RECT 0.216 3.684 6.300 3.804 ;
+      RECT 0.216 4.452 6.300 4.572 ;
+      RECT 0.216 5.220 6.300 5.340 ;
+      RECT 0.216 5.988 6.300 6.108 ;
+      RECT 0.216 6.756 6.300 6.876 ;
+      RECT 0.216 7.524 6.300 7.644 ;
+    END
+  END VDD
+  OBS
+    LAYER M1 ;
+    RECT 0 0 6.516 7.830 ;
+    LAYER M2 ;
+    RECT 0 0 6.516 7.830 ;
+    LAYER M3 ;
+    RECT 0 0 6.516 7.830 ;
+    LAYER M4 ;
+    RECT 0 0 6.516 7.830 ;
+  END
+END ht_asap7_blackparrot_64x7
+
+END LIBRARY

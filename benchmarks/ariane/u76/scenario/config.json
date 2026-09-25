@@ -1,0 +1,26 @@
+{
+  "id": "ariane_p55_h50",
+  "design": "ariane",
+  "periods_ps": {
+    "BC": 1638.0,
+    "TC": 2014.0,
+    "WC": 2716.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "clk_io_pct": 0.2,
+  "input_transition_ps": 20.0,
+  "output_load_ff": 2.0,
+  "delivered_base_period_ps": 900.0,
+  "clock_ratios": {
+    "core_clock": 1.0
+  },
+  "source_run_dir": "/home/jal216/ispd27_postcts/ariane_u74d84",
+  "delivered_period_ps": 5280.0,
+  "achievable_period_ps": {
+    "BC": 2979.0898617121807,
+    "TC": 3661.103421178285,
+    "WC": 4938.371051281462
+  },
+  "period_percent": 55
+}
