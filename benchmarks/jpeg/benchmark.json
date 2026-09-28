@@ -1,0 +1,33 @@
+{
+  "id": "jpeg_p55_h35",
+  "design": "jpeg",
+  "utilization_percent": 65,
+  "generation_period_ps": 1100,
+  "period_set": "p55",
+  "periods_ps": {
+    "BC": 407,
+    "TC": 550,
+    "WC": 770
+  },
+  "setup_uncertainty_ps": 0,
+  "hold_uncertainty_ps": 35,
+  "top_module": "jpeg_encoder",
+  "input_def": "input.def",
+  "input_verilog": "input.v",
+  "mcmm": "mcmm.tcl",
+  "sdc_dir": "sdc",
+  "platform": "../../platform/asap7",
+  "geometry": "geometry.json",
+  "units": {
+    "time": "ps",
+    "length": "um",
+    "area": "um^2"
+  },
+  "mode": "functional",
+  "corners": [
+    "BC",
+    "TC",
+    "WC"
+  ],
+  "additional_ocv_derating": false
+}

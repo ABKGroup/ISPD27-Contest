@@ -1,0 +1,14 @@
+{
+  "id": "jpeg_p55_h35",
+  "design": "jpeg",
+  "utilization_percent": 65,
+  "generation_period_ps": 1100,
+  "period_set": "p55",
+  "periods_ps": {
+    "BC": 407,
+    "TC": 550,
+    "WC": 770
+  },
+  "setup_uncertainty_ps": 0,
+  "hold_uncertainty_ps": 35
+}

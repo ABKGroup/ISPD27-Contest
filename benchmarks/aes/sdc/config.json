@@ -1,0 +1,14 @@
+{
+  "id": "aes_p55_h55",
+  "design": "aes",
+  "utilization_percent": 50,
+  "generation_period_ps": 620,
+  "period_set": "p55",
+  "periods_ps": {
+    "BC": 248,
+    "TC": 308,
+    "WC": 429
+  },
+  "setup_uncertainty_ps": 0,
+  "hold_uncertainty_ps": 55
+}
