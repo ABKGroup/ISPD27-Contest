@@ -23,7 +23,7 @@
 - Results Announcement: March 31, 2027 
 
 ## Contact
-Email: ispd26contest@gmail.com
+Email: ispd2027contest@gmail.com
 
 ## Registration 
 
@@ -48,4 +48,4 @@ UCSD. (Advisor: Prof. Andrew B. Kahng.)
 - NVIDIA: prizes for winning teams.
 
 ## Support
-Feel free to **open a GitHub issue** if you have any questions.
+Feel free to [**open a GitHub issue**](https://github.com/ABKGroup/ISPD27-Contest/issues) if you have any questions.

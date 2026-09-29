@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Write one row per scenario; report metrics without inventing a contest score."""
+"""Write one row per scenario for the separate score.py scoring step."""
 import csv
 import importlib.util
 import json
@@ -62,10 +62,6 @@ def summarize(folder):
         writer = csv.DictWriter(stream, fieldnames=output[0].keys())
         writer.writeheader()
         writer.writerows(output)
-    (folder / "score.json").write_text(json.dumps({
-        "status": "not_defined", "score": None,
-        "reason": "Contest weights, hold tolerance, normalization and eligibility rules are not finalized.",
-    }, indent=2) + "\n")
 
 
 if __name__ == "__main__":

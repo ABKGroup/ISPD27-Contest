@@ -77,7 +77,7 @@ def main():
     }, indent=2) + "\n")
     (output / "EVALUATION_COMPLETE").write_text(
         "Timing, routing, available validation and metric extraction completed.\n"
-        "Final contest legality and scoring are not yet implemented; see evaluator/README.md.\n")
+        "Run score.py separately. Final contest legality is not yet fully implemented; see evaluator/README.md.\n")
     print(f"Completed: {output / 'summary.csv'}")
 
 

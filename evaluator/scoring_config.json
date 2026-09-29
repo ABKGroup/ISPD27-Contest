@@ -1,0 +1,33 @@
+{
+  "status": "provisional",
+  "weights": {
+    "setup_tns": 0.5,
+    "setup_wns": 0.5,
+    "dynamic_power": 0.05,
+    "leakage_power": 0.05,
+    "hold_tns": 1.0,
+    "hold_wns": 1.0,
+    "slew": 0.1,
+    "cap": 0.1,
+    "fanout": 0.1,
+    "tool_runtime": 0.05,
+    "flow_runtime": 0.05,
+    "displacement": 0.05,
+    "max_overflow": 1.0,
+    "total_overflow": 1.0
+  },
+  "scenarios": {
+    "BC": {"weight": 0.3333333333333333, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01},
+    "TC": {"weight": 0.3333333333333333, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01},
+    "WC": {"weight": 0.3333333333333333, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01}
+  },
+  "epsilon": {
+    "time_ns": 0.000001,
+    "slew_ps": 0.001,
+    "cap_ff": 0.000001,
+    "fanout": 0.000001,
+    "displacement_um": 0.000001,
+    "overflow": 0.000001
+  },
+  "overflow_thresholds": {"max": 0.0, "total": 0.0}
+}
