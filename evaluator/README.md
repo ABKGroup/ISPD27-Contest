@@ -2,7 +2,7 @@
 
 Evaluate a legalized DEF/Verilog pair using global routing and setup/hold timing analysis at BC, TC and WC. The evaluator does not run Resizer.
 
-**The current score is a dummy score for testing. The weights of individual score components will be announced before the Alpha submission, as stated in the contest description.** Setup TNS and WNS have equal weights.
+**The current score is a dummy score for testing. The weights of individual score components will be announced after the Alpha submission, as stated in the contest description.** Setup TNS and WNS have equal weights.
 
 ## 1. Prepare your files and tools
 
