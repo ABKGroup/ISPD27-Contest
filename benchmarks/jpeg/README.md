@@ -2,6 +2,7 @@
 
 - Top module: `jpeg_encoder`.
 - Inputs: `input.def` (legalized post-CTS placement), `input.v` (matching netlist).
+- Existing data buffers and functional inverters are retained; no debuffering is applied.
 - Physical provenance: 65% target utilization.
 - Post-CTS functional/clock cell count: 56,061; no macros.
 - Evaluation periods BC/TC/WC: 407 / 550 / 770 ps.

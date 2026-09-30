@@ -4,12 +4,14 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
 import time
+from legality import finalize
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def executable(variable, default):
@@ -18,6 +20,19 @@ def executable(variable, default):
     if not resolved:
         raise ValueError(f"Cannot find {default}. Set {variable} or add it to PATH.")
     return str(Path(resolved).resolve())
+
+
+def check_openroad_version(binary, env):
+    versions = json.loads((ROOT / "evaluator/config/tool_versions.json").read_text())
+    expected = versions.get("openroad_commit")
+    if not expected:
+        raise ValueError("Missing pinned OpenROAD revision in tool_versions.json")
+    reported = subprocess.check_output([binary, "-version"], env=env, text=True,
+                                       stderr=subprocess.STDOUT, timeout=30).strip()
+    revision = re.search(r"(?:^|-)g([0-9a-f]{7,40})(?:\b|$)", reported)
+    if not revision or not expected.startswith(revision.group(1)) or "dirty" in reported.lower():
+        raise ValueError(f"Expected clean OpenROAD {expected[:12]}, got {reported!r}. "
+                         "Set OPENROAD_EXE to the pinned upstream build; see tool_versions.json.")
 
 
 def main():
@@ -60,24 +75,26 @@ def main():
     )
     # Internal scripts invoke python3; keep the same interpreter throughout.
     env["PATH"] = str(Path(sys.executable).parent) + os.pathsep + env.get("PATH", "")
-    subprocess.run([sys.executable, str(ROOT / "evaluator/verify_package.py")],
+    subprocess.run([sys.executable, str(ROOT / "evaluator/internal/verify_package.py")],
                    env=env, check=True)
+    check_openroad_version(env["OPENROAD_EXE"], env)
     started = time.monotonic()
-    subprocess.run(["bash", str(ROOT / "evaluator/core_run.sh")], env=env, check=True)
+    subprocess.run(["bash", str(ROOT / "evaluator/internal/core_run.sh")], env=env, check=True)
     with (output / "spef_validation.json").open("x") as stream:
-        subprocess.run([sys.executable, str(ROOT / "evaluator/check_spef.py"),
+        subprocess.run([sys.executable, str(ROOT / "evaluator/internal/check_spef.py"),
                         *[str(output / f"parasitics_{c}.spef") for c in cfg["corners"]]],
                        env=env, stdout=stream, check=True)
-    subprocess.run([sys.executable, str(ROOT / "evaluator/metrics.py"), str(output)],
+    subprocess.run([sys.executable, str(ROOT / "evaluator/internal/metrics.py"), str(output)],
                    env=env, check=True)
     (output / "evaluation_runtime.json").write_text(json.dumps({
         "evaluation_wall_seconds": time.monotonic() - started,
         "includes": "input checks, formal proofs, OpenROAD, SPEF checks, metric extraction",
         "contestant_tool_runtime_seconds": None,
     }, indent=2) + "\n")
+    finalize(output)
     (output / "EVALUATION_COMPLETE").write_text(
-        "Timing, routing, available validation and metric extraction completed.\n"
-        "Run score.py separately. Final contest legality is not yet fully implemented; see evaluator/README.md.\n")
+        "Design legality, timing, routing and metric extraction passed; see legality.json.\n"
+        "Use run_submission.py for measured tool-runtime validation. Scoring is a separate step.\n")
     print(f"Completed: {output / 'summary.csv'}")
 
 

@@ -29,5 +29,7 @@
     "TC",
     "WC"
   ],
-  "additional_ocv_derating": false
+  "additional_ocv_derating": false,
+  "physical_revision": "original-buffered-post-cts",
+  "data_buffer_removal_applied": false
 }

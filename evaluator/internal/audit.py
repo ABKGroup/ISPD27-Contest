@@ -9,6 +9,7 @@ import re
 import subprocess
 import sys
 import time
+from metrics import parse_erc_violations
 
 out = Path(os.environ['OUTPUT_DIR'])
 platform = Path(os.environ['PLATFORM_DIR'])
@@ -50,12 +51,14 @@ if sys.argv[1] == 'config':
     data['scenario_sdc_sha256'] = {c:digest(Path(data['SCENARIO_DIR'])/(c+'.sdc')) for c in ['BC','TC','WC']}
     data['platform_manifest_sha256'] = digest(platform/'manifest.json')
     data['openroad_sha256'] = digest(data['OPENROAD_EXE'])
-    data['script_sha256'] = {p.name:digest(p) for p in Path(__file__).parent.glob('*') if p.suffix in ['.tcl','.sh','.py']}
+    data['script_sha256'] = {str(p.relative_to(Path(__file__).resolve().parents[1])):digest(p)
+                             for base in (Path(__file__).resolve().parent, Path(__file__).resolve().parents[1])
+                             for p in base.iterdir() if p.suffix in ['.tcl','.sh','.py']}
     if os.environ.get('SPEF_PREFIX'):
         data['spef_sha256']={c:digest(os.environ['SPEF_PREFIX']+'_'+c+'.spef') for c in data['CORNERS'].split()}
     (out/'run_config.json').write_text(json.dumps(data,indent=2)+'\n')
 elif sys.argv[1] == 'generation':
-    root = Path(__file__).resolve().parent
+    root = Path(__file__).resolve().parents[2]
     bench = Path(os.environ.get('BENCHMARK_DIR', root/'benchmarks'/os.environ['BENCHMARK']))
     result = formal('generation_equivalence', bench/'source_synth.v', bench/'input.v')
     (out/'generation_validation.json').write_text(json.dumps(result,indent=2)+'\n')
@@ -64,6 +67,9 @@ elif sys.argv[1] == 'input':
     if canonical(out/'verilog_source.v') != canonical(out/'loaded.v'):
         raise RuntimeError('DEF and Verilog canonical exports differ; inspect verilog_source.v and loaded.v')
     if os.environ['PHASE'] == 'full':
+        structural = json.loads((out/'structural_validation.json').read_text())
+        if not structural.get('passed'):
+            raise RuntimeError('Structural legality did not pass')
         if (out/'baseline_clock.txt').read_text() != (out/'clock_before.txt').read_text():
             raise RuntimeError('Submitted clock nets, clock cells, or clock sink placement differ from official R0')
         baseline={r['instance']:r for r in csv.DictReader((out/'baseline_placement.tsv').open(),delimiter='\t')}
@@ -75,7 +81,8 @@ elif sys.argv[1] == 'input':
         proof=formal('submission_equivalence', os.environ['BASELINE_VERILOG'], out/'loaded.v')
         (out/'submission_validation.json').write_text(json.dumps(dict(
             r0_to_submission_equivalence=proof, clock_and_sink_integrity=True,
-            protected_instance_integrity=True, complete_contest_legality=False),indent=2)+'\n')
+            protected_instance_integrity=True, structural_legality=structural,
+            input_legality_passed=True),indent=2)+'\n')
     print('Input Verilog and DEF connectivity match exactly.')
 elif sys.argv[1] == 'finish':
     if 'EVALUATION_OPENROAD_SUCCESS' not in (out/'evaluation.log').read_text():
@@ -103,14 +110,7 @@ elif sys.argv[1] == 'finish':
         erc = {}
         for kind in ['max_slew','max_capacitance','max_fanout']:
             report = (out/f'{scene}_{kind}.rpt').read_text()
-            violations = []
-            for line in report.splitlines():
-                if '(VIOLATED)' in line:
-                    match = re.search(r'([-+\d.eE]+)\s+\(VIOLATED\)',line)
-                    if not match:
-                        raise RuntimeError('Unrecognized dedicated ERC report line: '+line)
-                    violations.append(float(match[1]))
-            erc[kind] = {'count':len(violations), 'sum_violation':sum(-v for v in violations)}
+            erc[kind] = parse_erc_violations(report, kind)
         row['erc'] = erc
     before = {r['instance']:r for r in csv.DictReader((out/'placement_before.tsv').open(),delimiter='\t')}
     after_path=out/'placement_after.tsv'

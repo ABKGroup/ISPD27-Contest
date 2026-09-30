@@ -10,6 +10,7 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 SPEC = importlib.util.spec_from_file_location("contest_score", ROOT / "score.py")
 score = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(score)
@@ -17,7 +18,7 @@ SPEC.loader.exec_module(score)
 
 class ScoreTests(unittest.TestCase):
     def setUp(self):
-        self.config = json.loads((ROOT / "scoring_config.json").read_text())
+        self.config = json.loads((ROOT / "config/scoring_config.json").read_text())
         self.config["scenarios"] = {"BC": {
             "weight": 1, "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1}}
         self.config["epsilon"] = dict.fromkeys(score.EPSILONS, 1)
@@ -70,6 +71,24 @@ class ScoreTests(unittest.TestCase):
     def test_hold_threshold_boundary(self):
         self.candidate["BC"].update(hold_tns_ns=-1, hold_wns_ns=-1)
         self.assertEqual(self.result()["components"]["hold_penalty"], 0)
+
+    def test_zero_threshold_overflow_uses_one_resource_unit(self):
+        self.config['overflow_thresholds'] = {'max': 0, 'total': 0}
+        self.config['epsilon']['overflow'] = 1e-6
+        self.assertEqual(self.result()['components']['overflow_penalty'], 0)
+        self.candidate['BC'].update(max_global_routing_overflow=1, global_routing_overflow=1)
+        self.assertEqual(self.result()['components']['overflow_penalty'], 2)
+        self.candidate['BC']['global_routing_overflow'] = 5
+        self.assertEqual(self.result()['components']['overflow_penalty'], 6)
+
+    def test_overflow_threshold_boundary_and_positive_threshold(self):
+        self.config['overflow_thresholds'] = {'max': 2, 'total': 10}
+        self.config['epsilon']['overflow'] = 1e-6
+        self.candidate['BC'].update(max_global_routing_overflow=2, global_routing_overflow=10)
+        self.assertEqual(self.result()['components']['overflow_penalty'], 0)
+        self.candidate['BC'].update(max_global_routing_overflow=4, global_routing_overflow=15)
+        self.assertAlmostEqual(self.result()['components']['overflow_penalty'],
+                               2 / 2.000001 + 5 / 10.000001)
 
     def test_equal_weights_required_for_both_timing_types(self):
         for key in ("setup_tns", "hold_tns"):
@@ -124,7 +143,7 @@ class ScoreTests(unittest.TestCase):
     def test_cli_number_json_and_no_overwrite(self):
         with tempfile.TemporaryDirectory() as folder:
             folder = Path(folder)
-            args = [sys.executable, "-B", str(ROOT / "score.py")]
+            args = [sys.executable, "-B", str(ROOT / "score.py"), "--allow-unverified"]
             for key, data in (("baseline", self.base), ("candidate", self.candidate), ("reference", self.reference)):
                 path = folder / (key + ".csv")
                 self.write_csv(path, data)
@@ -141,7 +160,7 @@ class ScoreTests(unittest.TestCase):
             report = json.loads(output.read_text())
             self.assertEqual(report["design"], "aes")
             self.assertEqual(report["status"], "provisional")
-            self.assertEqual(report["eligibility"], "not_certified")
+            self.assertEqual(report["eligibility"], "unverified_dummy")
             before = output.read_bytes()
             rerun = subprocess.run(args, capture_output=True, text=True)
             self.assertNotEqual(rerun.returncode, 0)

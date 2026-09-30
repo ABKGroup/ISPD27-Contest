@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# All run/design configuration is here. The evaluation Tcl is design independent.
+# Internal stage runner. Official run/design settings are supplied by run.py.
 set -euo pipefail
 EVAL_ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd -- "$EVAL_ROOT/../.." && pwd)"
 export PYTHONDONTWRITEBYTECODE=1
 : "${SCENARIO_DIR:?Select a new experiment scenario directory}"
 : "${OUTPUT_DIR:?Select a fresh experiment output directory}"
@@ -15,10 +16,10 @@ case "$BENCHMARK" in
     *) echo "Set DESIGN_NAME and input paths for additional designs." >&2; default_top="$BENCHMARK" ;;
 esac
 export DESIGN_NAME="${DESIGN_NAME:-$default_top}"
-export INPUT_DEF="${INPUT_DEF:-$EVAL_ROOT/benchmarks/$BENCHMARK/input.def}"
-export INPUT_VERILOG="${INPUT_VERILOG:-$EVAL_ROOT/benchmarks/$BENCHMARK/input.v}"
-export SDC_FILE="${SDC_FILE:-$EVAL_ROOT/benchmarks/$BENCHMARK/constraint.sdc}"
-export PLATFORM_DIR="${PLATFORM_DIR:-$EVAL_ROOT/platform/asap7}"
+export INPUT_DEF="${INPUT_DEF:-$REPO_ROOT/benchmarks/$BENCHMARK/input.def}"
+export INPUT_VERILOG="${INPUT_VERILOG:-$REPO_ROOT/benchmarks/$BENCHMARK/input.v}"
+export SDC_FILE="${SDC_FILE:-$REPO_ROOT/benchmarks/$BENCHMARK/constraint.sdc}"
+export PLATFORM_DIR="${PLATFORM_DIR:-$REPO_ROOT/platform/asap7}"
 default_result="rsz$RUN_RESIZER"
 if [[ "$RUN_RESIZER" == 1 ]]; then default_result=rsz1_pin_vt_v1; fi
 export OUTPUT_DIR="${OUTPUT_DIR:-$EVAL_ROOT/results/$BENCHMARK/$default_result}"

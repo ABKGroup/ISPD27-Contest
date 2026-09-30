@@ -2,6 +2,7 @@
 
 - Top module: `aes_cipher_top`.
 - Inputs: `input.def` (legalized post-CTS placement), `input.v` (matching netlist).
+- Existing data buffers and functional inverters are retained; no debuffering is applied.
 - Physical provenance: 50% target utilization.
 - Post-CTS functional/clock cell count: 15,343; no macros.
 - Evaluation periods BC/TC/WC: 248 / 308 / 429 ps.

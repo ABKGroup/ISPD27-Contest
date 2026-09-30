@@ -4,11 +4,11 @@ import hashlib
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def verify():
-    manifest = json.loads((ROOT / "evaluator/package_manifest.json").read_text())
+    manifest = json.loads((ROOT / "evaluator/config/package_manifest.json").read_text())
     for name, expected in manifest["sha256"].items():
         path = ROOT / name
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
