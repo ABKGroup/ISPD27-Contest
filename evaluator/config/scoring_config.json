@@ -1,8 +1,8 @@
 {
   "status": "provisional",
   "weights": {
-    "setup_tns": 0.5,
-    "setup_wns": 0.5,
+    "setup_tns": 1.0,
+    "setup_wns": 1.0,
     "dynamic_power": 0.05,
     "leakage_power": 0.05,
     "hold_tns": 1.0,
@@ -17,9 +17,9 @@
     "total_overflow": 1.0
   },
   "scenarios": {
-    "BC": {"weight": 0.3333333333333333, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01},
-    "TC": {"weight": 0.3333333333333333, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01},
-    "WC": {"weight": 0.3333333333333333, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01}
+    "BC": {"weight": 0.33, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01},
+    "TC": {"weight": 0.33, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01},
+    "WC": {"weight": 0.33, "hold_tns_tolerance_ns": 1.0, "hold_wns_tolerance_ns": 0.01}
   },
   "epsilon": {
     "time_ns": 0.000001,
