@@ -456,7 +456,6 @@ def finalize(folder):
               "complete_contest_legality": True, "runtime_measured": measured,
               "automated_checks_passed": True,
               "design": cfg["BENCHMARK"], "configuration": cfg["scenario"]["id"],
-              "package_manifest_sha256": digest(Path(__file__).resolve().parents[1] / "config/package_manifest.json"),
               "files_sha256": {name: digest(folder / name) for name in names},
               "checks": ["fixed_floorplan_io_pdn_blockages_tracks", "protected_macros_and_cells",
                          "allowed_masters_and_transforms", "clock_tree_and_sink_integrity",
@@ -473,8 +472,6 @@ def verify_certificate(candidate, require_runtime=True):
     record = json.loads((folder / "legality.json").read_text())
     require(record.get("passed") is True and record.get("design_legality_passed") is True,
             "Candidate has not passed design legality")
-    require(record["package_manifest_sha256"] == digest(Path(__file__).resolve().parents[1] / "config/package_manifest.json"),
-            "Validation belongs to a different evaluator package; reevaluate the submission")
     require(record["files_sha256"].get("summary.csv") == digest(candidate), "Scoring CSV changed since validation")
     if require_runtime:
         require(record.get("runtime_measured") is True, "Run run_submission.py to measure tool runtime, or explicitly request an unverified dummy score")

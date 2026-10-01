@@ -20,18 +20,17 @@ For normal scoring, run `run_submission.py` first and then `score.py`.
 Use `eval.sh` to evaluate existing DEF/Verilog files without running the
 submission tool.
 
-
-<!-- 
 ## Requirements
 
-- Python 3.9+ and compatible OpenROAD and Kepler Formal executables on `PATH`.
-  See [tool versions](../public/ISPD27-Contest/evaluator/config/tool_versions.json).
+- Use the organizer-provided container, which supplies Python 3.9+, OpenROAD,
+  Kepler Formal, and trusted evaluation inputs. Tool versions and package
+  integrity are managed by the organizer; the evaluator does not check them.
 - A legalized `.def` and matching `.v` produced by your tool.
 - The supplied clock tree, official timing constraints, libraries, and RC
   settings must remain unchanged.
 
 Run all commands below from the contest repository root: the directory containing
-`evaluator/`, `benchmarks/`, and `platform/`. -->
+`evaluator/`, `benchmarks/`, and `platform/`.
 
 ## Run your tool and score
 
@@ -104,7 +103,7 @@ The command prints the score and writes the score breakdown to `score.json`. **H
 are better.** 
 
 Normal scoring requires passed legality checks, runtime measurements from `run_submission.py`, and validated output files that have not changed after evaluation. See
-[scoring configuration](../public/ISPD27-Contest/evaluator/config/scoring_config.json)
+[scoring configuration](config/scoring_config.json)
 for the current weights and tolerances.
 
 For manual experiments, `--allow-unverified` can be used to compute an **unverified dummy score**
@@ -153,13 +152,6 @@ bash evaluator/eval.sh aes /tmp/aes-baseline-evaluation
 
 ## Legality checks
 
-<!-- Checks cover the fixed floorplan, I/O, PDN, blockages, protected cells, clock tree
-and clock sinks, permitted transformations, formal
-equivalence, and package integrity.
-
-Data repeater changes must preserve polarity. Other gate changes are limited to
-approved sizing/VT variants and equivalent-pin swaps. Failed checks prevent
-normal scoring. -->
 The evaluator checks that the submitted design follows the contest rules,
 including:
 
@@ -183,8 +175,8 @@ function of the original design.
 or replaced only if the signal polarity is preserved. Other cells may only be
 changed to approved sizing/VT variants or through equivalent-pin swaps.
 
-- All required output files must be present, and files
-provided by the contest must not be modified.
+- All required output files must be present. Validated evaluation outputs and
+runtime records must remain unchanged before scoring.
 
 A submission that fails any required legality check cannot receive a normal
 score.
@@ -209,10 +201,9 @@ Reference files for each design are stored under: `evaluator/reference_results/<
 | Location | Purpose |
 | --- | --- |
 | `eval.sh`, `run_submission.py`, `score.py` | Main scripts for evaluation, runtime measurement, and scoring. |
-| `config/` | Scoring parameters, tool versions, and evaluator configuration files. |
+| `config/` | Scoring weights and tolerances. |
 | `internal/` | Internal scripts for legality checks, timing analysis, and metric calculation. |
 | `reference_results/` | Contest-provided baseline and OpenROAD Resizer reference results used for scoring. |
 | `third_party/displacement/` | Reused ISPD26 displacement helper and related files. |
 | `tests/` | Evaluator regression tests. |
-
 

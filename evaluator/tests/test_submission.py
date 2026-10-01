@@ -11,8 +11,6 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from run_submission import timed_command
 import run_submission
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "internal"))
-import run
 
 
 class RuntimeTests(unittest.TestCase):
@@ -76,7 +74,6 @@ name = 'submission' if LEGACY else Path(input_dir).name
         argv = ['run_submission.py', design, str(out), '--', sys.executable, str(script)]
         with patch.object(run_submission, 'ROOT', package), \
                 patch.object(sys, 'argv', argv), \
-                patch.object(run_submission.subprocess, 'run'), \
                 patch.object(run_submission, 'timed_command', side_effect=execute), \
                 patch.object(run_submission, 'finalize'):
             if legacy_names:
@@ -102,19 +99,6 @@ name = 'submission' if LEGACY else Path(input_dir).name
 
     def test_legacy_output_names_rejected(self):
         self.exercise_launcher('aes', 'aes_cipher_top', legacy_names=True)
-
-    def test_pinned_openroad_revision(self):
-        (self.root / 'evaluator/config').mkdir(parents=True)
-        expected = '8443f6ff398e3c4e06cb65a05a0abf22734ad345'
-        (self.root / 'evaluator/config/tool_versions.json').write_text(json.dumps({'openroad_commit': expected}))
-        with patch.object(run, 'ROOT', self.root):
-            with patch.object(run.subprocess, 'check_output', return_value='26Q3-123-g8443f6ff39\n'):
-                run.check_openroad_version('/test/openroad', {})
-            for version in ('26Q3-123-g90e29809c3', '26Q3-123-g8443f6ff39-dirty', 'unknown'):
-                with self.subTest(version=version), patch.object(run.subprocess, 'check_output', return_value=version):
-                    with self.assertRaisesRegex(ValueError, 'Expected clean OpenROAD'):
-                        run.check_openroad_version('/test/openroad', {})
-
 
 if __name__ == '__main__':
     unittest.main()

@@ -214,7 +214,6 @@ class CertificateTests(unittest.TestCase):
         for name in names:
             (self.folder / name).write_text('{}')
         self.record = dict(passed=True, design_legality_passed=True, runtime_measured=True,
-            package_manifest_sha256=L.digest(ROOT / 'config/package_manifest.json'),
             files_sha256={n:L.digest(self.folder / n) for n in names})
         self.save()
 
@@ -238,13 +237,9 @@ class CertificateTests(unittest.TestCase):
             L.verify_certificate(self.folder / 'summary.csv')
         L.verify_certificate(self.folder / 'summary.csv', require_runtime=False)
 
-    def test_failed_check_and_changed_package(self):
+    def test_failed_check(self):
         self.record['passed'] = False; self.save()
         with self.assertRaisesRegex(L.Illegal, 'not passed'):
-            L.verify_certificate(self.folder / 'summary.csv')
-        self.record['passed'] = True
-        self.record['package_manifest_sha256'] = 'different'; self.save()
-        with self.assertRaisesRegex(L.Illegal, 'different evaluator'):
             L.verify_certificate(self.folder / 'summary.csv')
 
 

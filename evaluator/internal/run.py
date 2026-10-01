@@ -4,7 +4,6 @@ import argparse
 import json
 import os
 from pathlib import Path
-import re
 import shutil
 import subprocess
 import sys
@@ -20,19 +19,6 @@ def executable(variable, default):
     if not resolved:
         raise ValueError(f"Cannot find {default}. Set {variable} or add it to PATH.")
     return str(Path(resolved).resolve())
-
-
-def check_openroad_version(binary, env):
-    versions = json.loads((ROOT / "evaluator/config/tool_versions.json").read_text())
-    expected = versions.get("openroad_commit")
-    if not expected:
-        raise ValueError("Missing pinned OpenROAD revision in tool_versions.json")
-    reported = subprocess.check_output([binary, "-version"], env=env, text=True,
-                                       stderr=subprocess.STDOUT, timeout=30).strip()
-    revision = re.search(r"(?:^|-)g([0-9a-f]{7,40})(?:\b|$)", reported)
-    if not revision or not expected.startswith(revision.group(1)) or "dirty" in reported.lower():
-        raise ValueError(f"Expected clean OpenROAD {expected[:12]}, got {reported!r}. "
-                         "Set OPENROAD_EXE to the pinned upstream build; see tool_versions.json.")
 
 
 def main():
@@ -75,9 +61,6 @@ def main():
     )
     # Internal scripts invoke python3; keep the same interpreter throughout.
     env["PATH"] = str(Path(sys.executable).parent) + os.pathsep + env.get("PATH", "")
-    subprocess.run([sys.executable, str(ROOT / "evaluator/internal/verify_package.py")],
-                   env=env, check=True)
-    check_openroad_version(env["OPENROAD_EXE"], env)
     started = time.monotonic()
     subprocess.run(["bash", str(ROOT / "evaluator/internal/core_run.sh")], env=env, check=True)
     with (output / "spef_validation.json").open("x") as stream:

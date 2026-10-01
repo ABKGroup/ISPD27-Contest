@@ -59,7 +59,6 @@ def main():
                PLATFORM_DIR=str(ROOT / "platform/asap7"), PYTHONDONTWRITEBYTECODE="1")
     start = time.monotonic()
     try:
-        subprocess.run([sys.executable, str(ROOT / "evaluator/internal/verify_package.py")], check=True)
         top_module = json.loads((bench / "benchmark.json").read_text())["top_module"]
         tool_command = command + [str(bench), str(ROOT / "platform/asap7"),
                                   str(tool), top_module]
