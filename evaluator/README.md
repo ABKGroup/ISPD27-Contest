@@ -19,18 +19,12 @@ For normal scoring, run `run_submission.py` first and then `score.py`.
 
 Use `eval.sh` to evaluate existing DEF/Verilog files without running the
 submission tool.
-
+<!-- 
 ## Requirements
 
-- Use the organizer-provided container, which supplies Python 3.9+, OpenROAD,
-  Kepler Formal, and trusted evaluation inputs. Tool versions and package
-  integrity are managed by the organizer; the evaluator does not check them.
-- A legalized `.def` and matching `.v` produced by your tool.
-- The supplied clock tree, official timing constraints, libraries, and RC
-  settings must remain unchanged.
+- Use the organizer-provided container for Python 3.9+, OpenROAD,
+  Kepler Formal. After entering the container, clone the contest repository to obtain the benchmarks, platform files, and evaluator. -->
 
-Run all commands below from the contest repository root: the directory containing
-`evaluator/`, `benchmarks/`, and `platform/`.
 
 ## Run your tool and score
 
