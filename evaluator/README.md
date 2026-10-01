@@ -11,13 +11,17 @@ Alpha submission. Setup TNS and WNS have equal weights.**
 
 | Command | Purpose |
 | --- | --- |
-| `evaluator/eval.sh` | Evaluate existing DEF/Verilog files. Does not run or time your tool. |
-| `evaluator/run_submission.py` | Run and time your tool, then automatically evaluate its outputs. |
-| `evaluator/score.py` | Calculate a numerical score from evaluation results and runtimes. |
+| `evaluator/run_submission.py` | Run a submission, measure runtime, and evaluate the outputs. |
+| `evaluator/score.py` | Compute the score from evaluation results and runtime. |
+| `evaluator/eval.sh` | Evaluate existing DEF/Verilog outputs without running or timing the submission. |
 
-For a score with validated runtime measurements, run `run_submission.py` first,
-then `score.py`. For design-quality checks on existing files, use `eval.sh`.
+For normal scoring, run `run_submission.py` first and then `score.py`.
 
+Use `eval.sh` to evaluate existing DEF/Verilog files without running the
+submission tool.
+
+
+<!-- 
 ## Requirements
 
 - Python 3.9+ and compatible OpenROAD and Kepler Formal executables on `PATH`.
@@ -27,24 +31,22 @@ then `score.py`. For design-quality checks on existing files, use `eval.sh`.
   settings must remain unchanged.
 
 Run all commands below from the contest repository root: the directory containing
-`evaluator/`, `benchmarks/`, and `platform/`.
+`evaluator/`, `benchmarks/`, and `platform/`. -->
 
 ## Run your tool and score
 
-### 1. Run your tool and evaluate its outputs
+### 1. Run the submitted tool
 
 ```bash
 python3 evaluator/run_submission.py aes /tmp/aes-run -- bash /path/to/run.sh
 ```
 
-Replace `/path/to/run.sh` with your own tool launcher. Everything after `--` is
-the command used to start your tool.
+Everything after `--` is
+the command used to launch the submitted tool.
 
-The launcher creates `/tmp/aes-run` to store the results. **Do not create this
-directory beforehand.** If it already exists, even if empty, use a different
-name such as `/tmp/aes-run-2`.
+The launcher creates `/tmp/aes-run` to store the results. The directory must not already exist.
 
-Your script receives four positional arguments:
+The launcher calls `run.sh` with four positional arguments:
 
 ```bash
 bash /path/to/run.sh <input_dir> <platform_dir> <output_dir> <top_module>
@@ -54,42 +56,40 @@ bash /path/to/run.sh <input_dir> <platform_dir> <output_dir> <top_module>
 | --- | --- | --- |
 | `$1` | Benchmark input directory | `<repository>/benchmarks/aes` |
 | `$2` | Technology platform directory | `<repository>/platform/asap7` |
-| `$3` | Directory for your tool's output files | `/tmp/aes-run/tool` |
+| `$3` | Tool output directory | `/tmp/aes-run/tool` |
 | `$4` | Top-level Verilog module | `aes_cipher_top` |
 
 Directory arguments are absolute paths. The top module is read from
 `benchmarks/<design_name>/benchmark.json`.
 
-Your tool must write these two files before exiting successfully:
-
+The submitted tool must produce:
 ```text
 /tmp/aes-run/tool/aes.def
 /tmp/aes-run/tool/aes.v
 ```
 
 Use the design name (`aes` or `jpeg`) for output filenames, **not** the top-module
-name. The launcher also provides these environment variables:
+name. The launcher also sets the following environment variables:
 
 | Variable | Meaning |
 | --- | --- |
 | `INPUT_DEF`, `INPUT_VERILOG` | Paths to the supplied input files |
 | `OUTPUT_DEF`, `OUTPUT_VERILOG` | Required output file paths |
 | `BENCHMARK_DIR` | Benchmark input directory |
-| `MCMM_CONFIG` | Benchmark timing configuration file |
+| `MCMM_CONFIG` | Benchmark timing configuration  |
 | `PLATFORM_DIR` | Technology platform directory |
 
-After your tool finishes, the launcher automatically validates and evaluates its
+After the submitted tool finishes running, the launcher automatically validates and evaluates its
 outputs. Results are saved in `/tmp/aes-run/evaluation/`.
 
-- **Tool runtime:** time spent running your command.
+- **Tool runtime:** time spent running the submitted tool.
 - **Total-flow runtime:** time spent running the tool, validation, and evaluation.
 
-Both limits are five hours. Evaluation must finish within the remaining
-total-flow time. Unchanged baseline submissions are rejected.
+The limit for both is five hours. Unchanged baseline submissions are rejected.
 
 ### 2. Calculate the score
 
-After step 1 succeeds, run:
+After the run completes successfully:
 
 ```bash
 python3 evaluator/score.py \
@@ -100,15 +100,14 @@ python3 evaluator/score.py \
   --output /tmp/aes-run/evaluation/score.json
 ```
 
-This prints the score and saves its breakdown to `score.json`. **Higher scores
-are better.** The output file must not already exist.
+The command prints the score and writes the score breakdown to `score.json`. **Higher scores
+are better.** 
 
-Normal scoring requires passed legality checks, runtime measurements recorded by
-the launcher, and validated artifacts that have not subsequently changed. See
+Normal scoring requires passed legality checks, runtime measurements from `run_submission.py`, and validated output files that have not changed after evaluation. See
 [scoring configuration](../public/ISPD27-Contest/evaluator/config/scoring_config.json)
-for weights and tolerances.
+for the current weights and tolerances.
 
-For manual experiments, `--allow-unverified` permits an **unverified dummy score**
+For manual experiments, `--allow-unverified` can be used to compute an **unverified dummy score**
 without legality/runtime certification. A runtime JSON file is still required.
 
 For JPEG, replace `aes` with `jpeg` in the commands and paths above. The launcher
@@ -116,7 +115,7 @@ reads the JPEG top-module name automatically.
 
 ## Evaluate existing output files
 
-Use this command when your tool has already produced a DEF/Verilog pair:
+To evaluate an existing DEF/Verilog pair:
 
 ```bash
 bash evaluator/eval.sh aes /tmp/aes-evaluation \
@@ -124,25 +123,20 @@ bash evaluator/eval.sh aes /tmp/aes-evaluation \
   --verilog /path/to/submission.v
 ```
 
-Choose an output directory that does not already exist. Replace `aes` with
+The output directory must not already exist. Replace `aes` with
 `jpeg` for JPEG.
 
-This runs legality checks and produces design-quality metrics. It does not run
-your tool, record its runtime, or calculate a numerical score. For normal
-scoring, use the two-step workflow above.
+`eval.sh` runs legality checks and reports design-quality metrics. It does not run
+the submission tool, measure tool runtime, or calculate a score. 
 
-To evaluate the supplied unoptimized baseline, omit both file arguments:
+To evaluate the supplied unoptimized baseline:
 
 ```bash
 bash evaluator/eval.sh aes /tmp/aes-baseline-evaluation
 ```
 
-The released inputs retain their existing data buffers and functional inverters.
+## Evaluation Results
 
-## Results
-
-The following paths are relative to the evaluation directory: either the
-directory passed to `eval.sh` or `<run_dir>/evaluation/` for the launcher.
 
 | Output | Contents |
 | --- | --- |
@@ -150,50 +144,75 @@ directory passed to `eval.sh` or `<run_dir>/evaluation/` for the launcher.
 | `final_timing/` | Final timing reports from a fresh SPEF reload. |
 | `evaluation.log` | Evaluator log. |
 | `evaluation_runtime.json` | Evaluator wall time. |
-| `legality.json` | Final validation record; `complete_contest_legality` is true after all evaluator legality checks pass. |
+| `legality.json` | Final legality result. `complete_contest_legality` is true after all evaluator legality checks pass. |
 | `structural_validation.json`, `final_structural_validation.json`, `submission_validation.json` | Detailed validation reports. |
-| `EVALUATION_COMPLETE` | Marker indicating successful evaluation. |
-| `runtimes.json` | Candidate and reference runtimes, written by the launcher for scoring. |
-| `score.json` | Score and breakdown, written by the scoring command above. |
+| `EVALUATION_COMPLETE` | Marker for successful evaluation. |
+| `runtimes.json` | Candidate and reference runtimes used by scoring. |
+| `score.json` | Score and score breakdown. |
 
-The launcher also writes `<run_dir>/tool.log` and, on success,
-`<run_dir>/SUBMISSION_COMPLETE`. Successful evaluation alone does not mean a
-score has been calculated.
 
 ## Legality checks
 
-Checks cover the fixed floorplan, I/O, PDN, blockages, protected cells, clock tree
-and sinks, permitted transformations, placement, DEF/Verilog consistency, formal
+<!-- Checks cover the fixed floorplan, I/O, PDN, blockages, protected cells, clock tree
+and clock sinks, permitted transformations, formal
 equivalence, and package integrity.
 
 Data repeater changes must preserve polarity. Other gate changes are limited to
 approved sizing/VT variants and equivalent-pin swaps. Failed checks prevent
-normal scoring.
+normal scoring. -->
+The evaluator checks that the submitted design follows the contest rules,
+including:
+
+- The die/core area, I/O locations, PDN,
+and placement blockages must not be changed.
+
+- Protected cells, the clock tree, and
+clock sinks must remain unchanged.
+
+- All movable cells must be legally placed inside the placement
+region, aligned to valid sites/rows, and must not overlap other cells or
+blocked regions.
+
+- The physical design in the DEF and the netlist in
+the Verilog must describe the same cells and connectivity.
+
+- The submitted netlist must preserve the logic
+function of the original design.
+
+- Data-path buffers/inverters may be added, removed,
+or replaced only if the signal polarity is preserved. Other cells may only be
+changed to approved sizing/VT variants or through equivalent-pin swaps.
+
+- All required output files must be present, and files
+provided by the contest must not be modified.
+
+A submission that fails any required legality check cannot receive a normal
+score.
 
 ## Supplied reference results
 
-Each design has recorded results under `evaluator/reference_results/<design_name>/`:
+The scoring script compares each submitted result against a set of reference
+results provided with the contest. These reference results are used to normalize
+the scoring metrics and runtime.
+
+Reference files for each design are stored under: `evaluator/reference_results/<design_name>/`
 
 | File | Purpose |
 | --- | --- |
-| `baseline.csv` | Normalize setup timing, power, and ERC. |
-| `resizer.csv` | Normalize displacement. |
-| `runtimes.json` | Supply reference tool and total-flow runtimes. |
+| `baseline.csv` | Results from the released unoptimized design. Used to normalize setup timing, power, and ERC. |
+| `resizer.csv` | Results from the OpenROAD Resizer reference run. Used to normalize displacement. |
+| `runtimes.json` | Recorded runtimes of the reference runs. Used for runtime normalization. |
 
-These files describe the released reference runs, not your current run. Reference
-runtimes depend on the host. Use your run's `evaluation/runtimes.json` as the
-`--runtimes` input when scoring your tool.
 
 ## Evaluator directory guide
 
 | Location | Purpose |
 | --- | --- |
-| `eval.sh`, `run_submission.py`, `score.py` | Public commands. |
-| `config/` | Scoring policy, tool versions, and package integrity manifest. |
-| `internal/` | Evaluation, timing, legality, and metric implementation. |
-| `reference_results/` | Supplied baseline and Resizer measurements. |
-| `third_party/displacement/` | Reused ISPD26 displacement helper, cell groups, and license. |
+| `eval.sh`, `run_submission.py`, `score.py` | Main scripts for evaluation, runtime measurement, and scoring. |
+| `config/` | Scoring parameters, tool versions, and evaluator configuration files. |
+| `internal/` | Internal scripts for legality checks, timing analysis, and metric calculation. |
+| `reference_results/` | Contest-provided baseline and OpenROAD Resizer reference results used for scoring. |
+| `third_party/displacement/` | Reused ISPD26 displacement helper and related files. |
 | `tests/` | Evaluator regression tests. |
 
-Store new run results in the output directory you choose, outside the supplied
-evaluator files.
+
