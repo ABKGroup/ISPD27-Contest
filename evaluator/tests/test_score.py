@@ -18,7 +18,20 @@ SPEC.loader.exec_module(score)
 
 class ScoreTests(unittest.TestCase):
     def setUp(self):
-        self.config = json.loads((ROOT / "config/scoring_config.json").read_text())
+        # Fixed fixture weights keep hand-calculated expectations independent
+        # of changes to the released contest scoring policy.
+        self.config = {
+            "status": "provisional",
+            "weights": {
+                "setup_tns": 0.5, "setup_wns": 0.5,
+                "dynamic_power": 0.05, "leakage_power": 0.05,
+                "hold_tns": 1.0, "hold_wns": 1.0,
+                "slew": 0.1, "cap": 0.1, "fanout": 0.1,
+                "tool_runtime": 0.05, "flow_runtime": 0.05,
+                "displacement": 0.05,
+                "max_overflow": 1.0, "total_overflow": 1.0,
+            },
+        }
         self.config["scenarios"] = {"BC": {
             "weight": 1, "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1}}
         self.config["epsilon"] = dict.fromkeys(score.EPSILONS, 1)
@@ -193,6 +206,12 @@ class ScoreTests(unittest.TestCase):
         self.candidate["TC"]["average_displacement_um"] = 42
         with self.assertRaisesRegex(ValueError, "identical across corners"):
             self.result()
+
+
+class PackagedConfigTests(unittest.TestCase):
+    def test_released_scoring_config_is_valid(self):
+        config = json.loads((ROOT / "config/scoring_config.json").read_text())
+        score.validate_config(config)
 
 
 if __name__ == "__main__":
