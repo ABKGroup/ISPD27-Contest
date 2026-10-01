@@ -1,4 +1,4 @@
-# ISPD28 Contest: Containers and Submission Information
+# ISPD27 Contest: Containers and Submission Information
 
 ## Container
 
