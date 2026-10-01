@@ -12,7 +12,7 @@
 - [Benchmarks](benchmarks/): Public benchmarks.
 - [ASAP7 platform](platform/asap7/README.md):  Technology platform files and libraries for the ASAP7 PDK.
 - [Evaluation guide](evaluator/README.md): tool requirements, commands, output files, metrics, and validation status.
-- Docker containers and submission formatting.
+- [Docker containers](docker/README.md): Dockerfile and instructions for setting up a consistent evaluation environment.
 
 ## Timeline
 - Registration Open: October 5, 2026
