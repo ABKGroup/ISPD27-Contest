@@ -107,8 +107,8 @@ proc timing_metrics {scene} {
 source $::env(MCMM_CONFIG)
 set started [clock milliseconds]
 set_thread_count $::env(NUM_CORES)
-source $::env(PLATFORM_DIR)/liberty_suppressions.tcl
-source $::env(PLATFORM_DIR)/libraries.tcl
+source [file join $::env(PLATFORM_DIR) util liberty_suppressions.tcl]
+source [file join $::env(PLATFORM_DIR) util libraries.tcl]
 foreach lef [list asap7_tech_1x_201209.lef asap7sc7p5t_28_R_1x_220121a.lef \
                   asap7sc7p5t_28_L_1x_220121a.lef asap7sc7p5t_28_SL_1x_220121a.lef] {
     read_lef [file join $::env(PLATFORM_DIR) lef $lef]
@@ -159,7 +159,7 @@ foreach corner $::env(CORNERS) {
     }
 }
 if {"TC" in $::env(CORNERS)} { set_scene TC } else { set_scene [lindex $::env(CORNERS) 0] }
-source $::env(PLATFORM_DIR)/setRC.tcl
+source [file join $::env(PLATFORM_DIR) util setRC.tcl]
 report_units
 set fp [open [out clocks.tsv] w]
 puts $fp "corner\tmode\tclock\tperiod_ps\tvirtual\tpropagated"

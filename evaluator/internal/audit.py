@@ -24,7 +24,7 @@ def canonical(path):
                   for s in text.split(';') if s.strip())
 
 def formal(name, first, second):
-    manifest = json.loads((platform / 'manifest.json').read_text())
+    manifest = json.loads((platform / 'util/manifest.json').read_text())
     config = dict(format='verilog', input_paths=[str(Path(first).resolve()), str(Path(second).resolve())],
         liberty_files=[str(platform / p) for p in manifest['corners']['TC']['libraries']],
         log_file=str(out / (name + '.proof.log')))
@@ -49,7 +49,7 @@ if sys.argv[1] == 'config':
     data['sha256'] = {k:digest(data[k]) for k in ['INPUT_DEF','INPUT_VERILOG','SDC_FILE','BASELINE_DEF','BASELINE_VERILOG','MCMM_CONFIG']}
     data['scenario'] = json.loads((Path(data['SCENARIO_DIR'])/'config.json').read_text())
     data['scenario_sdc_sha256'] = {c:digest(Path(data['SCENARIO_DIR'])/(c+'.sdc')) for c in ['BC','TC','WC']}
-    data['platform_manifest_sha256'] = digest(platform/'manifest.json')
+    data['platform_manifest_sha256'] = digest(platform/'util/manifest.json')
     data['openroad_sha256'] = digest(data['OPENROAD_EXE'])
     data['script_sha256'] = {str(p.relative_to(Path(__file__).resolve().parents[1])):digest(p)
                              for base in (Path(__file__).resolve().parent, Path(__file__).resolve().parents[1])
