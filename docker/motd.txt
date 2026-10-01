@@ -1,0 +1,19 @@
+░██████  ░██████   ░█████████  ░███████       ░██████  ░█████████ 
+  ░██   ░██   ░██  ░██     ░██ ░██   ░██     ░██   ░██ ░██    ░██ 
+  ░██  ░██         ░██     ░██ ░██    ░██          ░██       ░██  
+  ░██   ░████████  ░█████████  ░██    ░██      ░█████       ░██   
+  ░██          ░██ ░██         ░██    ░██     ░██          ░██    
+  ░██   ░██   ░██  ░██         ░██   ░██     ░██           ░██    
+░██████  ░██████   ░██         ░███████      ░████████     ░██    
+                                                                  
+                                                                                                          
+
+ISPD-27 Contest Environment v1
+        Includes OpenROAD Sources, OpenROAD-flow-scripts, Yosys, KLayout, Kepler-Formal, and Conda.
+        Based on Ubuntu 24.04.
+
+
+OpenROAD sources are located in /OpenROAD (Commit 8443f6ff398e3c4e06cb65a05a0abf22734ad345).
+
+OpenROAD-flow-scripts is located in /OpenROAD-flow-scripts (Commit a12d46907510891a2e3d3310abdd19975d28db0e) 
+
