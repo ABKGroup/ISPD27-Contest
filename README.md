@@ -8,7 +8,7 @@
 
 ## Resources
 
-- [Contest description](ISPD27-Contest-Description.pdf): objectives, permitted transformations, scoring framework, and contest rules.
+- [Contest description](https://github.com/ABKGroup/ISPD27-Contest/blob/main/ISPD27-Contest-Description.pdf): objectives, permitted transformations, scoring framework, and contest rules.
 - [Benchmarks](benchmarks/): Public benchmarks.
 - [ASAP7 platform](platform/asap7/): Technology platform files and libraries for the ASAP7 PDK.
 - [Evaluation guide](evaluator/README.md): tool requirements, commands, output files, metrics, and validation status.
@@ -32,10 +32,9 @@ Email: ispd2027contest@gmail.com
 
 ## Prizes
 
-Cash prizes: **$1,500** for first place, **$750** for second place, and **$375**
-for third place. 
+**USD 1,500 / 750 / 375** for the top three teams. 
+All amounts are pre-tax and subject to applicable ACM and local tax withholding.
 
-NVIDIA sponsors additional GPU prizes for the winning teams.
 
 ## Organizers 
 
@@ -45,7 +44,6 @@ UCSD. (Advisor: Prof. Andrew B. Kahng.)
 ## Sponsors
 
 - Purdue University and the NSF [Chipshub](https://nanohub.org/groups/chipshub/): compute resources for teams and submission evaluation.
-- NVIDIA: prizes for winning teams.
 
 ## Support
 Feel free to [**open a GitHub issue**](https://github.com/ABKGroup/ISPD27-Contest/issues) if you have any questions.
