@@ -53,7 +53,7 @@ def refresh(folder):
     env.update(PHASE='timing',VERIFY_FORMAL='0',INPUT_DEF=str(folder/'evaluated.def'),
                INPUT_VERILOG=str(folder/'evaluated.v'),SPEF_PREFIX=str(folder/'parasitics'),OUTPUT_DIR=str(final))
     with (folder/'final_timing.log').open('w') as log:
-        subprocess.run(['bash',str(ROOT/'core_run.sh')],env=env,cwd=ROOT.parent,
+        subprocess.run(['bash',str(ROOT/'core_run.sh')],env=env,cwd=ROOT.parent.parent,
                        stdout=log,stderr=subprocess.STDOUT,check=True)
     updated=read(final/'metrics.json')
     assert {s['corner'] for s in updated['scenarios']}==set(cfg['CORNERS'].split())

@@ -1,131 +1,203 @@
-# Evaluation
+# Evaluation and scoring
 
-Evaluate a legalized DEF/Verilog pair using global routing and setup/hold timing analysis at BC, TC and WC. The evaluator does not run Resizer.
+The evaluator checks a legalized DEF/Verilog pair and measures design quality
+using global routing and setup/hold timing analysis at BC, TC, and WC. It does
+not run OpenROAD Resizer.
 
-**The current score is a dummy score for testing. The weights of individual score components will be announced after the Alpha submission, as stated in the contest description.** Setup TNS and WNS have equal weights.
+**Current scores use dummy weights. Final weights will be announced after the
+Alpha submission. Setup TNS and WNS have equal weights.**
 
-## 1. Prepare your files and tools
+## Choose a workflow
 
-- Provide the legalized `.def` and matching `.v` produced by your tool.
-- Keep the supplied clock tree and official timing constraints unchanged.
-- Use Python 3.9+ and compatible OpenROAD/Kepler Formal executables on PATH.
-  See [tool_versions.json](tool_versions.json) for versions and the required patch.
+| Command | Purpose |
+| --- | --- |
+| `evaluator/run_submission.py` | Run a submission, measure runtime, and evaluate the outputs. |
+| `evaluator/score.py` | Compute the score from evaluation results and runtime. |
+| `evaluator/eval.sh` | Evaluate existing DEF/Verilog outputs without running or timing the submission. |
 
-## 2. Run the evaluation
+For normal scoring, run `run_submission.py` first and then `score.py`.
 
-From the repository root:
+Use `eval.sh` to evaluate existing DEF/Verilog files without running the
+submission tool.
+<!-- 
+## Requirements
 
-```bash
-bash evaluator/eval.sh aes /tmp/aes-evaluation \
-  --def /path/to/submission.def --verilog /path/to/submission.v
-```
+- Use the organizer-provided container for Python 3.9+, OpenROAD,
+  Kepler Formal. After entering the container, clone the contest repository to obtain the benchmarks, platform files, and evaluator. -->
 
-Replace `aes` with `jpeg` for JPEG. Choose a new output directory for every run.
 
-To evaluate the supplied unoptimized baseline, omit the input-file arguments:
+## Run your tool and score
 
-```bash
-bash evaluator/eval.sh aes /tmp/aes-baseline
-```
-
-## 3. Calculate the dummy score
-
-Reference metrics for the released benchmarks are provided below:
-
-| Design | Unoptimized baseline | Resizer reference | Runtime template |
-| --- | --- | --- | --- |
-| AES | [baseline.csv](results/aes/baseline.csv) | [resizer.csv](results/aes/resizer.csv) | [runtimes.json](results/aes/runtimes.json) |
-| JPEG | [baseline.csv](results/jpeg/baseline.csv) | [resizer.csv](results/jpeg/resizer.csv) | [runtimes.json](results/jpeg/runtimes.json) |
-
-The **unoptimized baseline** is used to normalize setup timing, power, and ERC metrics.
-Hold and routing-overflow penalties use the tolerances and thresholds in the scoring configuration.
-
-The **OpenROAD Resizer reference** is used to normalize displacement and runtime.
-These files contain recorded reference results for the released benchmarks; they are
-not regenerated during evaluation. Reference runtimes therefore depend on the machine
-on which they were originally measured.
-Use the baseline and reference matching your design and timing configuration.
-
-First, copy the runtime template into your output directory:
+### 1. Run the submitted tool
 
 ```bash
-cp evaluator/results/aes/runtimes.json /tmp/aes-evaluation/runtimes.json
+python3 evaluator/run_submission.py aes /tmp/aes-run -- bash /path/to/run.sh
 ```
 
-Fill in `tool_s` with your tool runtime and `flow_s` with your tool runtime plus
-`evaluation_wall_seconds` from `evaluation_runtime.json`. All times are in seconds.
-Use this wall time rather than `runtime_s` in `summary.csv`, which covers only the
-recorded OpenROAD stages. Keep the supplied `reference_*` values unchanged. Then run:
+Everything after `--` is
+the command used to launch the submitted tool.
+
+The launcher creates `/tmp/aes-run` to store the results. The directory must not already exist.
+
+The launcher calls `run.sh` with four positional arguments:
+
+```bash
+bash /path/to/run.sh <input_dir> <platform_dir> <output_dir> <top_module>
+```
+
+| Argument | Meaning | Value for this AES run |
+| --- | --- | --- |
+| `$1` | Benchmark input directory | `<repository>/benchmarks/aes` |
+| `$2` | Technology platform directory | `<repository>/platform/asap7` |
+| `$3` | Tool output directory | `/tmp/aes-run/tool` |
+| `$4` | Top-level Verilog module | `aes_cipher_top` |
+
+Directory arguments are absolute paths. The top module is read from
+`benchmarks/<design_name>/benchmark.json`.
+
+The submitted tool must produce:
+```text
+/tmp/aes-run/tool/aes.def
+/tmp/aes-run/tool/aes.v
+```
+
+Use the design name (`aes` or `jpeg`) for output filenames, **not** the top-module
+name. The launcher also sets the following environment variables:
+
+| Variable | Meaning |
+| --- | --- |
+| `INPUT_DEF`, `INPUT_VERILOG` | Paths to the supplied input files |
+| `OUTPUT_DEF`, `OUTPUT_VERILOG` | Required output file paths |
+| `BENCHMARK_DIR` | Benchmark input directory |
+| `MCMM_CONFIG` | Benchmark timing configuration  |
+| `PLATFORM_DIR` | Technology platform directory |
+
+After the submitted tool finishes running, the launcher automatically validates and evaluates its
+outputs. Results are saved in `/tmp/aes-run/evaluation/`.
+
+- **Tool runtime:** time spent running the submitted tool.
+- **Total-flow runtime:** time spent running the tool, validation, and evaluation.
+
+The limit for both is five hours. Unchanged baseline submissions are rejected.
+
+### 2. Calculate the score
+
+After the run completes successfully:
 
 ```bash
 python3 evaluator/score.py \
-  --baseline evaluator/results/aes/baseline.csv \
-  --candidate /tmp/aes-evaluation/summary.csv \
-  --reference evaluator/results/aes/resizer.csv \
-  --runtimes /tmp/aes-evaluation/runtimes.json \
-  --output /tmp/aes-evaluation/score.json
+  --baseline evaluator/reference_results/aes/baseline.csv \
+  --candidate /tmp/aes-run/evaluation/summary.csv \
+  --reference evaluator/reference_results/aes/resizer.csv \
+  --runtimes /tmp/aes-run/evaluation/runtimes.json \
+  --output /tmp/aes-run/evaluation/score.json
 ```
 
-The command prints one number; **higher is better**. `score.json` contains the
-component breakdown. The output file must not already exist.
-The provisional weights are in [scoring_config.json](scoring_config.json).
-Use `--config /path/to/config.json` to try other weights; keep TNS and WNS weights
-equal within both the setup and hold pairs.
+The command prints the score and writes the score breakdown to `score.json`. **Higher scores
+are better.** 
 
-## 4. Check the results
+Normal scoring requires passed legality checks, runtime measurements from `run_submission.py`, and validated output files that have not changed after evaluation. See
+[scoring configuration](config/scoring_config.json)
+for the current weights and tolerances.
 
-The output directory contains:
+For manual experiments, `--allow-unverified` can be used to compute an **unverified dummy score**
+without legality/runtime certification. A runtime JSON file is still required.
 
-- `summary.csv`: per-corner timing, power, ERC, routing overflow and displacement.
-  WNS/TNS values are in **ns**; raw `timing.csv` uses **ps**. Slew violations remain in **ps**.
-- `evaluation_runtime.json`: evaluator wall time used for scoring.
-- `evaluation.log`: the main evaluation log.
-- `final_timing/`: final MCMM timing reports.
-- `EVALUATION_COMPLETE`: evaluation and metric extraction finished; scoring is a separate step.
+For JPEG, replace `aes` with `jpeg` in the commands and paths above. The launcher
+reads the JPEG top-module name automatically.
 
-**Note:** Complete contest
-legality checks are pending. `EVALUATION_COMPLETE` does not certify final eligibility.
+## Evaluate existing output files
 
-## File guide
+To evaluate an existing DEF/Verilog pair:
 
-Use `eval.sh` for evaluation and `score.py` for scoring. The other scripts support these steps.
+```bash
+bash evaluator/eval.sh aes /tmp/aes-evaluation \
+  --def /path/to/submission.def \
+  --verilog /path/to/submission.v
+```
+
+The output directory must not already exist. Replace `aes` with
+`jpeg` for JPEG.
+
+`eval.sh` runs legality checks and reports design-quality metrics. It does not run
+the submission tool, measure tool runtime, or calculate a score. 
+
+To evaluate the supplied unoptimized baseline:
+
+```bash
+bash evaluator/eval.sh aes /tmp/aes-baseline-evaluation
+```
+
+## Evaluation Results
+
+
+| Output | Contents |
+| --- | --- |
+| `summary.csv` | Timing, power, electrical rule violations (ERC), routing overflow, and displacement. WNS/TNS use ns; raw timing and slew-violation sums use ps. |
+| `final_timing/` | Final timing reports from a fresh SPEF reload. |
+| `evaluation.log` | Evaluator log. |
+| `evaluation_runtime.json` | Evaluator wall time. |
+| `legality.json` | Final legality result. `complete_contest_legality` is true after all evaluator legality checks pass. |
+| `structural_validation.json`, `final_structural_validation.json`, `submission_validation.json` | Detailed validation reports. |
+| `EVALUATION_COMPLETE` | Marker for successful evaluation. |
+| `runtimes.json` | Candidate and reference runtimes used by scoring. |
+| `score.json` | Score and score breakdown. |
+
+
+## Legality checks
+
+The evaluator checks that the submitted design follows the contest rules,
+including:
+
+- The die/core area, I/O locations, PDN,
+and placement blockages must not be changed.
+
+- Protected cells, the clock tree, and
+clock sinks must remain unchanged.
+
+- All movable cells must be legally placed inside the placement
+region, aligned to valid sites/rows, and must not overlap other cells or
+blocked regions.
+
+- The physical design in the DEF and the netlist in
+the Verilog must describe the same cells and connectivity.
+
+- The submitted netlist must preserve the logic
+function of the original design.
+
+- Data-path buffers/inverters may be added, removed,
+or replaced only if the signal polarity is preserved. Other cells may only be
+changed to approved sizing/VT variants or through equivalent-pin swaps.
+
+- All required output files must be present. Validated evaluation outputs and
+runtime records must remain unchanged before scoring.
+
+A submission that fails any required legality check cannot receive a normal
+score.
+
+## Supplied reference results
+
+The scoring script compares each submitted result against a set of reference
+results provided with the contest. These reference results are used to normalize
+the scoring metrics and runtime.
+
+Reference files for each design are stored under: `evaluator/reference_results/<design_name>/`
 
 | File | Purpose |
 | --- | --- |
-| [README.md](README.md) | Quick-start instructions. |
-| [eval.sh](eval.sh) | User entry point; forwards arguments to `run.py`. |
-| [run.py](run.py) | Selects the benchmark, applies official settings, and coordinates evaluation. Writes `EVALUATION_COMPLETE` on success. |
-| [core_run.sh](core_run.sh) | Runs the OpenROAD stages, audits, and final timing refresh. |
-| [evaluation.tcl](evaluation.tcl) | Loads the design and MCMM constraints, checks placement, runs global routing, and exports parasitics and analysis results. |
-| [audit.py](audit.py) | Checks DEF/Verilog consistency and protected clock-tree data, runs Kepler Formal equivalence checks, and records audit results. |
-| [refresh_timing.py](refresh_timing.py) | Recomputes final MCMM timing in a fresh OpenROAD process using the exported design and SPEFs. |
-| [metrics.py](metrics.py) | Collects timing, power, ERC, routing, displacement, and runtime into `summary.csv`. |
-| [score.py](score.py) | Computes one design's Section 3.3.1 score from R0, candidate, Resizer-reference metrics, and measured runtimes. |
-| [scoring_config.json](scoring_config.json) | Provisional scoring weights, scenario tolerances, thresholds, and numerical epsilons. |
-| [tests/test_score.py](tests/test_score.py) | Checks scoring arithmetic, input validation, and the command-line interface. |
-| [inspect_geometry.tcl](inspect_geometry.tcl) | Extracts design dimensions, cell counts, area, and utilization. |
-| [check_spef.py](check_spef.py) | Checks that exported wire capacitances sum to each net's declared total. |
-| [verify_package.py](verify_package.py) | Verifies released files against the package manifest. |
-| [package_manifest.json](package_manifest.json) | Lists expected SHA-256 hashes of released files. |
-| [tool_versions.json](tool_versions.json) | Records tool revisions, Python requirements, and the OpenROAD patch. |
-| [patches/openroad-spef-pin-wire-cap.patch](patches/openroad-spef-pin-wire-cap.patch) | OpenROAD source patch for SPEF export, including wire capacitance at pin nodes. Apply before building OpenROAD. |
-| [displacement/netlist_equiv_check.py](displacement/netlist_equiv_check.py) | Original ISPD26 helper; this evaluator uses only its cell-table loader and displacement calculation. Formal equivalence is checked separately by Kepler Formal. |
-| [displacement/asap7_equivalent_cell_list.csv](displacement/asap7_equivalent_cell_list.csv) | Cell groups used by the displacement calculation to identify logic cells. |
-| [displacement/LICENSE](displacement/LICENSE) | Original license for the reused ISPD26 files; retain it with these files. |
-<!--
+| `baseline.csv` | Results from the released unoptimized design. Used to normalize setup timing, power, and ERC. |
+| `resizer.csv` | Results from the OpenROAD Resizer reference run. Used to normalize displacement. |
+| `runtimes.json` | Recorded runtimes of the reference runs. Used for runtime normalization. |
 
-## Scoring conventions
 
-Timing inputs are signed WNS/TNS in **ns**; hold penalties use their nonnegative
-violation magnitudes. The scorer follows the PDF's printed setup denominator
-`abs(baseline + epsilon)`. It interprets the total-overflow formula's incomplete
-`max(...)` as `max(0, overflow - threshold)`, matching the maximum-overflow formula.
-ERC, runtime, and displacement penalties may be negative (a reward), as in the PDF.
-Physical displacement, routing overflow, and runtime are counted once per design.
+## Evaluator directory guide
 
-Missing/nonfinite data, mismatched scenarios, invalid denominators, and candidate
-tool or flow runtime above five hours cause an error instead of a score. A numerical
-score does not certify legality; the across-team illegal-submission ranking rule
-in Section 3.3.2 is outside this per-design scorer.
+| Location | Purpose |
+| --- | --- |
+| `eval.sh`, `run_submission.py`, `score.py` | Main scripts for evaluation, runtime measurement, and scoring. |
+| `config/` | Scoring weights and tolerances. |
+| `internal/` | Internal scripts for legality checks, timing analysis, and metric calculation. |
+| `reference_results/` | Contest-provided baseline and OpenROAD Resizer reference results used for scoring. |
+| `third_party/displacement/` | Reused ISPD26 displacement helper and related files. |
+| `tests/` | Evaluator regression tests. |
 
-The default weights, tolerances, and epsilons are provisional. Zero overflow thresholds and small epsilons can produce large penalties. The dummy score is for testing; weights and calibration will be adjusted before final scoring. -->

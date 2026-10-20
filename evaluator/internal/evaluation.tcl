@@ -1,4 +1,5 @@
 # Standalone OpenROAD evaluator. No ORFS Tcl or Makefile is loaded.
+source [file join [file dirname [info script]] legality_snapshot.tcl]
 proc out {name} { return [file join $::env(OUTPUT_DIR) $name] }
 proc timed {label script} {
     set start [clock milliseconds]
@@ -48,17 +49,38 @@ proc clock_snapshot {} {
     return [list [lsort $nets] [lsort $cells]]
 }
 proc protect_clocks {} {
-    # Freeze clock cells AND sequential sink instances for this prototype.
+    # Clock drivers stay dont_touch. Register masters and locations are fixed,
+    # but register data pins must remain available for repeater insertion.
+    set clock_insts [dict create]
+    set clock_drivers [dict create]
     foreach net [[ord::get_db_block] getNets] {
         if {[$net getSigType] ne "CLOCK"} { continue }
         $net setDoNotTouch true
         foreach pin [$net getITerms] {
             set inst [$pin getInst]
+            dict set clock_insts [$inst getName] $inst
+            if {[[$pin getMTerm] getIoType] ne "INPUT"} {
+                dict set clock_drivers [$inst getName] 1
+            }
+        }
+    }
+    if {$::env(RUN_RESIZER)} {
+        # Freeze every available ASAP7 register sizing/VT choice. This affects
+        # only the organizer Resizer reference, not the public scoring flow.
+        set_dont_use {DFF* SDF*}
+    }
+    dict for {name inst} $clock_insts {
+        $inst setPlacementStatus FIRM
+        set master [[$inst getMaster] getName]
+        if {$::env(RUN_RESIZER) && ![dict exists $clock_drivers $name]
+            && ([string match DFF* $master] || [string match SDF* $master])} {
+            $inst setDoNotTouch false
+        } else {
             $inst setDoNotTouch true
-            $inst setPlacementStatus FIRM
         }
     }
 }
+
 proc timing_metrics {scene} {
     set values [list $::env(BENCHMARK) $::env(RUN_RESIZER) $scene]
     foreach delay {max min} {
@@ -85,8 +107,8 @@ proc timing_metrics {scene} {
 source $::env(MCMM_CONFIG)
 set started [clock milliseconds]
 set_thread_count $::env(NUM_CORES)
-source $::env(PLATFORM_DIR)/liberty_suppressions.tcl
-source $::env(PLATFORM_DIR)/libraries.tcl
+source [file join $::env(PLATFORM_DIR) util liberty_suppressions.tcl]
+source [file join $::env(PLATFORM_DIR) util libraries.tcl]
 foreach lef [list asap7_tech_1x_201209.lef asap7sc7p5t_28_R_1x_220121a.lef \
                   asap7sc7p5t_28_L_1x_220121a.lef asap7sc7p5t_28_SL_1x_220121a.lef] {
     read_lef [file join $::env(PLATFORM_DIR) lef $lef]
@@ -107,6 +129,7 @@ if {$::env(PHASE) eq "baseline_snapshot"} {
     puts $fp [clock_snapshot]
     close $fp
     placement_snapshot [out baseline_placement.tsv]
+    legality_snapshot [out baseline_structure] 1
     exit
 }
 # Import the complete physical DEF, including physical-only cells and PDN.
@@ -114,6 +137,11 @@ if {$::env(PHASE) eq "baseline_snapshot"} {
 # compare those graphs before optimization so neither input can be ignored.
 read_def $::env(INPUT_DEF)
 if {[[ord::get_db_block] getName] ne $::env(DESIGN_NAME)} { error "Top module mismatch" }
+if {$::env(PHASE) eq "full"} {
+    legality_snapshot [out submitted_structure]
+    exec python3 [file join [file dirname [info script]] legality.py] \
+        [out baseline_structure] [out submitted_structure] --output [out structural_validation.json]
+}
 # Separate constraint modes prevent one corner's clock period overwriting another.
 foreach corner $::env(CORNERS) {
     set mode $scenario_mode($corner)
@@ -131,7 +159,7 @@ foreach corner $::env(CORNERS) {
     }
 }
 if {"TC" in $::env(CORNERS)} { set_scene TC } else { set_scene [lindex $::env(CORNERS) 0] }
-source $::env(PLATFORM_DIR)/setRC.tcl
+source [file join $::env(PLATFORM_DIR) util setRC.tcl]
 report_units
 set fp [open [out clocks.tsv] w]
 puts $fp "corner\tmode\tclock\tperiod_ps\tvirtual\tpropagated"
@@ -176,6 +204,7 @@ if {$::env(PHASE) eq "full"} {
         timed legalize { detailed_placement; check_placement -verbose }
     }
     if {[clock_snapshot] ne $original_clock} { error "Clock tree or sink placement changed" }
+    check_placement -verbose
     write_def [out evaluated.def]
     write_verilog -remove_cells [physical_only] [out evaluated.v]
     placement_snapshot [out placement_after.tsv]
@@ -189,6 +218,9 @@ if {$::env(PHASE) eq "full"} {
         write_guides [out route.guide]
     }
     if {[clock_snapshot] ne $original_clock} { error "Clock integrity changed during routing" }
+    legality_snapshot [out final_structure]
+    exec python3 [file join [file dirname [info script]] legality.py] \
+        [out baseline_structure] [out final_structure] --post-route --output [out final_structural_validation.json]
     write_db [out routed.odb]
     # Preserve per-layer resource overflow; do not pool unused layer capacity.
     set grid [[ord::get_db_block] getGCellGrid]

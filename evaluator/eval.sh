@@ -8,4 +8,4 @@ for arg in "$@"; do
         exit 2
     fi
 done
-exec "${PYTHON_EXE:-python3}" "$root/run.py" "$@"
+exec "${PYTHON_EXE:-python3}" "$root/internal/run.py" "$@"

@@ -6,6 +6,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+from internal.legality import verify_certificate
 
 
 WEIGHTS = (
@@ -179,9 +180,11 @@ def calculate(baseline, candidate, reference, config, runtimes):
     components["displacement_penalty"] = weights["displacement"] * (
         shared(candidate, "average_displacement_um") - reference_displacement
     ) / (reference_displacement + eps["displacement_um"])
+    # Overflow is counted in routing-resource units. Use at least one unit
+    # for normalization, even when the permitted overflow threshold is zero.
     components["overflow_penalty"] = math.fsum(
         weights[key + "_overflow"] * max(0.0, shared(candidate, col) - config["overflow_thresholds"][key])
-        / (config["overflow_thresholds"][key] + eps["overflow"])
+        / max(1.0, config["overflow_thresholds"][key] + eps["overflow"])
         for key, col in (("max", "max_global_routing_overflow"), ("total", "global_routing_overflow")))
     for key, value in components.items():
         number(value, key)
@@ -201,12 +204,29 @@ def main():
         ("runtimes", "Measured candidate and Resizer tool/total-flow runtimes JSON"),
     ):
         parser.add_argument("--" + flag, type=Path, required=True, help=help_text)
-    parser.add_argument("--config", type=Path, default=Path(__file__).with_name("scoring_config.json"),
+    parser.add_argument("--config", type=Path, default=Path(__file__).parent / "config/scoring_config.json",
                         help="Scoring policy JSON (default: supplied PROVISIONAL scoring_config.json)")
     parser.add_argument("--output", type=Path, help="Optional NEW JSON file containing score and breakdown")
+    parser.add_argument("--allow-unverified", action="store_true",
+                        help="Explicitly compute a dummy score without eligibility/runtime certification")
     args = parser.parse_args()
     try:
         inputs = {name: getattr(args, name) for name in ("baseline", "candidate", "reference", "config", "runtimes")}
+        if not args.allow_unverified:
+            certificate = verify_certificate(args.candidate)
+            official = Path(__file__).with_name("reference_results") / certificate["design"]
+            for key, filename in (("baseline", "baseline.csv"), ("reference", "resizer.csv")):
+                if inputs[key].read_bytes() != (official / filename).read_bytes():
+                    raise ValueError(f"Use the packaged {key} metrics for this benchmark")
+            measured = json.loads((args.candidate.parent / "runtime_validation.json").read_text())
+            requested = json.loads(args.runtimes.read_text())
+            reference_times = json.loads((official / "runtimes.json").read_text())
+            for key in ("reference_tool_s", "reference_flow_s"):
+                if requested[key] != reference_times[key]:
+                    raise ValueError(f"{key} differs from the packaged reference runtime")
+            for key in ("tool_s", "flow_s"):
+                if requested[key] != measured[key]:
+                    raise ValueError(f"{key} differs from the measured runtime")
         summaries = [read_summary(inputs[key]) for key in ("baseline", "candidate", "reference")]
         if len({identity for identity, _ in summaries}) != 1:
             raise ValueError("Baseline, candidate, and reference design/configuration IDs must match")
@@ -215,6 +235,7 @@ def main():
         report.update(design=summaries[0][0][0], configuration=summaries[0][0][1],
                       inputs={name: {"path": str(path.resolve()), "sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
                               for name, path in inputs.items()})
+        report["eligibility"] = "unverified_dummy" if args.allow_unverified else "design_and_runtime_checks_passed"
         if args.output:
             with args.output.open("x") as stream:
                 json.dump(report, stream, indent=2, allow_nan=False)

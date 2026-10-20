@@ -1,8 +1,8 @@
 {
   "status": "provisional",
   "weights": {
-    "setup_tns": 0.5,
-    "setup_wns": 0.5,
+    "setup_tns": 1.0,
+    "setup_wns": 1.0,
     "dynamic_power": 0.05,
     "leakage_power": 0.05,
     "hold_tns": 1.0,
