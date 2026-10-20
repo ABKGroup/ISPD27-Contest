@@ -18,23 +18,35 @@ tar -xvzf oss-cad-suite.tgz
 rm oss-cad-suite.tgz
 
 apt update
-apt install g++ libboost-dev python3.9-dev capnproto libcapnp-dev libtbb-dev pkg-config bison flex doxygen libspdlog-dev libfmt-dev libboost-iostreams-dev zlib1g-dev
+apt install -y g++ libboost-dev capnproto libcapnp-dev libtbb-dev pkg-config bison flex doxygen libspdlog-dev libfmt-dev libboost-iostreams-dev zlib1g-dev cmake curl
+
+
+source /opt/miniconda3/etc/profile.d/conda.sh && conda activate base
+conda install -y python=3.12
+conda install -y -c conda-forge tbb-devel
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+
+
+curl -O https://capnproto.org/capnproto-c++-1.5.0.tar.gz
+tar zxf capnproto-c++-1.5.0.tar.gz
+cd capnproto-c++-1.5.0
+mkdir build && cd build
+cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON ..
+make -j install
+
 
 git clone --recurse-submodules https://github.com/keplertech/kepler-formal.git
 cd kepler-formal
-mkdir build
-cd build
+git reset --hard f55036826d1e98d1261b3e67a21c5a9fa1687400
+mkdir build && cd build
 cmake .. \
   -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_CXX_STANDARD=20 \
   -DCMAKE_CXX_FLAGS="-O3 -flto -DNDEBUG" \
-  -DCMAKE_CXX_FLAGS_RELEASE="-O3  -flto -DNDEBUG" \
+  -DCMAKE_CXX_FLAGS_RELEASE="-O3 -DNDEBUG" \
   -DCMAKE_EXE_LINKER_FLAGS="-flto"
 make -j
 make -j install
-
-
-
 
 # GitHub CLI
 

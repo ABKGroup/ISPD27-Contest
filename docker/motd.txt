@@ -8,7 +8,7 @@
                                                                   
                                                                                                           
 
-ISPD-27 Contest Environment v1
+ISPD-27 Contest Environment v2
         Includes OpenROAD Sources, OpenROAD-flow-scripts, Yosys, KLayout, Kepler-Formal, and Conda.
         Based on Ubuntu 24.04.
 
