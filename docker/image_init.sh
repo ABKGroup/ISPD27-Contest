@@ -20,7 +20,7 @@ rm oss-cad-suite.tgz
 apt update
 apt install -y g++ libboost-dev capnproto libcapnp-dev libtbb-dev pkg-config bison flex doxygen libspdlog-dev libfmt-dev libboost-iostreams-dev zlib1g-dev cmake curl
 
-
+export CONDA_PLUGINS_AUTO_ACCEPT_TOS=true
 source /opt/miniconda3/etc/profile.d/conda.sh && conda activate base
 conda install -y python=3.12
 conda install -y -c conda-forge tbb-devel
