@@ -32,7 +32,7 @@ Email: ispd2027contest@gmail.com
 
 ## Prizes
 
-**USD 1,500 / 750 / 375** for the top three teams. 
+**USD 1,500 / 750 / 375** and NVIDIA GPUs for the top three teams. 
 All amounts are pre-tax and subject to applicable ACM and local tax withholding.
 
 
@@ -44,6 +44,7 @@ UCSD. (Advisor: Prof. Andrew B. Kahng.)
 ## Sponsors
 
 - Purdue University and the NSF [Chipshub](https://nanohub.org/groups/chipshub/): compute resources for teams and submission evaluation.
+- NVIDIA: prizes for winning teams
 
 ## Support
 Feel free to [**open a GitHub issue**](https://github.com/ABKGroup/ISPD27-Contest/issues) if you have any questions.
