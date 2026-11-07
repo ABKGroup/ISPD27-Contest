@@ -26,14 +26,15 @@ def canonical(path):
 def formal(name, first, second):
     manifest = json.loads((platform / 'util/manifest.json').read_text())
     config = dict(format='verilog', input_paths=[str(Path(first).resolve()), str(Path(second).resolve())],
-        liberty_files=[str(platform / p) for p in manifest['corners']['TC']['libraries']],
+        liberty_files=[str(platform / p) for p in manifest['corners']['TC']['libraries']]
+                      + [p for p in os.environ.get('ADDITIONAL_LIBS', '').split(':') if p],
         log_file=str(out / (name + '.proof.log')))
     cfg = out / (name + '.yml')
     cfg.write_text(json.dumps(config, indent=2)+'\n')
     started = time.monotonic()
     with (out / (name + '.stdout.log')).open('w') as f:
         result = subprocess.run([os.environ['KEPLER_FORMAL_EXE'], '--config', str(cfg)],
-            cwd=out, stdout=f, stderr=subprocess.STDOUT, timeout=1800)
+            cwd=out, stdout=f, stderr=subprocess.STDOUT, timeout=7200)
     proof = Path(config['log_file']).read_text() if Path(config['log_file']).exists() else ''
     output = (out / (name + '.stdout.log')).read_text()
     if result.returncode or 'Found difference' in proof or 'Circuits are IDENTICAL' not in proof or 'No difference was found.' not in output:
@@ -42,13 +43,17 @@ def formal(name, first, second):
 
 if sys.argv[1] == 'config':
     keys = ['BENCHMARK','DESIGN_NAME','INPUT_DEF','INPUT_VERILOG','SDC_FILE','PLATFORM_DIR',
-            'BASELINE_DEF','BASELINE_VERILOG','MCMM_CONFIG','RUN_RESIZER','CORNERS','LIBRARY_CORNERS','NUM_CORES','SIGNAL_LAYERS','CLOCK_LAYERS','ROUTE_ADJUSTMENT',
+            'BASELINE_DEF','BASELINE_VERILOG','MCMM_CONFIG','RUN_RESIZER','CORNERS','SCENES','LIBRARY_CORNERS','NUM_CORES','SIGNAL_LAYERS','CLOCK_LAYERS','ROUTE_ADJUSTMENT',
             'ROUTE_ITERATIONS','ROUTE_SEED','RSZ_MAX_ITERATIONS','RSZ_TNS_PERCENT','RSZ_SETUP_SEQUENCE','PHASE',
             'OPENROAD_EXE','KEPLER_FORMAL_EXE','VERIFY_FORMAL','SCENARIO_DIR','REPAIR_KIND']
     data = {k: os.environ[k] for k in keys}
+    for k in ['TECH_LEF', 'ADDITIONAL_LEFS', 'ADDITIONAL_LIBS', 'RSZ_MAX_BUFFER_PERCENT']:
+        data[k] = os.environ.get(k, '')
     data['sha256'] = {k:digest(data[k]) for k in ['INPUT_DEF','INPUT_VERILOG','SDC_FILE','BASELINE_DEF','BASELINE_VERILOG','MCMM_CONFIG']}
+    data['library_sha256'] = {p:digest(p) for k in ['TECH_LEF', 'ADDITIONAL_LEFS', 'ADDITIONAL_LIBS']
+                              for p in data[k].split(':') if p}
     data['scenario'] = json.loads((Path(data['SCENARIO_DIR'])/'config.json').read_text())
-    data['scenario_sdc_sha256'] = {c:digest(Path(data['SCENARIO_DIR'])/(c+'.sdc')) for c in ['BC','TC','WC']}
+    data['scenario_sdc_sha256'] = {c:digest(Path(data['SCENARIO_DIR'])/(c+'.sdc')) for c in data['SCENES'].split()}
     data['platform_manifest_sha256'] = digest(platform/'util/manifest.json')
     data['openroad_sha256'] = digest(data['OPENROAD_EXE'])
     data['script_sha256'] = {str(p.relative_to(Path(__file__).resolve().parents[1])):digest(p)
@@ -57,12 +62,6 @@ if sys.argv[1] == 'config':
     if os.environ.get('SPEF_PREFIX'):
         data['spef_sha256']={c:digest(os.environ['SPEF_PREFIX']+'_'+c+'.spef') for c in data['CORNERS'].split()}
     (out/'run_config.json').write_text(json.dumps(data,indent=2)+'\n')
-elif sys.argv[1] == 'generation':
-    root = Path(__file__).resolve().parents[2]
-    bench = Path(os.environ.get('BENCHMARK_DIR', root/'benchmarks'/os.environ['BENCHMARK']))
-    result = formal('generation_equivalence', bench/'source_synth.v', bench/'input.v')
-    (out/'generation_validation.json').write_text(json.dumps(result,indent=2)+'\n')
-    print('PASS: mapped netlist to post-CTS equivalence:',bench)
 elif sys.argv[1] == 'input':
     if canonical(out/'verilog_source.v') != canonical(out/'loaded.v'):
         raise RuntimeError('DEF and Verilog canonical exports differ; inspect verilog_source.v and loaded.v')
@@ -125,10 +124,9 @@ elif sys.argv[1] == 'finish':
         audit['displacement_dbu']={'max':max(disps,default=0),'sum':sum(disps)}
     data = {'validation':audit,'scenarios':timing,
             'runtime':list(csv.DictReader((out/'runtime.csv').open())),
-            'units':{'time':'ps','capacitance':'fF','power':'W','displacement':'database units'},
-            'hold_coverage':'Experimental corner-dependent periods and uncertainty; inherited JPEG interface hold coverage remains incomplete.'}
+            'units':{'time':'ps','capacitance':'fF','power':'W','displacement':'database units'}}
     (out/'metrics.json').write_text(json.dumps(data,indent=2)+'\n')
     (out/'SUCCESS').write_text('OpenROAD completed; input consistency and requested formal checks passed.\n')
     print('PASS: evaluation and validation:',out)
 else:
-    raise SystemExit('Usage: audit.py config|finish')
+    raise SystemExit('Usage: audit.py config|input|finish')

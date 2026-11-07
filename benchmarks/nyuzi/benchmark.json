@@ -1,0 +1,65 @@
+{
+  "id": "nyuzi_u55_h50p60",
+  "design": "nyuzi",
+  "utilization_percent": 55,
+  "generation_period_ps": 5700,
+  "periods_ps": {
+    "BC": 787,
+    "TC": 1012,
+    "WC": 1444
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "period_basis": "tuning variant of nyuzi_u55_h50p70: hold 50 ps, periods x0.857143, capacitance BC x0.9 TC x1 WC x1.1",
+  "top_module": "NyuziProcessor",
+  "input_def": "input.def",
+  "input_verilog": "input.v",
+  "mcmm": "mcmm.tcl",
+  "sdc_dir": "sdc",
+  "platform": "../../platform/asap7",
+  "geometry": "geometry.json",
+  "tech_lef": "lef/asap7_tech_1x_201209.lef",
+  "macro_lefs": [
+    "macros/lef/ht_asap7_nyuzi_128x32_2r1w.lef",
+    "macros/lef/ht_asap7_nyuzi_16x52.lef",
+    "macros/lef/ht_asap7_nyuzi_2048x512.lef",
+    "macros/lef/ht_asap7_nyuzi_256x1.lef",
+    "macros/lef/ht_asap7_nyuzi_256x18.lef",
+    "macros/lef/ht_asap7_nyuzi_256x512.lef",
+    "macros/lef/ht_asap7_nyuzi_256x7.lef",
+    "macros/lef/ht_asap7_nyuzi_64x20.lef",
+    "macros/lef/ht_asap7_nyuzi_64x20_2r1w.lef",
+    "macros/lef/ht_asap7_nyuzi_64x3.lef"
+  ],
+  "macro_libs": [
+    "macros/lib/ht_asap7_nyuzi_128x32_2r1w.lib",
+    "macros/lib/ht_asap7_nyuzi_16x52.lib",
+    "macros/lib/ht_asap7_nyuzi_2048x512.lib",
+    "macros/lib/ht_asap7_nyuzi_256x1.lib",
+    "macros/lib/ht_asap7_nyuzi_256x18.lib",
+    "macros/lib/ht_asap7_nyuzi_256x512.lib",
+    "macros/lib/ht_asap7_nyuzi_256x7.lib",
+    "macros/lib/ht_asap7_nyuzi_64x20.lib",
+    "macros/lib/ht_asap7_nyuzi_64x20_2r1w.lib",
+    "macros/lib/ht_asap7_nyuzi_64x3.lib"
+  ],
+  "units": {
+    "time": "ps",
+    "length": "um",
+    "area": "um^2"
+  },
+  "mode": "functional",
+  "corners": [
+    "BC",
+    "TC",
+    "WC"
+  ],
+  "additional_ocv_derating": false,
+  "physical_revision": "original-buffered-post-cts",
+  "data_buffer_removal_applied": false,
+  "cap_scale": {
+    "BC": 0.9,
+    "TC": 1.0,
+    "WC": 1.1
+  }
+}

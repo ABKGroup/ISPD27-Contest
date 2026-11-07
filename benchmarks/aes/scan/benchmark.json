@@ -1,0 +1,46 @@
+{
+  "id": "aes_p55_h55_scan",
+  "design": "aes/scan",
+  "utilization_percent": 50,
+  "generation_period_ps": 620,
+  "period_set": "p55",
+  "periods_ps": {
+    "BC": 248,
+    "TC": 308,
+    "WC": 429
+  },
+  "setup_uncertainty_ps": 0,
+  "hold_uncertainty_ps": 55,
+  "top_module": "aes_cipher_top",
+  "input_def": "input.def",
+  "input_verilog": "input.v",
+  "mcmm": "mcmm.tcl",
+  "sdc_dir": "sdc",
+  "platform": "../../../platform/asap7",
+  "geometry": "geometry.json",
+  "units": {
+    "time": "ps",
+    "length": "um",
+    "area": "um^2"
+  },
+  "mode": "functional / scan",
+  "corners": [
+    "BC",
+    "TC",
+    "WC"
+  ],
+  "additional_ocv_derating": false,
+  "physical_revision": "original-buffered-post-cts",
+  "data_buffer_removal_applied": false,
+  "macro_lefs": [],
+  "macro_libs": [],
+  "scenes": [
+    "TC",
+    "BC",
+    "WC",
+    "TC_test",
+    "BC_test",
+    "WC_test"
+  ],
+  "scan_shift_period": "test_clk period equals the functional period of the same corner"
+}

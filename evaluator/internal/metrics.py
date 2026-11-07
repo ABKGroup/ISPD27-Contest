@@ -88,7 +88,8 @@ def summarize(folder):
     peak = max(float(r["max_overflow"]) for r in routing)
     runtime = {r["stage"]: float(r["seconds"]) for r in data["runtime"]}
     output = []
-    for scene in sorted(data["scenarios"], key=lambda r: ["BC", "TC", "WC"].index(r["corner"])):
+    for scene in sorted(data["scenarios"],
+                        key=lambda r: (["BC", "TC", "WC"].index(r["corner"].split("_")[0]), r["corner"])):
         row = dict(design=cfg["BENCHMARK"], scenario=cfg["scenario"]["id"],
                    corner=scene["corner"], resizer=int(cfg["RUN_RESIZER"]))
         for check in ["setup", "hold"]:

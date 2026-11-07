@@ -31,7 +31,8 @@ def refresh(folder):
     final=folder/'final_timing'; original=folder/'inprocess_reports'
     inputs=['evaluated.def','evaluated.v']+[f'parasitics_{c}.spef' for c in cfg['CORNERS'].split()]
     fingerprint={p:sha(folder/p) for p in inputs}
-    scenario_hashes={c:sha(Path(cfg['SCENARIO_DIR'])/(c+'.sdc')) for c in ['BC','TC','WC']}
+    scenes=cfg.get('SCENES',cfg['CORNERS']).split()
+    scenario_hashes={c:sha(Path(cfg['SCENARIO_DIR'])/(c+'.sdc')) for c in scenes}
     assert scenario_hashes==cfg['scenario_sdc_sha256']
     stamp=folder/'timing_refresh.json'
     if stamp.exists():
@@ -42,7 +43,7 @@ def refresh(folder):
         return
     assert (folder/'SUCCESS').exists() or (original/'SUCCESS').exists()
     names=['timing.csv','metrics.json','runtime.csv','constraint_coverage.rpt','clocks.tsv','SUCCESS']
-    for corner in cfg['CORNERS'].split():
+    for corner in scenes:
         names += [p.name for p in folder.glob(corner+'_*') if p.is_file() and p.suffix in ['.rpt','.json']]
     original.mkdir(exist_ok=True)
     for name in names:
@@ -56,7 +57,7 @@ def refresh(folder):
         subprocess.run(['bash',str(ROOT/'core_run.sh')],env=env,cwd=ROOT.parent.parent,
                        stdout=log,stderr=subprocess.STDOUT,check=True)
     updated=read(final/'metrics.json')
-    assert {s['corner'] for s in updated['scenarios']}==set(cfg['CORNERS'].split())
+    assert {s['corner'] for s in updated['scenarios']}==set(scenes)
     metrics=read(original/'metrics.json')
     with (original/'runtime.csv').open() as f:
         runtime={r['stage']:float(r['seconds']) for r in csv.DictReader(f)}

@@ -1,2 +1,12 @@
 __pycache__/
 *.py[cod]
+# Unpacked copies of inputs shipped as .gz
+benchmarks/*/*/input.def
+benchmarks/*/*/input.v
+benchmarks/*/*/scan/input.def
+benchmarks/*/*/scan/input.v
+# AES and JPEG without scan include their inputs unpacked
+!benchmarks/aes/input.def
+!benchmarks/aes/input.v
+!benchmarks/jpeg/input.def
+!benchmarks/jpeg/input.v

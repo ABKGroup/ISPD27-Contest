@@ -32,8 +32,8 @@ class ScoreTests(unittest.TestCase):
                 "max_overflow": 1.0, "total_overflow": 1.0,
             },
         }
-        self.config["scenarios"] = {"BC": {
-            "weight": 1, "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1}}
+        self.config["scenarios"] = {"BC": {"mode": "functional",
+            "weight": 1, "hold_weight": 1, "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1}}
         self.config["epsilon"] = dict.fromkeys(score.EPSILONS, 1)
         self.config["overflow_thresholds"] = {"max": 1, "total": 5}
         row = dict.fromkeys(score.TIMING + score.NONNEGATIVE, 0.0)
@@ -71,7 +71,7 @@ class ScoreTests(unittest.TestCase):
         for data in (self.base, self.candidate, self.reference):
             data["TC"] = copy.deepcopy(data["BC"])
             data["WC"] = copy.deepcopy(data["BC"])
-        self.config["scenarios"] = {c: dict(weight=w, hold_tns_tolerance_ns=1,
+        self.config["scenarios"] = {c: dict(mode="functional", weight=w, hold_weight=w, hold_tns_tolerance_ns=1,
             hold_wns_tolerance_ns=1) for c, w in (("BC", .2), ("TC", .3), ("WC", .5))}
         self.candidate["WC"]["setup_tns_ns"] = -51
         for row in self.candidate.values():
@@ -128,14 +128,93 @@ class ScoreTests(unittest.TestCase):
             self.result()
 
     def test_runtime_limit_and_inclusion(self):
-        self.times["flow_s"] = 18000
+        # The limit is on tool runtime; total-flow runtime has no limit.
+        self.assertEqual(score.TOOL_LIMIT_SECONDS, 7 * 3600)
+        self.times.update(tool_s=score.TOOL_LIMIT_SECONDS, flow_s=40000)
         self.result()
-        self.times["flow_s"] = 18001
-        with self.assertRaisesRegex(ValueError, "five-hour"):
+        self.times["tool_s"] = score.TOOL_LIMIT_SECONDS + 1
+        with self.assertRaisesRegex(ValueError, "runtime limit"):
             self.result()
-        self.times["flow_s"] = 1
+        self.times.update(tool_s=200, flow_s=1)
         with self.assertRaisesRegex(ValueError, "include tool"):
             self.result()
+
+    def scan_fixture(self, weight=0, hold_weight=0.5):
+        """A scan testcase with one functional scene BC and one scan test scene BC_test."""
+        self.config["scan_scenarios"] = {
+            "BC": {"mode": "functional", "weight": 1 - weight, "hold_weight": 1 - hold_weight,
+                   "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1},
+            "BC_test": {"mode": "scan test", "weight": weight, "hold_weight": hold_weight,
+                        "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1}}
+        for data in (self.base, self.candidate, self.reference):
+            data["BC_test"] = copy.deepcopy(data["BC"])
+
+    def test_scan_hold_penalty_uses_hold_weights_of_all_scenarios(self):
+        self.scan_fixture()
+        self.assertEqual(self.result()["score"], 0)
+        # BC: (3-1)/2 + (2-1)/2 = 1.5; BC_test: (5-1)/2 + 0 = 2; hold weights 0.5 each.
+        self.candidate["BC"].update(hold_tns_ns=-3, hold_wns_ns=-2)
+        self.candidate["BC_test"].update(hold_tns_ns=-5, hold_wns_ns=-1)
+        result = self.result()
+        self.assertAlmostEqual(result["components"]["hold_penalty"], 1.75)
+        self.assertAlmostEqual(result["score"], -1.75)
+        self.assertEqual(set(result["scenarios"]), {"BC", "BC_test"})
+        self.assertEqual(result["scenarios"]["BC_test"]["mode"], "scan test")
+
+    def test_scan_test_scene_with_zero_weight_scores_hold_only(self):
+        self.scan_fixture(weight=0)
+        self.candidate["BC_test"].update(
+            setup_tns_ns=-500, setup_wns_ns=-50, dynamic_power_w=99, leakage_power_w=99,
+            slew_violation_sum_ps=99, cap_violation_sum_ff=99, fanout_violation_sum=99)
+        self.assertEqual(self.result()["score"], 0)
+
+    def test_scan_test_scene_setup_and_erc_use_its_weight_but_power_is_functional_only(self):
+        self.scan_fixture(weight=0.5)
+        # Setup TNS: (-51 + 101) / |-101 + 1| = 0.5, weight 0.5 -> 0.25; scenario weight 0.5 -> 0.125.
+        # Slew: (19 - 9) / (9 + 1) = 1, weight 0.1 -> 0.1; scenario weight 0.5 -> 0.05.
+        # Dynamic power 10 -> 5 would add 0.05 * 0.5 * 0.5 if power were scored in scan test mode.
+        self.candidate["BC_test"].update(setup_tns_ns=-51, slew_violation_sum_ps=19, dynamic_power_w=5)
+        result = self.result()
+        self.assertAlmostEqual(result["components"]["ppa"], 0.125)
+        self.assertAlmostEqual(result["components"]["erc_penalty"], 0.05)
+        self.assertAlmostEqual(result["score"], 0.075)
+        self.assertEqual(result["scenarios"]["BC_test"]["weighted_terms"]["dynamic_power"], 0)
+        self.candidate["BC"]["dynamic_power_w"] = 5
+        self.assertAlmostEqual(self.result()["components"]["ppa"], 0.125 + 0.5 * 0.05 * 0.5)
+
+    def test_config_with_scan_scenarios_scores_functional_testcase(self):
+        self.config["scan_scenarios"] = {
+            "BC": {"mode": "functional", "weight": 1, "hold_weight": 1,
+                   "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1},
+            "BC_test": {"mode": "scan test", "weight": 0, "hold_weight": 0,
+                        "hold_tns_tolerance_ns": 1, "hold_wns_tolerance_ns": 1}}
+        self.assertEqual(self.result()["score"], 0)
+        self.assertEqual(set(self.result()["scenarios"]), {"BC"})
+
+    def test_scan_scene_sets_must_match(self):
+        self.scan_fixture()
+        del self.candidate["BC_test"]
+        with self.assertRaisesRegex(ValueError, "identical scenario sets"):
+            self.result()
+        self.candidate["BC_test"] = copy.deepcopy(self.candidate["BC"])
+        del self.config["scan_scenarios"]
+        with self.assertRaisesRegex(ValueError, "identical scenario sets"):
+            self.result()
+
+    def test_scenario_block_validation(self):
+        self.config["scenarios"]["BC"]["mode"] = "shift"
+        with self.assertRaisesRegex(ValueError, "mode must be"):
+            self.result()
+        self.config["scenarios"]["BC"]["mode"] = "scan test"
+        with self.assertRaisesRegex(ValueError, "functional scenario"):
+            self.result()
+        self.config["scenarios"]["BC"]["mode"] = "functional"
+        for key in ("weight", "hold_weight"):
+            with self.subTest(key=key):
+                self.config["scenarios"]["BC"][key] = 0.5
+                with self.assertRaisesRegex(ValueError, f"{key} must sum to one"):
+                    self.result()
+                self.config["scenarios"]["BC"][key] = 1
 
     def test_nonfinite_config_and_unknown_fields(self):
         self.config["epsilon"]["time_ns"] = float("nan")
@@ -201,7 +280,7 @@ class ScoreTests(unittest.TestCase):
     def test_inconsistent_physical_metric_rejected(self):
         for data in (self.base, self.candidate, self.reference):
             data["TC"] = copy.deepcopy(data["BC"])
-        self.config["scenarios"]["BC"]["weight"] = .5
+        self.config["scenarios"]["BC"].update(weight=.5, hold_weight=.5)
         self.config["scenarios"]["TC"] = copy.deepcopy(self.config["scenarios"]["BC"])
         self.candidate["TC"]["average_displacement_um"] = 42
         with self.assertRaisesRegex(ValueError, "identical across corners"):
@@ -212,6 +291,10 @@ class PackagedConfigTests(unittest.TestCase):
     def test_released_scoring_config_is_valid(self):
         config = json.loads((ROOT / "config/scoring_config.json").read_text())
         score.validate_config(config)
+        self.assertEqual(set(config["scenarios"]), {"BC", "TC", "WC"})
+        self.assertEqual(set(config["scan_scenarios"]), {"BC", "TC", "WC", "BC_test", "TC_test", "WC_test"})
+        for scene, values in config["scan_scenarios"].items():
+            self.assertEqual(values["mode"], "scan test" if scene.endswith("_test") else "functional")
 
 
 if __name__ == "__main__":

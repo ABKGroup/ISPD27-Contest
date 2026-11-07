@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import time
+from benchmark import environment, names, packed
 from legality import finalize
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -23,7 +24,7 @@ def executable(variable, default):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("benchmark", choices=["aes", "jpeg"])
+    parser.add_argument("benchmark", choices=names(ROOT))
     parser.add_argument("output", type=Path, help="New output directory; never overwritten")
     parser.add_argument("--def", dest="input_def", type=Path)
     parser.add_argument("--verilog", type=Path)
@@ -31,6 +32,8 @@ def main():
     if bool(args.input_def) != bool(args.verilog):
         parser.error("Supply both --def and --verilog, or neither to evaluate R0.")
     bench = ROOT / "benchmarks" / args.benchmark
+    if packed(bench):
+        parser.error("Unpack the benchmark first: gunzip -k " + " ".join(packed(bench)))
     cfg = json.loads((bench / "benchmark.json").read_text())
     output = args.output.expanduser().resolve()
     if output.exists():
@@ -52,12 +55,14 @@ def main():
         MCMM_CONFIG=str(bench / "mcmm.tcl"), PLATFORM_DIR=str(ROOT / "platform/asap7"),
         OUTPUT_DIR=str(output), RUN_RESIZER="0", REPAIR_KIND="off",
         CORNERS="TC BC WC", LIBRARY_CORNERS="TC BC WC", NUM_CORES="8",
+        SCENES=" ".join(cfg.get("scenes", ["TC", "BC", "WC"])),
         SIGNAL_LAYERS="M2-M7", CLOCK_LAYERS="M4-M7", ROUTE_ADJUSTMENT="0.25",
         ROUTE_ITERATIONS="30", ROUTE_SEED="42", RSZ_MAX_ITERATIONS="500",
         RSZ_TNS_PERCENT="100", RSZ_SETUP_SEQUENCE="vt_swap sizeup swap buffer",
         PHASE="full", VERIFY_FORMAL="1", PYTHONDONTWRITEBYTECODE="1",
         OPENROAD_EXE=executable("OPENROAD_EXE", "openroad"),
         KEPLER_FORMAL_EXE=executable("KEPLER_FORMAL_EXE", "kepler-formal"),
+        **environment(ROOT, bench),
     )
     # Internal scripts invoke python3; keep the same interpreter throughout.
     env["PATH"] = str(Path(sys.executable).parent) + os.pathsep + env.get("PATH", "")

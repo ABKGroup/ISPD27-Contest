@@ -1,0 +1,44 @@
+{
+  "id": "coralnpu_u70c_h50p60",
+  "design": "coralnpu",
+  "utilization_percent": 70,
+  "generation_period_ps": 4000,
+  "periods_ps": {
+    "BC": 1358,
+    "TC": 1850,
+    "WC": 2779
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "period_basis": "tuning variant of coralnpu_u70c: hold 50 ps, periods x0.6",
+  "top_module": "CoralNPUChiselSubsystem",
+  "input_def": "input.def",
+  "input_verilog": "input.v",
+  "mcmm": "mcmm.tcl",
+  "sdc_dir": "sdc",
+  "platform": "../../platform/asap7",
+  "geometry": "geometry.json",
+  "tech_lef": "lef/asap7_tech_1x_201209.lef",
+  "macro_lefs": [
+    "macros/lef/ht_asap7_coralnpu_2048x128.lef",
+    "macros/lef/ht_asap7_coralnpu_512x128.lef"
+  ],
+  "macro_libs": [
+    "macros/lib/ht_asap7_coralnpu_2048x128.lib",
+    "macros/lib/ht_asap7_coralnpu_512x128.lib"
+  ],
+  "units": {
+    "time": "ps",
+    "length": "um",
+    "area": "um^2"
+  },
+  "mode": "functional",
+  "corners": [
+    "BC",
+    "TC",
+    "WC"
+  ],
+  "additional_ocv_derating": false,
+  "physical_revision": "original-buffered-post-cts",
+  "data_buffer_removal_applied": false
+}

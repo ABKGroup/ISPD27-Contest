@@ -10,8 +10,9 @@
 
 Use `sdc/BC.sdc`, `sdc/TC.sdc` and `sdc/WC.sdc` for evaluation.
 `mcmm.tcl` maps scenarios to independent SDC contexts and documents common settings.
-Shared Liberty sets are mapped in `../../platform/asap7/util/libraries.tcl`.
+Shared Liberty sets are mapped in `../../../platform/asap7/util/libraries.tcl`.
 `benchmark.json` records portable paths and configuration metadata.
+The same layout with scan chains is the scan testcase in `scan/`; see `benchmarks/README.md`.
 
 Keep the official SDCs, libraries, RC settings and clock tree unchanged.
 Timing is measured after global routing.

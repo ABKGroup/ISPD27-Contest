@@ -1,7 +1,8 @@
 # Evaluation and scoring
 
 The evaluator checks a legalized DEF/Verilog pair and measures design quality
-using global routing and setup/hold timing analysis at BC, TC, and WC. It does
+using global routing and setup/hold timing analysis at BC, TC, and WC. A scan
+testcase is also analyzed in scan test mode at BC, TC, and WC. The evaluator does
 not run OpenROAD Resizer.
 
 **Current scores use dummy weights. Final weights will be announced after the
@@ -19,12 +20,6 @@ For normal scoring, run `run_submission.py` first and then `score.py`.
 
 Use `eval.sh` to evaluate existing DEF/Verilog files without running the
 submission tool.
-<!-- 
-## Requirements
-
-- Use the organizer-provided container for Python 3.9+, OpenROAD,
-  Kepler Formal. After entering the container, clone the contest repository to obtain the benchmarks, platform files, and evaluator. -->
-
 
 ## Run your tool and score
 
@@ -53,7 +48,10 @@ bash /path/to/run.sh <input_dir> <platform_dir> <output_dir> <top_module>
 | `$4` | Top-level Verilog module | `aes_cipher_top` |
 
 Directory arguments are absolute paths. The top module is read from
-`benchmarks/<design_name>/benchmark.json`.
+`benchmarks/<benchmark>/benchmark.json`. A benchmark is `<design>`, such as `nyuzi`, or `<design>/scan` for a scan
+testcase (see `benchmarks/README.md` and [Scan testcases](#scan-testcases)). The tool writes `tool/<benchmark>.def` and
+`.v`, where `<benchmark>` is the benchmark path with `/` replaced by `_`, such as `nyuzi` or `jpeg_scan`. The evaluator
+also gives these two paths to the tool in the environment variables `OUTPUT_DEF` and `OUTPUT_VERILOG`.
 
 The submitted tool must produce:
 ```text
@@ -61,8 +59,8 @@ The submitted tool must produce:
 /tmp/aes-run/tool/aes.v
 ```
 
-Use the design name (`aes` or `jpeg`) for output filenames, **not** the top-module
-name. The launcher also sets the following environment variables:
+Use the benchmark name with `/` replaced by `_` for output filenames,
+**not** the top-module name. The launcher also sets the following environment variables:
 
 | Variable | Meaning |
 | --- | --- |
@@ -71,6 +69,11 @@ name. The launcher also sets the following environment variables:
 | `BENCHMARK_DIR` | Benchmark input directory |
 | `MCMM_CONFIG` | Benchmark timing configuration  |
 | `PLATFORM_DIR` | Technology platform directory |
+| `TECH_LEF` | Technology LEF of this benchmark |
+| `ADDITIONAL_LEFS`, `ADDITIONAL_LIBS` | Hard-macro LEF and Liberty files, separated by `:`; empty without macros |
+
+Benchmarks shipped as `input.def.gz` and `input.v.gz` must be unpacked first with
+`gunzip -k`; both commands stop with that instruction otherwise.
 
 After the submitted tool finishes running, the launcher automatically validates and evaluates its
 outputs. Results are saved in `/tmp/aes-run/evaluation/`.
@@ -78,7 +81,8 @@ outputs. Results are saved in `/tmp/aes-run/evaluation/`.
 - **Tool runtime:** time spent running the submitted tool.
 - **Total-flow runtime:** time spent running the tool, validation, and evaluation.
 
-The limit for both is five hours. Unchanged baseline submissions are rejected.
+The tool runtime limit is seven hours. The total-flow runtime limit will be finalized after the Alpha submission.
+Unchanged baseline submissions are rejected.
 
 ### 2. Calculate the score
 
@@ -102,6 +106,10 @@ for the current weights and tolerances.
 
 For manual experiments, `--allow-unverified` can be used to compute an **unverified dummy score**
 without legality/runtime certification. A runtime JSON file is still required.
+
+`score.py` needs `baseline.csv`, `resizer.csv` and `runtimes.json` of the benchmark (see
+[Supplied reference results](#supplied-reference-results)). For a benchmark without `resizer.csv` and
+`runtimes.json`, `run_submission.py` still validates the submission and reports that no score can be computed.
 
 For JPEG, replace `aes` with `jpeg` in the commands and paths above. The launcher
 reads the JPEG top-module name automatically.
@@ -128,6 +136,26 @@ To evaluate the supplied unoptimized baseline:
 bash evaluator/eval.sh aes /tmp/aes-baseline-evaluation
 ```
 
+## Scan testcases
+
+A scan testcase is `<benchmark>/scan`, such as `jpeg/scan`.
+All commands above take this name:
+
+```bash
+gunzip -k benchmarks/jpeg/scan/input.def.gz \
+          benchmarks/jpeg/scan/input.v.gz
+python3 evaluator/run_submission.py jpeg/scan /tmp/jpeg-scan-run -- bash /path/to/run.sh
+```
+
+- The tool gets `<repository>/benchmarks/jpeg/scan` as its input directory
+  and must write `tool/jpeg_scan.def` and `.v`.
+- The evaluation has six scenes: `BC`, `TC` and `WC` for the functional mode and `BC_test`, `TC_test` and `WC_test`
+  for the scan test mode (see `benchmarks/README.md`).
+- Score: See Section 3.3.1 of the  [ISPD27-Contest-Description.pdf](../ISPD27-Contest-Description.pdf) for details.
+<!-- - Scan flops are clock sinks, so they keep their cell, location and connections. Buffers may be inserted on their
+  `D`, `SI` and `SE` inputs. -->
+
+
 ## Evaluation Results
 
 
@@ -142,6 +170,9 @@ bash evaluator/eval.sh aes /tmp/aes-baseline-evaluation
 | `EVALUATION_COMPLETE` | Marker for successful evaluation. |
 | `runtimes.json` | Candidate and reference runtimes used by scoring. |
 | `score.json` | Score and score breakdown. |
+
+A scan testcase (`<benchmark>/scan`) has six rows in `summary.csv`: `BC`, `TC` and `WC` for the functional mode
+and `BC_test`, `TC_test` and `WC_test` for the scan test mode.
 
 
 ## Legality checks
@@ -181,13 +212,16 @@ The scoring script compares each submitted result against a set of reference
 results provided with the contest. These reference results are used to normalize
 the scoring metrics and runtime.
 
-Reference files for each design are stored under: `evaluator/reference_results/<design_name>/`
+Reference files for each design are stored under: `evaluator/reference_results/<benchmark>/`
+
+The Resizer reference runs of Coral NPU and NyuziProcessor set `-max_buffer_percent 100` in
+`repair_timing`. The AES and JPEG runs, with and without scan, use the OpenROAD default.
 
 | File | Purpose |
 | --- | --- |
 | `baseline.csv` | Results from the released unoptimized design. Used to normalize setup timing, power, and ERC. |
 | `resizer.csv` | Results from the OpenROAD Resizer reference run. Used to normalize displacement. |
-| `runtimes.json` | Recorded runtimes of the reference runs. Used for runtime normalization. |
+| `runtimes.json` | Recorded runtimes of the reference runs (8 threads, organizers' machine). Used for runtime normalization. They are re-measured on the official evaluation machine before final scoring. |
 
 
 ## Evaluator directory guide

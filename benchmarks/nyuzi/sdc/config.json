@@ -1,0 +1,26 @@
+{
+  "id": "nyuzi_u55_h50p60",
+  "design": "nyuzi",
+  "clk_io_pct": 0.2,
+  "input_transition_ps": 20.0,
+  "output_load_ff": 2.0,
+  "delivered_base_period_ps": 2841.0,
+  "clock_ratios": {
+    "clk": 1.0
+  },
+  "utilization_percent": 55.0,
+  "generation_period_ps": 5700.0,
+  "periods_ps": {
+    "BC": 787.0,
+    "TC": 1012.0,
+    "WC": 1444.0
+  },
+  "setup_uncertainty_ps": 0.0,
+  "hold_uncertainty_ps": 50.0,
+  "tuning_note": "tuning variant of nyuzi_u55_h50p70: hold 50 ps, periods x0.857143, capacitance BC x0.9 TC x1 WC x1.1",
+  "cap_scale": {
+    "BC": 0.9,
+    "TC": 1.0,
+    "WC": 1.1
+  }
+}

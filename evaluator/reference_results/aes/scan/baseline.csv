@@ -1,0 +1,7 @@
+design,scenario,corner,resizer,setup_wns_ns,setup_tns_ns,setup_violating_endpoints,hold_wns_ns,hold_tns_ns,hold_violating_endpoints,slew_violation_sum_ps,slew_violation_sum_ps_count,cap_violation_sum_ff,cap_violation_sum_ff_count,fanout_violation_sum,fanout_violation_sum_count,global_routing_overflow,max_global_routing_overflow,runtime_s,average_displacement_um,matched_logic_cells,moved_logic_cells,max_displacement_um,dynamic_power_w,leakage_power_w,area_um2
+aes/scan,aes_p55_h55_scan,BC,0,-0.2096888504551264,-36.14883340452928,282,-0.00955439897686009,-0.32109173781562755,93,0,0,0,0,0,0,0.0,0.0,103.459,0.0,14725,0,0.0,0.28400000000000003,2.57e-05,1729.0422
+aes/scan,aes_p55_h55_scan,BC_test,0,0.0,0.0,0,-0.04232456763101391,-14.317884712879412,558,0,0,0,0,0,0,0.0,0.0,103.459,0.0,14725,0,0.0,0.28400000000000003,2.57e-05,1729.0422
+aes/scan,aes_p55_h55_scan,TC,0,-0.3126103555185674,-49.87517618849159,276,0.0,0.0,0,0,0,0,0,0,0,0.0,0.0,103.459,0.0,14725,0,0.0,0.2113,4e-05,1729.0422
+aes/scan,aes_p55_h55_scan,TC_test,0,0.0,0.0,0,-0.03727062423590852,-9.242651125857224,506,0,0,0,0,0,0,0.0,0.0,103.459,0.0,14725,0,0.0,0.2113,4e-05,1729.0422
+aes/scan,aes_p55_h55_scan,WC,0,-0.49421128498340955,-72.69291331283179,266,0.0,0.0,0,1454.266628263999,79,0,0,0,0,0.0,0.0,103.459,0.0,14725,0,0.0,0.176,0.000252,1729.0422
+aes/scan,aes_p55_h55_scan,WC_test,0,0.0,0.0,0,-0.02775328589153728,-3.3913694210750687,306,1454.266628263999,79,0,0,0,0,0.0,0.0,103.459,0.0,14725,0,0.0,0.176,0.000252,1729.0422

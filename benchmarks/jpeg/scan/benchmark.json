@@ -1,0 +1,46 @@
+{
+  "id": "jpeg_p55_h35_scan",
+  "design": "jpeg/scan",
+  "utilization_percent": 65,
+  "generation_period_ps": 1100,
+  "period_set": "p55",
+  "periods_ps": {
+    "BC": 407,
+    "TC": 550,
+    "WC": 770
+  },
+  "setup_uncertainty_ps": 0,
+  "hold_uncertainty_ps": 35,
+  "top_module": "jpeg_encoder",
+  "input_def": "input.def",
+  "input_verilog": "input.v",
+  "mcmm": "mcmm.tcl",
+  "sdc_dir": "sdc",
+  "platform": "../../../platform/asap7",
+  "geometry": "geometry.json",
+  "units": {
+    "time": "ps",
+    "length": "um",
+    "area": "um^2"
+  },
+  "mode": "functional / scan",
+  "corners": [
+    "BC",
+    "TC",
+    "WC"
+  ],
+  "additional_ocv_derating": false,
+  "physical_revision": "original-buffered-post-cts",
+  "data_buffer_removal_applied": false,
+  "macro_lefs": [],
+  "macro_libs": [],
+  "scenes": [
+    "TC",
+    "BC",
+    "WC",
+    "TC_test",
+    "BC_test",
+    "WC_test"
+  ],
+  "scan_shift_period": "test_clk period equals the functional period of the same corner"
+}

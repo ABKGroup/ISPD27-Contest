@@ -6,7 +6,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
-from internal.legality import verify_certificate
+from internal.legality import TOOL_LIMIT_SECONDS, verify_certificate
 
 
 WEIGHTS = (
@@ -44,8 +44,38 @@ def exact_keys(data, keys, label):
         raise ValueError(f"{label}: expected keys {', '.join(keys)}")
 
 
+MODES = ("functional", "scan test")
+
+
+def validate_scenes(scenes, label):
+    """A scenario block: every scenario of one kind of testcase (Section 3.3.1).
+
+    `weight` is the scenario weight of the setup, power and ERC terms and `hold_weight` that of the hold
+    penalty ("different scenario weights may be used for setup and hold"); each kind sums to one.
+    Power is scored in the scenarios of mode "functional" only.
+    """
+    if not isinstance(scenes, dict) or not scenes:
+        raise ValueError(f"{label} must be a nonempty object keyed by summary.csv corner")
+    for scene, values in scenes.items():
+        exact_keys(values, ("mode", "weight", "hold_weight", "hold_tns_tolerance_ns", "hold_wns_tolerance_ns"), scene)
+        if values["mode"] not in MODES:
+            raise ValueError(f"{scene}: mode must be one of: {', '.join(MODES)}")
+        for key in ("weight", "hold_weight", "hold_tns_tolerance_ns", "hold_wns_tolerance_ns"):
+            values[key] = number(values[key], f"{label}.{scene}.{key}", minimum=0)
+    for key in ("weight", "hold_weight"):
+        if not math.isclose(math.fsum(v[key] for v in scenes.values()), 1.0, rel_tol=0, abs_tol=1e-12):
+            raise ValueError(f"{label}: the scenario values of {key} must sum to one")
+    if all(v["mode"] != "functional" for v in scenes.values()):
+        raise ValueError(f"{label}: at least one functional scenario is required")
+
+
 def validate_config(config):
-    exact_keys(config, ("status", "weights", "scenarios", "epsilon", "overflow_thresholds"), "config")
+    keys = ("status", "weights", "scenarios", "epsilon", "overflow_thresholds")
+    # scenarios: the three scenarios of a functional-only testcase.
+    # scan_scenarios (optional): the six scenarios of a scan testcase.
+    if isinstance(config, dict) and "scan_scenarios" in config:
+        keys += ("scan_scenarios",)
+    exact_keys(config, keys, "config")
     if config["status"] not in ("provisional", "official"):
         raise ValueError("config.status must be provisional or official")
     exact_keys(config["weights"], WEIGHTS, "weights")
@@ -64,18 +94,9 @@ def validate_config(config):
     for key in ("max", "total"):
         config["overflow_thresholds"][key] = number(
             config["overflow_thresholds"][key], f"overflow_thresholds.{key}", minimum=0)
-    scenes = config["scenarios"]
-    if not isinstance(scenes, dict) or not scenes:
-        raise ValueError("scenarios must be a nonempty object keyed by summary.csv corner")
-    for scene, values in scenes.items():
-        exact_keys(values, ("weight", "hold_tns_tolerance_ns", "hold_wns_tolerance_ns"), scene)
-        for key in values:
-            values[key] = number(values[key], f"scenarios.{scene}.{key}", minimum=0)
-        if values["weight"] == 0:
-            raise ValueError(f"{scene}: scenario weight must be positive")
-    if not math.isclose(math.fsum(v["weight"] for v in scenes.values()), 1.0,
-                        rel_tol=0, abs_tol=1e-12):
-        raise ValueError("Scenario weights must sum to one")
+    validate_scenes(config["scenarios"], "scenarios")
+    if "scan_scenarios" in config:
+        validate_scenes(config["scan_scenarios"], "scan_scenarios")
     return config
 
 
@@ -122,51 +143,63 @@ def ratio(numerator, denominator, label):
 def calculate(baseline, candidate, reference, config, runtimes):
     """Inputs are per-corner dictionaries; reference is the Resizer result."""
     validate_config(config)
-    expected = set(config["scenarios"])
-    if any(set(data) != expected for data in (baseline, candidate, reference)):
+    # A testcase is scored with the scenario block whose scenarios are exactly those of its summary.csv:
+    # "scenarios" (functional-only testcase, three scenarios) or "scan_scenarios" (scan testcase, six).
+    expected = set(baseline)
+    blocks = [config["scenarios"]] + ([config["scan_scenarios"]] if "scan_scenarios" in config else [])
+    matching = [block for block in blocks if set(block) == expected]
+    if not matching or any(set(data) != expected for data in (candidate, reference)):
         raise ValueError("Baseline, candidate, reference, and config must have identical scenario sets")
+    scenarios = matching[0]
     exact_keys(runtimes, ("tool_s", "flow_s", "reference_tool_s", "reference_flow_s"), "runtimes")
     times = {key: number(value, key, minimum=0, positive=key.startswith("reference_"))
              for key, value in runtimes.items()}
     for prefix in ("", "reference_"):
         if times[prefix + "flow_s"] < times[prefix + "tool_s"]:
             raise ValueError("Flow runtime must include tool runtime")
-    if times["tool_s"] > 18000 or times["flow_s"] > 18000:
-        raise ValueError("Candidate exceeds the five-hour tool or flow runtime limit; no numerical score")
+    if times["tool_s"] > TOOL_LIMIT_SECONDS:
+        raise ValueError(f"Candidate exceeds the tool runtime limit of {TOOL_LIMIT_SECONDS // 3600} hours; no numerical score")
     weights, eps = config["weights"], config["epsilon"]
-    details = {}
-    for scene, settings in config["scenarios"].items():
-        base, cand = baseline[scene], candidate[scene]
+
+    def hold_terms(cand, settings):
         terms = {}
+        for metric in ("tns", "wns"):
+            hold_key = "hold_" + metric
+            tolerance = settings[hold_key + "_tolerance_ns"]
+            magnitude = max(0.0, -cand[hold_key + "_ns"])
+            terms[hold_key] = weights[hold_key] * max(0.0, magnitude - tolerance) / (
+                tolerance + eps["time_ns"])
+        return terms
+
+    details = {}
+    for scene, settings in scenarios.items():
+        base, cand = baseline[scene], candidate[scene]
+        functional = settings["mode"] == "functional"
+        terms = hold_terms(cand, settings)
         for metric in ("tns", "wns"):
             key = "setup_" + metric
             col = key + "_ns"
             # Literal denominator printed in Section 3.3.1: |baseline + epsilon|.
             terms[key] = weights[key] * ratio(cand[col] - base[col],
                 abs(base[col] + eps["time_ns"]), key)
-            hold_key = "hold_" + metric
-            tolerance = settings[hold_key + "_tolerance_ns"]
-            magnitude = max(0.0, -cand[hold_key + "_ns"])
-            terms[hold_key] = weights[hold_key] * max(0.0, magnitude - tolerance) / (
-                tolerance + eps["time_ns"])
         for key in ("dynamic_power", "leakage_power"):
             col = key + "_w"
-            # The PDF includes no epsilon in power normalization.
+            # Power is scored in the functional scenarios only. The PDF includes no epsilon in power normalization.
             terms[key] = (weights[key] * ratio(base[col] - cand[col], base[col], key)
-                          if weights[key] else 0.0)
+                          if functional and weights[key] else 0.0)
         for key, col, unit in (("slew", "slew_violation_sum_ps", "slew_ps"),
                               ("cap", "cap_violation_sum_ff", "cap_ff"),
                               ("fanout", "fanout_violation_sum", "fanout")):
             terms[key] = weights[key] * (cand[col] - base[col]) / (base[col] + eps[unit])
-        details[scene] = {"weight": settings["weight"], "weighted_terms": terms}
+        details[scene] = {"mode": settings["mode"], "weight": settings["weight"],
+                          "hold_weight": settings["hold_weight"], "weighted_terms": terms}
 
-    def aggregate(keys):
-        return math.fsum(d["weight"] * math.fsum(d["weighted_terms"][k] for k in keys)
-                         for d in details.values())
+    def aggregate(keys, weight="weight"):
+        return math.fsum(d[weight] * math.fsum(d["weighted_terms"][k] for k in keys) for d in details.values())
 
     components = {
         "ppa": aggregate(("setup_tns", "setup_wns", "dynamic_power", "leakage_power")),
-        "hold_penalty": aggregate(("hold_tns", "hold_wns")),
+        "hold_penalty": aggregate(("hold_tns", "hold_wns"), "hold_weight"),
         "erc_penalty": aggregate(("slew", "cap", "fanout")),
         "runtime_penalty": math.fsum(
             weights[key + "_runtime"] * (times[key + "_s"] - times["reference_" + key + "_s"])

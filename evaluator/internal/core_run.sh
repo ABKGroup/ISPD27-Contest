@@ -7,24 +7,18 @@ export PYTHONDONTWRITEBYTECODE=1
 : "${SCENARIO_DIR:?Select a new experiment scenario directory}"
 : "${OUTPUT_DIR:?Select a fresh experiment output directory}"
 export SCENARIO_DIR
+: "${BENCHMARK:?run.py supplies the benchmark name}"
+: "${DESIGN_NAME:?run.py supplies the top module}"
+: "${INPUT_DEF:?run.py supplies the DEF}"
+: "${INPUT_VERILOG:?run.py supplies the Verilog}"
+: "${SDC_FILE:?run.py supplies the SDC}"
+export BENCHMARK DESIGN_NAME INPUT_DEF INPUT_VERILOG SDC_FILE OUTPUT_DIR
 export REPAIR_KIND="${REPAIR_KIND:-both}"
-export BENCHMARK="${BENCHMARK:-aes}"
 export RUN_RESIZER="${RUN_RESIZER:-0}"
-case "$BENCHMARK" in
-    aes) default_top=aes_cipher_top ;;
-    jpeg) default_top=jpeg_encoder ;;
-    *) echo "Set DESIGN_NAME and input paths for additional designs." >&2; default_top="$BENCHMARK" ;;
-esac
-export DESIGN_NAME="${DESIGN_NAME:-$default_top}"
-export INPUT_DEF="${INPUT_DEF:-$REPO_ROOT/benchmarks/$BENCHMARK/input.def}"
-export INPUT_VERILOG="${INPUT_VERILOG:-$REPO_ROOT/benchmarks/$BENCHMARK/input.v}"
-export SDC_FILE="${SDC_FILE:-$REPO_ROOT/benchmarks/$BENCHMARK/constraint.sdc}"
 export PLATFORM_DIR="${PLATFORM_DIR:-$REPO_ROOT/platform/asap7}"
-default_result="rsz$RUN_RESIZER"
-if [[ "$RUN_RESIZER" == 1 ]]; then default_result=rsz1_pin_vt_v1; fi
-export OUTPUT_DIR="${OUTPUT_DIR:-$EVAL_ROOT/results/$BENCHMARK/$default_result}"
 export CORNERS="${CORNERS:-TC BC WC}"
 export LIBRARY_CORNERS="${LIBRARY_CORNERS:-TC BC WC}"
+export SCENES="${SCENES:-$CORNERS}"
 export NUM_CORES="${NUM_CORES:-8}"
 export SIGNAL_LAYERS="${SIGNAL_LAYERS:-M2-M7}"
 export CLOCK_LAYERS="${CLOCK_LAYERS:-M4-M7}"

@@ -17,6 +17,9 @@ import math
 from pathlib import Path
 import re
 
+# Tool runtime limit (contest description, Section 3.3.1): seven hours. Evaluation time is not limited.
+TOOL_LIMIT_SECONDS = 7 * 3600
+
 
 class Illegal(ValueError):
     pass
@@ -82,7 +85,7 @@ def immutable_def(path, post_route=False):
         # Regular signal-net names/connectivity are permitted to change. Routing
         # and NDR attributes are not allowed to smuggle in altered resources.
         tail = list(record[record.index("+"):]) if "+" in record else []
-        if tail[:3] in (["+", "USE", "SIGNAL"], ["+", "USE", "CLOCK"]):
+        if tail[:3] in (["+", "USE", "SIGNAL"], ["+", "USE", "CLOCK"], ["+", "USE", "SCAN"]):
             tail = tail[3:]
         if tail:
             attributes.append((record[1], *tail))
@@ -250,7 +253,7 @@ class Design:
                 self.protected.add(inst)
             if row["signal"] not in ("POWER", "GROUND") and row["net"]:
                 driver = row["direction"] == ("INPUT" if not inst else "OUTPUT")
-                require(row["direction"] != "INOUT", f"Unsupported signal inout: {inst}/{pin}")
+                require(not inst or row["direction"] != "INOUT", f"Unsupported signal inout: {inst}/{pin}")
                 if driver:
                     self.drivers[row["net"]].append((inst, pin))
         for name, row in self.cells.items():
@@ -442,8 +445,8 @@ def finalize(folder):
         require(read("structural_validation.json").get("changed_from_baseline") is True,
                 "Unchanged baseline is valid for calibration, but not a contestant solution")
         require(runtime.get("passed") is True and math.isfinite(runtime["tool_s"])
-                and math.isfinite(runtime["flow_s"]) and 0 <= runtime["tool_s"] <= 18000
-                and runtime["tool_s"] <= runtime["flow_s"] <= 18000,
+                and math.isfinite(runtime["flow_s"]) and 0 <= runtime["tool_s"] <= TOOL_LIMIT_SECONDS
+                and runtime["tool_s"] <= runtime["flow_s"],
                 "Measured tool/flow runtime failed")
         require(runtime["input_sha256"] == {k: cfg["sha256"][k] for k in ("INPUT_DEF", "INPUT_VERILOG")},
                 "Runtime record does not belong to evaluated submission")

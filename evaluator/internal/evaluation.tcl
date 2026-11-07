@@ -72,11 +72,25 @@ proc protect_clocks {} {
     dict for {name inst} $clock_insts {
         $inst setPlacementStatus FIRM
         set master [[$inst getMaster] getName]
+        # Macro sinks too: a dont_touch SRAM stops repair_design at its data pins (RSZ-3006).
         if {$::env(RUN_RESIZER) && ![dict exists $clock_drivers $name]
-            && ([string match DFF* $master] || [string match SDF* $master])} {
+            && ([string match DFF* $master] || [string match SDF* $master]
+                || [[$inst getMaster] isBlock])} {
             $inst setDoNotTouch false
         } else {
             $inst setDoNotTouch true
+        }
+    }
+    if {$::env(RUN_RESIZER)} {
+        # A dont_touch clock cell, such as a clock gate, cannot take a buffer at its
+        # data inputs (RSZ-3006), so the nets feeding those inputs are left alone.
+        dict for {name inst} $clock_insts {
+            if {![$inst isDoNotTouch]} { continue }
+            foreach pin [$inst getITerms] {
+                set net [$pin getNet]
+                if {$net eq "NULL" || [$net getSigType] in {CLOCK POWER GROUND}} { continue }
+                if {[[$pin getMTerm] getIoType] eq "INPUT"} { $net setDoNotTouch true }
+            }
         }
     }
 }
@@ -109,13 +123,26 @@ set started [clock milliseconds]
 set_thread_count $::env(NUM_CORES)
 source [file join $::env(PLATFORM_DIR) util liberty_suppressions.tcl]
 source [file join $::env(PLATFORM_DIR) util libraries.tcl]
-foreach lef [list asap7_tech_1x_201209.lef asap7sc7p5t_28_R_1x_220121a.lef \
+# Technology LEF and hard-macro files come from benchmark.json through run.py.
+proc env_paths {name} {
+    if {![info exists ::env($name)] || $::env($name) eq ""} { return {} }
+    return [split $::env($name) :]
+}
+set tech_lef [file join $::env(PLATFORM_DIR) lef asap7_tech_1x_201209.lef]
+if {[llength [env_paths TECH_LEF]]} { set tech_lef $::env(TECH_LEF) }
+set macro_lefs [env_paths ADDITIONAL_LEFS]
+set macro_libs [env_paths ADDITIONAL_LIBS]
+read_lef $tech_lef
+foreach lef [list asap7sc7p5t_28_R_1x_220121a.lef \
                   asap7sc7p5t_28_L_1x_220121a.lef asap7sc7p5t_28_SL_1x_220121a.lef] {
     read_lef [file join $::env(PLATFORM_DIR) lef $lef]
 }
+foreach lef $macro_lefs { read_lef $lef }
 foreach corner $::env(LIBRARY_CORNERS) {
     foreach lib $corner_libs($corner) { read_liberty $lib }
 }
+# Macro Liberty is characterized at one corner, so one read serves every scene.
+foreach lib $macro_libs { read_liberty $lib }
 if {$::env(PHASE) eq "verilog_check"} {
     read_verilog $::env(INPUT_VERILOG)
     link_design $::env(DESIGN_NAME)
@@ -143,35 +170,46 @@ if {$::env(PHASE) eq "full"} {
         [out baseline_structure] [out submitted_structure] --output [out structural_validation.json]
 }
 # Separate constraint modes prevent one corner's clock period overwriting another.
-foreach corner $::env(CORNERS) {
-    set mode $scenario_mode($corner)
-    read_sdc -mode $mode $scenario_sdc($corner)
+set scenes $::env(CORNERS)
+if {[info exists ::env(SCENES)] && $::env(SCENES) ne ""} { set scenes $::env(SCENES) }
+proc scene_corner {scene} {
+    if {[info exists ::scenario_corner($scene)]} { return $::scenario_corner($scene) }
+    return $scene
+}
+set spef_read {}
+foreach scene $scenes {
+    set corner [scene_corner $scene]
+    set mode $scenario_mode($scene)
+    read_sdc -mode $mode $scenario_sdc($scene)
     set_mode $mode
     foreach clk [all_clocks] {
         if {![get_property $clk is_virtual]} { set_propagated_clock $clk }
     }
     if {$::env(PHASE) eq "timing"} {
-        read_spef -name rc_$corner $::env(SPEF_PREFIX)_$corner.spef
-        define_scene $corner -mode $mode -liberty $corner_libs($corner) -spef rc_$corner
-        report_parasitic_annotation -name rc_$corner -report_unannotated > [out ${corner}_parasitic_annotation.rpt]
+        if {[lsearch -exact $spef_read $corner] < 0} {
+            read_spef -name rc_$corner $::env(SPEF_PREFIX)_$corner.spef
+            lappend spef_read $corner
+        }
+        define_scene $scene -mode $mode -liberty [concat $corner_libs($corner) $macro_libs] -spef rc_$corner
+        report_parasitic_annotation -name rc_$corner -report_unannotated > [out ${scene}_parasitic_annotation.rpt]
     } else {
-        define_scene $corner -mode $mode -liberty $corner_libs($corner)
+        define_scene $scene -mode $mode -liberty [concat $corner_libs($corner) $macro_libs]
     }
 }
-if {"TC" in $::env(CORNERS)} { set_scene TC } else { set_scene [lindex $::env(CORNERS) 0] }
-source [file join $::env(PLATFORM_DIR) util setRC.tcl]
+if {"TC" in $scenes} { set_scene TC } else { set_scene [lindex $scenes 0] }
+source $mcmm_rc_file
 report_units
 set fp [open [out clocks.tsv] w]
 puts $fp "corner\tmode\tclock\tperiod_ps\tvirtual\tpropagated"
-foreach corner $::env(CORNERS) {
-    set_mode $scenario_mode($corner)
-    check_setup -verbose > [out ${corner}_constraint_coverage.rpt]
+foreach scene $scenes {
+    set_mode $scenario_mode($scene)
+    check_setup -verbose > [out ${scene}_constraint_coverage.rpt]
     foreach clk [all_clocks] {
-        puts $fp "$corner\t$scenario_mode($corner)\t[get_full_name $clk]\t[get_property $clk period]\t[get_property $clk is_virtual]\t[get_property $clk is_propagated]"
+        puts $fp "$scene\t$scenario_mode($scene)\t[get_full_name $clk]\t[get_property $clk period]\t[get_property $clk is_virtual]\t[get_property $clk is_propagated]"
     }
 }
 close $fp
-if {"TC" in $::env(CORNERS)} { set_scene TC } else { set_scene [lindex $::env(CORNERS) 0] }
+if {"TC" in $scenes} { set_scene TC } else { set_scene [lindex $scenes 0] }
 check_setup -verbose > [out constraint_coverage.rpt]
 set_dont_use {*x1p*_ASAP7* *xp*_ASAP7* SDF* ICG*}
 set original_clock [clock_snapshot]
@@ -187,6 +225,11 @@ set runtime(route) 0.0
 if {$::env(PHASE) eq "full"} {
     protect_clocks
     if {$::env(RUN_RESIZER)} {
+        # Empty RSZ_MAX_BUFFER_PERCENT keeps the OpenROAD default buffer limit.
+        set buffer_limit {}
+        if {[info exists ::env(RSZ_MAX_BUFFER_PERCENT)] && $::env(RSZ_MAX_BUFFER_PERCENT) ne ""} {
+            set buffer_limit [list -max_buffer_percent $::env(RSZ_MAX_BUFFER_PERCENT)]
+        }
         timed resizer {
             estimate_parasitics -placement
             repair_design
@@ -195,10 +238,10 @@ if {$::env(PHASE) eq "full"} {
             if {$::env(REPAIR_KIND) in {setup both}} {
                 repair_timing -setup -sequence $::env(RSZ_SETUP_SEQUENCE) -skip_gate_cloning \
                     -skip_buffer_removal -skip_last_gasp -repair_tns $::env(RSZ_TNS_PERCENT) \
-                    -max_iterations $::env(RSZ_MAX_ITERATIONS) -verbose
+                    -max_iterations $::env(RSZ_MAX_ITERATIONS) {*}$buffer_limit -verbose
             }
             if {$::env(REPAIR_KIND) in {hold both}} {
-                repair_timing -hold -max_iterations $::env(RSZ_MAX_ITERATIONS) -verbose
+                repair_timing -hold -max_iterations $::env(RSZ_MAX_ITERATIONS) {*}$buffer_limit -verbose
             }
         }
         timed legalize { detailed_placement; check_placement -verbose }
@@ -244,7 +287,7 @@ if {$::env(PHASE) eq "full"} {
 set fp [open [out timing.csv] w]
 puts $fp "design,resizer,corner,setup_worst_slack_ps,setup_tns_ps,setup_violating_endpoints,hold_worst_slack_ps,hold_tns_ps,hold_violating_endpoints"
 timed timing {
-    foreach scene $::env(CORNERS) { puts $fp [join [timing_metrics $scene] ,] }
+    foreach scene $scenes { puts $fp [join [timing_metrics $scene] ,] }
 }
 close $fp
 set runtime(total_openroad) [expr {([clock milliseconds]-$started)/1000.0}]
@@ -254,7 +297,7 @@ close $fp
 if {$::env(PHASE) eq "timing"} {
     set ep [open [out endpoints.tsv] w]
     puts $ep "corner\tcheck\tendpoint\tstartpoint\tslack_ps"
-    foreach corner $::env(CORNERS) {
+    foreach corner $scenes {
         foreach {delay check} {max setup min hold} {
             set endpoints [dict create]
             foreach path [find_timing_paths -scenes $corner -path_delay $delay -group_path_count 1000000 -endpoint_path_count 1 -slack_max 1e30] {

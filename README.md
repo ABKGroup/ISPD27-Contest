@@ -9,13 +9,15 @@
 ## Resources
 
 - [Contest description](https://github.com/ABKGroup/ISPD27-Contest/blob/main/ISPD27-Contest-Description.pdf): objectives, permitted transformations, scoring framework, and contest rules.
-- [Benchmarks](benchmarks/): Public benchmarks.
+- [Benchmarks](benchmarks/): All six public benchmarks are available: [AES](benchmarks/aes), [AES-scan](benchmarks/aes/scan), [JPEG](benchmarks/jpeg), [JPEG-scan](benchmarks/jpeg/scan), [CoralNPU](benchmarks/coralnpu), and [NyuziProcessor](benchmarks/nyuzi).
 - [ASAP7 platform](platform/asap7/): Technology platform files and libraries for the ASAP7 PDK.
 - [Evaluation guide](evaluator/README.md): tool requirements, commands, output files, metrics, and validation status.
 - [Docker containers](docker/README.md): Dockerfile and instructions for setting up a consistent evaluation environment.
 
 ## Timeline
 - Registration Open: October 5, 2026
+- First set of public benchmarks released: October 5, 2026
+- All public benchmarks released: November 7, 2026
 - Registration Close: December 5, 2026
 - Alpha Submission Deadline: January 11, 2027 
 - Beta Submission Deadline: February 15, 2027 
