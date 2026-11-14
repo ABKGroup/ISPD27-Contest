@@ -62,6 +62,17 @@ AES and JPEG without scan include `input.def` and `input.v` unpacked.
 | `input.scandef.gz` | Scan chains. Scan testcases only. The evaluator does not read it. |
 | `scan_enable_pins.txt.gz` | The scan enable port and the scan enable pin of every scan flop. Scan testcases only. The evaluator does not read it. |
 
+## Constraints and libraries
+
+- Units: all values in the SDC files are in ps and fF. OpenSTA takes the units from the first Liberty file it reads and ignores `set_units`.
+  The evaluator reads the standard-cell libraries of `platform/asap7` before the macro libraries of the testcase. Read the libraries in the
+  same order in your own scripts. Otherwise the SDC values of a testcase with hard macros are read in ns and pF.
+- Macro libraries: `macros/lib/*.lib` use ns, pF and 20% / 80% slew thresholds. The standard-cell libraries use ps, fF and 10% / 90%.
+  This is intended. OpenSTA converts a slew between libraries with different thresholds, and the slew limit of a macro pin is checked
+  in the convention of the macro library.
+- Reset ports: paths from input ports, including the reset ports, are timed as written in the SDC files. Only the `reset` port of
+  NyuziProcessor is a false path. The official evaluation uses the SDC files exactly as released.
+
 <!-- 
 
 ## Post-GRT results
