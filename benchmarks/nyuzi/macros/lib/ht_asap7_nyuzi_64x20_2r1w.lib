@@ -103,11 +103,11 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_clkslew) {
                 index_1 ("0.009, 0.227");
-                values ("1.345, 1.345")
+                values ("1.345, 1.345");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_clkslew) {
                 index_1 ("0.009, 0.227");
-                values ("1.345, 1.345")
+                values ("1.345, 1.345");
             }
         }
     }
@@ -120,11 +120,11 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_clkslew) {
                 index_1 ("0.009, 0.227");
-                values ("1.345, 1.345")
+                values ("1.345, 1.345");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_clkslew) {
                 index_1 ("0.009, 0.227");
-                values ("1.345, 1.345")
+                values ("1.345, 1.345");
             }
         }
     }
@@ -137,11 +137,11 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_clkslew) {
                 index_1 ("0.009, 0.227");
-                values ("1.345, 1.345")
+                values ("1.345, 1.345");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_clkslew) {
                 index_1 ("0.009, 0.227");
-                values ("1.345, 1.345")
+                values ("1.345, 1.345");
             }
         }
     }
@@ -163,7 +163,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.218, 0.218", \
                   "0.218, 0.218" \
-                )
+                );
             }
             cell_fall(ht_asap7_nyuzi_64x20_2r1w_mem_out_delay_template) {
                 index_1 ("0.009, 0.227");
@@ -171,15 +171,15 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.218, 0.218", \
                   "0.218, 0.218" \
-                )
+                );
             }
             rise_transition(ht_asap7_nyuzi_64x20_2r1w_mem_out_slew_template) {
                 index_1 ("0.005, 0.5");
-                values ("0.009, 0.227")
+                values ("0.009, 0.227");
             }
             fall_transition(ht_asap7_nyuzi_64x20_2r1w_mem_out_slew_template) {
                 index_1 ("0.005, 0.5");
-                values ("0.009, 0.227")
+                values ("0.009, 0.227");
             }
         }
     }
@@ -200,7 +200,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.218, 0.218", \
                   "0.218, 0.218" \
-                )
+                );
             }
             cell_fall(ht_asap7_nyuzi_64x20_2r1w_mem_out_delay_template) {
                 index_1 ("0.009, 0.227");
@@ -208,15 +208,15 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.218, 0.218", \
                   "0.218, 0.218" \
-                )
+                );
             }
             rise_transition(ht_asap7_nyuzi_64x20_2r1w_mem_out_slew_template) {
                 index_1 ("0.005, 0.5");
-                values ("0.009, 0.227")
+                values ("0.009, 0.227");
             }
             fall_transition(ht_asap7_nyuzi_64x20_2r1w_mem_out_slew_template) {
                 index_1 ("0.005, 0.5");
-                values ("0.009, 0.227")
+                values ("0.009, 0.227");
             }
         }
     }
@@ -232,7 +232,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -240,7 +240,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -252,7 +252,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -260,17 +260,17 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
@@ -286,7 +286,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -294,7 +294,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -306,7 +306,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -314,17 +314,17 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
@@ -340,7 +340,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -348,7 +348,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -360,7 +360,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -368,17 +368,17 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
@@ -394,7 +394,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -402,7 +402,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -414,7 +414,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -422,17 +422,17 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
@@ -453,7 +453,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -461,7 +461,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -473,7 +473,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -481,29 +481,29 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             when : "(! (w0_we_in) )";
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
         internal_power(){
             when : "(w0_we_in)";
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
@@ -520,7 +520,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -528,7 +528,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -540,7 +540,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -548,17 +548,17 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
@@ -575,7 +575,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -583,7 +583,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -595,7 +595,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -603,17 +603,17 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
@@ -630,7 +630,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -638,7 +638,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         } 
         timing() {
@@ -650,7 +650,7 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
             fall_constraint(ht_asap7_nyuzi_64x20_2r1w_constraint_template) {
                 index_1 ("0.009, 0.227");
@@ -658,17 +658,17 @@ cell(ht_asap7_nyuzi_64x20_2r1w) {
                 values ( \
                   "0.050, 0.050", \
                   "0.050, 0.050" \
-                )
+                );
             }
         }
         internal_power(){
             rise_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
             fall_power(ht_asap7_nyuzi_64x20_2r1w_energy_template_sigslew) {
                 index_1 ("0.009, 0.227");
-                values ("0.013, 0.013")
+                values ("0.013, 0.013");
             }
         }
     }
