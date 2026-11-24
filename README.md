@@ -32,6 +32,12 @@ Email: ispd2027contest@gmail.com
 - Registration form: [link](https://forms.gle/SkVWsWBRaas1TkY79)
 - Registration window: October 5–December 5, 2026.
 
+***The team list below was last updated on November 24 at 10:00 AM PT.***
+
+- If you registered before this cutoff and your team is not listed, please contact us.
+- If you registered after this cutoff, please wait for the next update and email notification.
+
+***The next update will be on December 6 (PT). We will also contact each registered team via email to confirm their participation details.***
 
 | TeamID | Team Name | Affiliation |
 |---|---|---|
@@ -95,6 +101,13 @@ Email: ispd2027contest@gmail.com
 | 58 | kskblzdjd | Nanjing University of Posts and Telecommunications |
 | 59 | PiyenParty | National Yang Ming Chiao Tung University / National Chung Cheng University |
 | 60 | GBC | Graduate Institute of Electronics Engineering, National Taiwan University |
+| 61 | SlackOpt | Huazhong University of Science and Technology |
+| 62 | VDALab | National Yang Ming Chiao Tung University |
+| 63 | Jieling | Yuan ze university |
+| 64 | P | Yuan Ze University |
+| 65 | HBD22 | Yuan Ze University |
+| 66 | Jojo | Yuan Ze University |
+| 67 | Alpha | Southeast University |
 
 
 ## Prizes
