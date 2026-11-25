@@ -108,6 +108,7 @@ Email: ispd2027contest@gmail.com
 | 65 | HBD22 | Yuan Ze University |
 | 66 | Jojo | Yuan Ze University |
 | 67 | Alpha | Southeast University |
+| 68 | vmv |East China Normal University|
 
 
 ## Prizes
