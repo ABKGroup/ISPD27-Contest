@@ -66,7 +66,7 @@ Email: ispd2027contest@gmail.com
 | 23 | TyneTiming | Newcastle University, UK |
 | 24 | RockBattle | National Yang Ming Chiao Tung University |
 | 25 | TuT | Institute of Computing Technology, Chinese Academy of Sciences |
-| 26 | ♪(^∇^*) | National Tsing Hua University, The Chinese University of Hong Kong |
+| 26 | ♪(^∇^*) | National Tsing Hua University, The Chinese University of Hong Kong, , National Taiwan University of Science and Technology |
 | 27 | 荷风队 | 上海创芯学院 |
 | 28 | Alejandro Pacheco | Independent |
 | 29 | P2C | Technical University of Munich |
